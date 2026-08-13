@@ -4,19 +4,19 @@ const choices = [
     id: "ecommerce",
     title: "חנות אונליין",
     text: "למכור מוצרים מהאתר — סליקה, מוצרים וסדר.",
-    hint: "מתאים למסלולים 1–3",
+    hint: "מסלולים 1–3",
   },
   {
     id: "landing",
     title: "דף נחיתה",
     text: "עמוד אחד ברור שמוביל ליצירת קשר.",
-    hint: "מתאים למסלולים 1–2",
+    hint: "מסלולים 1–2",
   },
   {
     id: "unique",
-    title: "עיצוב מיוחד",
-    text: "אתר עם אופי — לא תבנית מהמדף.",
-    hint: "נתאים יחד",
+    title: "מסלול משלי — אתה לא תקבע לי",
+    text: "אתם קובעים איך זה ייראה ואיך נעבוד. בלי תבנית סגורה.",
+    hint: "מסלול 4 בלבד",
   },
 ];
 ---
@@ -25,7 +25,7 @@ const choices = [
   <div class="choose-inner">
     <p class="eyebrow">בחירה</p>
     <h2>מה אתם צריכים?</h2>
-    <p class="lead">בחרו כיוון — ואציג לכם מסלולים שמתאימים.</p>
+    <p class="lead">בחרו כיוון — ואציג לכם רק את המסלולים שפתוחים לכם.</p>
 
     <div class="choices" role="list">
       {
@@ -50,22 +50,45 @@ const choices = [
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-choice]");
   const plans = document.getElementById("plans");
 
+  const applyFilter = (choice: string | undefined) => {
+    if (!plans) return;
+    plans.dataset.filter = choice || "";
+    plans.querySelectorAll<HTMLElement>("[data-fit]").forEach((card) => {
+      const fit = (card.dataset.fit || "").split(/\s+/).filter(Boolean);
+      const open = !choice || fit.includes(choice);
+      card.classList.toggle("locked", !open);
+      card.classList.toggle("spotlight", open && !!choice);
+      card.setAttribute("aria-disabled", open ? "false" : "true");
+
+      const cta = card.querySelector<HTMLAnchorElement>("a.btn");
+      if (cta) {
+        if (open) {
+          cta.removeAttribute("tabindex");
+          cta.classList.remove("is-disabled");
+        } else {
+          cta.setAttribute("tabindex", "-1");
+          cta.classList.add("is-disabled");
+        }
+      }
+    });
+  };
+
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const choice = btn.dataset.choice;
       buttons.forEach((b) => b.classList.toggle("active", b === btn));
-
-      if (plans) {
-        plans.dataset.filter = choice || "";
-        plans.querySelectorAll<HTMLElement>("[data-fit]").forEach((card) => {
-          const fit = (card.dataset.fit || "").split(" ");
-          const match = !choice || fit.includes(choice);
-          card.classList.toggle("dimmed", !match);
-          card.classList.toggle("spotlight", match && !!choice);
-        });
-        plans.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      applyFilter(choice);
+      plans?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
+  });
+
+  // Block clicks on locked plan CTAs
+  plans?.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement | null;
+    const link = target?.closest?.("a.btn");
+    if (link?.classList.contains("is-disabled")) {
+      e.preventDefault();
+    }
   });
 </script>
 

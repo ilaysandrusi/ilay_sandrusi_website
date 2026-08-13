@@ -8,7 +8,7 @@ const plans = [
     tag: "מסלול בסיסי",
     text: "בונים יחד עד שזה מרגיש נכון. כולל בדיקות תוכנה, ורק אז משחררים את האתר.",
     items: ["אפיון ועיצוב", "בנייה עד שאתם מרוצים", "בדיקות תוכנה", "השקה"],
-    fit: "ecommerce landing unique",
+    fit: "ecommerce landing",
     wa: "היי איליי, מעניין אותי מסלול 1 — אתר עד שאתם מרוצים",
   },
   {
@@ -33,11 +33,11 @@ const plans = [
     num: "04",
     name: "נתאים יחד",
     tag: "מסלול אישי",
-    text: "אם אף מסלול לא מדויק בשבילכם — נשב, נבין מה צריך, ונתאים משהו שמתאים באמת.",
+    text: "אתם קובעים. נשב, נבין מה צריך, ונבנה מסלול שמתאים באמת — בלי תבנית סגורה.",
     items: ["שיחה בלי התחייבות", "התאמה להיקף ולתקציב", "רק מה שצריך"],
-    fit: "ecommerce landing unique",
+    fit: "unique",
     featured: true,
-    wa: "היי איליי, רוצה להתאים מסלול אישי",
+    wa: "היי איליי, רוצה מסלול משלי — אתה לא תקבע לי",
   },
 ];
 ---
@@ -46,7 +46,7 @@ const plans = [
   <div class="plans-head">
     <p class="eyebrow">מסלולים</p>
     <h2>איך אפשר לעבוד יחד</h2>
-    <p class="lead">בחרו מסלול — ונמשיך בוואטסאפ.</p>
+    <p class="lead">אחרי הבחירה למעלה — רק המסלולים הפתוחים ניתנים לבחירה.</p>
   </div>
 
   <div class="rail" tabindex="0">
@@ -56,6 +56,7 @@ const plans = [
           class:list={["plan", "card", { featured: p.featured }]}
           data-fit={p.fit}
         >
+          <span class="lock-badge" aria-hidden="true">נעול</span>
           <span class="num">{p.num}</span>
           <span class="tag">{p.tag}</span>
           <h3>{p.name}</h3>
@@ -121,13 +122,45 @@ const plans = [
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
     transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
   }
 
-  .plan.dimmed {
-    opacity: 0.35;
-    filter: grayscale(0.4);
+  .lock-badge {
+    display: none;
+    position: absolute;
+    top: 14px;
+    inset-inline-end: 14px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: var(--line);
+    z-index: 2;
+  }
+
+  .plan.featured .lock-badge {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .plan.locked {
+    opacity: 0.4;
+    filter: grayscale(0.55);
     transform: scale(0.98);
+  }
+
+  .plan.locked .lock-badge {
+    display: inline-block;
+  }
+
+  .plan.locked .btn,
+  .plan .btn.is-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.55;
   }
 
   .plan.spotlight {
