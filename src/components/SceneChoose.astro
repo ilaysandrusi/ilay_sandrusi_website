@@ -1,0 +1,169 @@
+---
+const choices = [
+  {
+    id: "ecommerce",
+    title: "חנות אונליין",
+    text: "למכור מוצרים מהאתר — סליקה, מוצרים וסדר.",
+    hint: "מתאים למסלולים 1–3",
+  },
+  {
+    id: "landing",
+    title: "דף נחיתה",
+    text: "עמוד אחד ברור שמוביל ליצירת קשר.",
+    hint: "מתאים למסלולים 1–2",
+  },
+  {
+    id: "unique",
+    title: "עיצוב מיוחד",
+    text: "אתר עם אופי — לא תבנית מהמדף.",
+    hint: "נתאים יחד",
+  },
+];
+---
+
+<section class="scene choose" id="choose">
+  <div class="choose-inner">
+    <p class="eyebrow">בחירה</p>
+    <h2>מה אתם צריכים?</h2>
+    <p class="lead">בחרו כיוון — ואציג לכם מסלולים שמתאימים.</p>
+
+    <div class="choices" role="list">
+      {
+        choices.map((c) => (
+          <button
+            type="button"
+            class="choice card"
+            data-choice={c.id}
+            role="listitem"
+          >
+            <span class="choice-title">{c.title}</span>
+            <span class="choice-text">{c.text}</span>
+            <span class="choice-hint">{c.hint}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-choice]");
+  const plans = document.getElementById("plans");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const choice = btn.dataset.choice;
+      buttons.forEach((b) => b.classList.toggle("active", b === btn));
+
+      if (plans) {
+        plans.dataset.filter = choice || "";
+        plans.querySelectorAll<HTMLElement>("[data-fit]").forEach((card) => {
+          const fit = (card.dataset.fit || "").split(" ");
+          const match = !choice || fit.includes(choice);
+          card.classList.toggle("dimmed", !match);
+          card.classList.toggle("spotlight", match && !!choice);
+        });
+        plans.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+</script>
+
+<style>
+  .scene.choose {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 90px 0 calc(var(--bar-height) + 32px);
+    background: var(--paper-soft);
+    border-top: var(--line);
+    border-bottom: var(--line);
+  }
+
+  .choose-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    margin-bottom: 10px;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    margin-bottom: 28px;
+    max-width: 34ch;
+  }
+
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .choice {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+    text-align: start;
+    padding: 22px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .choice:hover,
+  .choice.active {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+  }
+
+  .choice-title {
+    font-family: "Suez One", serif;
+    font-size: 1.45rem;
+  }
+
+  .choice-text {
+    font-size: 1rem;
+    opacity: 0.85;
+  }
+
+  .choice-hint {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .choice.active .choice-hint,
+  .choice:hover .choice-hint {
+    color: var(--accent);
+  }
+
+  @media (min-width: 768px) {
+    .choose-inner {
+      padding: 0 32px;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .choice {
+      min-height: 220px;
+      justify-content: flex-end;
+      padding: 28px 24px;
+    }
+  }
+</style>

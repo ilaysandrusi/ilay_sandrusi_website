@@ -61,7 +61,7 @@ img {
 }
 
 section {
-  padding: 60px 0;
+  padding: 0;
 }
 
 .eyebrow {
@@ -163,12 +163,7 @@ summary:focus-visible {
 
 @media (min-width: 768px) {
   body {
-    /* The sticky action bar is mobile-only. */
     padding-bottom: 0;
-  }
-
-  section {
-    padding: 96px 0;
   }
 
   .container {

@@ -1,0 +1,122 @@
+---
+const points = [
+  {
+    title: "רקע מאופנה",
+    text: "לפני אתרים עבדתי בעיצוב אופנה. זה נתן לי עין לפרטים, לצבע ולמראה הכללי.",
+  },
+  {
+    title: "השקעה מהלב",
+    text: "אני לוקח פרויקטים שאני יכול לתת להם תשומת לב אמיתית. לא על סרט נע.",
+  },
+  {
+    title: "בודק תוכנה",
+    text: "יש לי ניסיון בבדיקות תוכנה ובמערכות. לפני שהאתר עולה — בודקים שהכול עובד.",
+  },
+  {
+    title: "מחירים הוגנים",
+    text: "הצעת מחיר ברורה מראש. בלי הפתעות ובלי לשלם על דברים שלא ביקשתם.",
+  },
+];
+---
+
+<section class="scene about" id="about">
+  <div class="about-inner">
+    <p class="eyebrow about-eye">קצת עליי</p>
+    <h2>מה חשוב לי בעבודה</h2>
+    <div class="points">
+      {
+        points.map((p, i) => (
+          <div class="point">
+            <span class="n">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .scene.about {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 90px 0 calc(var(--bar-height) + 40px);
+  }
+
+  .about-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .about-eye {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    margin-bottom: 36px;
+  }
+
+  .points {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .point {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(246, 241, 231, 0.18);
+  }
+
+  .point:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .n {
+    font-family: "Suez One", serif;
+    font-size: 1.4rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+
+  .point p {
+    color: #b8b0a3;
+    font-size: 1rem;
+    max-width: 42ch;
+  }
+
+  @media (min-width: 768px) {
+    .about-inner {
+      padding: 0 32px;
+    }
+
+    .points {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px 48px;
+    }
+
+    .point {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+</style>

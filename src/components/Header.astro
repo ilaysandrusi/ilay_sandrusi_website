@@ -1,9 +1,8 @@
 ---
 const links = [
-  { href: "#services", label: "שירותים" },
+  { href: "#choose", label: "בחירה" },
   { href: "#plans", label: "מסלולים" },
-  { href: "#process", label: "תהליך" },
-  { href: "#faq", label: "שאלות" },
+  { href: "#about", label: "עליי" },
 ];
 ---
 
@@ -12,7 +11,7 @@ const links = [
     <a href="#top" class="logo">איליי<span>.</span></a>
     <nav class="nav" id="nav">
       {links.map((link) => <a href={link.href}>{link.label}</a>)}
-      <a href="#contact" class="nav-cta">דברו איתי</a>
+      <a href="#choose" class="nav-cta">מה אתם צריכים?</a>
     </nav>
     <button class="menu-toggle" id="menu-toggle" aria-label="פתיחת תפריט" aria-expanded="false">
       <span></span><span></span>
@@ -66,7 +65,6 @@ const links = [
     color: var(--accent);
   }
 
-  /* Mobile-first: nav is a full-width dropdown panel. */
   .nav {
     position: absolute;
     top: 62px;
@@ -159,10 +157,6 @@ const links = [
     .nav-cta,
     .nav a.nav-cta {
       color: var(--accent);
-    }
-
-    .nav a.nav-cta:hover {
-      color: var(--accent-dark);
     }
 
     .menu-toggle {

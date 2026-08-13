@@ -1,0 +1,147 @@
+---
+---
+
+<section class="scene open" id="top">
+  <div class="open-inner">
+    <p class="open-kicker">איליי סנדרוסי</p>
+    <h1>
+      בונים אתר<br />
+      <em>שמתאים לעסק שלכם.</em>
+    </h1>
+    <p class="open-lead">
+      איקומרס, דפי נחיתה ועיצוב מותאם — בלי רעש מיותר, עם בדיקות לפני שעולים לאוויר.
+    </p>
+    <a href="#choose" class="btn btn-primary open-cta">
+      מה אתם צריכים?
+      <span aria-hidden="true">↓</span>
+    </a>
+  </div>
+  <div class="open-marks" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="stamp">א.</span>
+  </div>
+</section>
+
+<style>
+  .scene.open {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .open-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 100px 20px calc(var(--bar-height) + 40px);
+  }
+
+  .open-kicker {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+    color: var(--ink-soft);
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 12vw, 5.4rem);
+    margin-bottom: 20px;
+    max-width: 11ch;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .open-lead {
+    color: var(--ink-soft);
+    font-size: 1.12rem;
+    max-width: 34ch;
+    margin-bottom: 32px;
+  }
+
+  .open-cta {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .open-marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .blob {
+    position: absolute;
+    border: var(--line);
+    border-radius: 40% 60% 55% 45%;
+  }
+
+  .blob-a {
+    width: 180px;
+    height: 180px;
+    background: var(--accent);
+    top: 18%;
+    inset-inline-end: -40px;
+    transform: rotate(18deg);
+    opacity: 0.9;
+  }
+
+  .blob-b {
+    width: 120px;
+    height: 120px;
+    background: var(--paper);
+    top: 42%;
+    inset-inline-end: 40px;
+    box-shadow: var(--shadow);
+  }
+
+  .stamp {
+    position: absolute;
+    bottom: calc(var(--bar-height) + 24px);
+    inset-inline-end: 20px;
+    font-family: "Suez One", serif;
+    font-size: 4.5rem;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.08;
+  }
+
+  @media (min-width: 768px) {
+    .open-inner {
+      padding: 120px 32px 80px;
+      align-self: center;
+    }
+
+    .open-cta {
+      width: auto;
+    }
+
+    .blob-a {
+      width: 280px;
+      height: 280px;
+      inset-inline-end: 8%;
+      top: 22%;
+    }
+
+    .blob-b {
+      width: 160px;
+      height: 160px;
+      inset-inline-end: 22%;
+    }
+
+    .stamp {
+      font-size: 9rem;
+      bottom: 40px;
+      inset-inline-end: 8%;
+    }
+  }
+</style>
