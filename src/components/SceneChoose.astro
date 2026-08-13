@@ -27,14 +27,13 @@ const choices = [
     <h2>מה אתם צריכים?</h2>
     <p class="lead">בחרו כיוון — יוצגו רק המסלולים הפתוחים לכם.</p>
 
-    <div class="choices" role="list">
+    <div class="choices" role="group" aria-label="בחירת סוג אתר">
       {
         choices.map((c) => (
           <button
             type="button"
             class="choice card"
             data-choice={c.id}
-            role="listitem"
             aria-pressed="false"
           >
             <span class="choice-title">{c.title}</span>
@@ -146,12 +145,17 @@ const choices = [
     align-items: flex-start;
     gap: 6px;
     width: 100%;
+    min-height: 44px;
     text-align: start;
     padding: 22px 20px;
     cursor: pointer;
     font-family: inherit;
     color: inherit;
-    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+    transition:
+      transform var(--motion) var(--ease),
+      background var(--motion) var(--ease),
+      color var(--motion) var(--ease),
+      box-shadow var(--motion) var(--ease);
   }
 
   .choice:hover,
@@ -160,6 +164,11 @@ const choices = [
     color: var(--paper);
     transform: translate(-3px, -3px);
     box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+  }
+
+  .choice:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 rgba(255, 75, 38, 0.85);
   }
 
   .choice-title {

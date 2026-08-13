@@ -109,6 +109,7 @@ const plans = [
     scroll-snap-type: x mandatory;
     padding: 8px 20px 24px;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
 
@@ -226,10 +227,15 @@ const plans = [
   }
 
   li::before {
-    content: "✦";
+    content: "";
     position: absolute;
     inset-inline-start: 0;
-    color: var(--accent);
+    top: 0.45em;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
   }
 
   .plan .btn {

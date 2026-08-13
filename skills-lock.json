@@ -19,6 +19,12 @@
       "skillPath": "skills/design/scroll-experience/SKILL.md",
       "computedHash": "67208408ab85e746309bd6de93d55f756b3fd05993b37355a6fe49c7874e8c90"
     },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": "skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "305a7527fcb2f5b6e4129ab22cd839b5172d26df7f14d3324bfdec8fc1763560"
+    },
     "ux-writing-content-design": {
       "source": "hueyexe/frontend-agent-skills",
       "sourceType": "github",
