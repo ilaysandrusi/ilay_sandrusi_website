@@ -21,20 +21,22 @@ const links = [
 </header>
 
 <script>
-  const toggle = document.getElementById("menu-toggle")!;
-  const nav = document.getElementById("nav")!;
-  toggle.addEventListener("click", () => {
-    const open = nav.classList.toggle("open");
-    toggle.classList.toggle("active", open);
-    toggle.setAttribute("aria-expanded", String(open));
-  });
-  nav.addEventListener("click", (e) => {
-    if ((e.target as HTMLElement).tagName === "A") {
-      nav.classList.remove("open");
-      toggle.classList.remove("active");
-      toggle.setAttribute("aria-expanded", "false");
-    }
-  });
+  const toggle = document.getElementById("menu-toggle");
+  const nav = document.getElementById("nav");
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      toggle.classList.toggle("active", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    nav.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).tagName === "A") {
+        nav.classList.remove("open");
+        toggle.classList.remove("active");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 </script>
 
 <style>

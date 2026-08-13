@@ -1,14 +1,12 @@
 ---
-// Sticky bottom action bar — mobile only. TODO: replace with real contact details.
-const phone = "0500000000";
-const whatsappLink = "https://wa.me/972500000000";
+import { phoneTel, whatsappLink } from "../data/contact";
 ---
 
 <div class="mobile-bar">
-  <a href={whatsappLink} class="bar-btn whatsapp" target="_blank" rel="noopener">
+  <a href={whatsappLink} class="bar-btn whatsapp" target="_blank" rel="noopener noreferrer">
     וואטסאפ
   </a>
-  <a href={`tel:${phone}`} class="bar-btn call">התקשרו</a>
+  <a href={`tel:${phoneTel}`} class="bar-btn call">התקשרו</a>
 </div>
 
 <style>
@@ -20,7 +18,6 @@ const whatsappLink = "https://wa.me/972500000000";
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    /* Height comes from content + safe-area so buttons never get squashed. */
     padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
     background: rgba(246, 241, 231, 0.95);
     backdrop-filter: blur(10px);

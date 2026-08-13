@@ -1,38 +1,41 @@
 # בניית אתרים · איליי סנדרוסי
 
-אתר עסקי בעברית מלאה (RTL) לעסק בניית האתרים של איליי סנדרוסי. נבנה עם [Astro](https://astro.build) כאתר סטטי — מהיר, ללא JavaScript מיותר, ומוכן לפריסה בכל שירות אחסון סטטי (Vercel, Netlify, Cloudflare Pages).
+אתר עסקי בעברית (RTL), mobile-first. נבנה ב-[Astro](https://astro.build) כאתר סטטי ונפרס ל-GitHub Pages.
+
+**לייב:** https://ilaysandrusi.github.io/ilay_sandrusi_website/
 
 ## הרצה מקומית
 
 ```sh
 npm install
-npm run dev        # שרת פיתוח בכתובת http://localhost:4321
-npm run build      # בניית גרסת פרודקשן לתיקיית dist/
-npm run preview    # תצוגה מקדימה של גרסת הפרודקשן
+npm run dev
+npm run build
+npm run preview
 ```
 
-## מבנה הפרויקט
+## מבנה
 
 ```text
 src/
-├── layouts/Layout.astro      # תבנית בסיס: RTL, פונטים, מטא־תגיות
-├── styles/global.css         # משתני עיצוב וסגנונות גלובליים
-├── components/               # סקשנים של העמוד
-│   ├── Header.astro          # ניווט עליון + תפריט מובייל
-│   ├── Hero.astro            # פתיח ראשי
-│   ├── Services.astro        # שירותים
-│   ├── Process.astro         # תהליך העבודה
-│   ├── Work.astro            # תיק עבודות (placeholders)
-│   ├── WhyMe.astro           # יתרונות
-│   ├── Faq.astro             # שאלות נפוצות
-│   ├── Contact.astro         # יצירת קשר
-│   └── Footer.astro
-└── pages/index.astro         # עמוד הבית
+├── data/contact.ts           # טלפון / וואטסאפ / מייל — לעדכן כאן
+├── layouts/Layout.astro
+├── styles/global.css
+├── components/
+│   ├── Header.astro
+│   ├── Hero.astro
+│   ├── Services.astro
+│   ├── Packages.astro        # 4 מסלולים
+│   ├── Process.astro
+│   ├── WhyMe.astro
+│   ├── Faq.astro
+│   ├── Contact.astro
+│   ├── Footer.astro
+│   └── MobileBar.astro       # סרגל וואטסאפ/טלפון בנייד
+└── pages/index.astro
 ```
 
-## מה נשאר להשלים לפני עלייה לאוויר
+פריסה אוטומטית: כל push ל-`main` מריץ `.github/workflows/deploy.yml`.
 
-- [ ] **פרטי קשר אמיתיים** ב-`src/components/Contact.astro` — טלפון, מייל וקישור וואטסאפ (כרגע placeholders).
-- [ ] **תיק עבודות** ב-`src/components/Work.astro` — להחליף את כרטיסי הדוגמה בצילומי מסך וקישורים לפרויקטים אמיתיים.
-- [ ] **דומיין ופריסה** — חיבור דומיין והעלאה לשירות אחסון.
-- [ ] אופציונלי: לוגו, תמונת פרופיל, והמלצות מלקוחות אמיתיים.
+## לפני לקוחות אמיתיים
+
+עדכנו ב-`src/data/contact.ts` את הטלפון, קישור הוואטסאפ והמייל (כרגע placeholders).

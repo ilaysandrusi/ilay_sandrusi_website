@@ -1,8 +1,5 @@
 ---
-// TODO: replace with real contact details.
-const phone = "050-0000000";
-const whatsappLink = "https://wa.me/972500000000";
-const email = "hello@example.com";
+import { phoneDisplay, phoneTel, whatsappLink, email } from "../data/contact";
 ---
 
 <section id="contact" class="contact">
@@ -15,7 +12,7 @@ const email = "hello@example.com";
         והצעת מחיר. השיחה הראשונה — תמיד בחינם וללא התחייבות.
       </p>
       <div class="actions">
-        <a href={whatsappLink} class="btn btn-primary" target="_blank" rel="noopener">
+        <a href={whatsappLink} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
           שלחו הודעה בוואטסאפ
         </a>
         <a href={`mailto:${email}`} class="btn btn-ghost">שלחו מייל</a>
@@ -23,7 +20,7 @@ const email = "hello@example.com";
       <ul class="details">
         <li>
           <span class="label">טלפון</span>
-          <a href={`tel:${phone.replace(/-/g, "")}`} dir="ltr">{phone}</a>
+          <a href={`tel:${phoneTel}`} dir="ltr">{phoneDisplay}</a>
         </li>
         <li>
           <span class="label">מייל</span>

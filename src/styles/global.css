@@ -126,6 +126,14 @@ section {
   color: var(--paper);
 }
 
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .card {
   background: var(--card);
   border: var(--line);
