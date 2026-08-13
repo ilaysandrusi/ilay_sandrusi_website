@@ -1,0 +1,166 @@
+---
+const plans = [
+  {
+    num: "01",
+    name: "אתר עד שאתם מרוצים",
+    tag: "המסלול הבסיסי",
+    text: "בונים את האתר יחד עד לתוצאה שאתם שלמים איתה. כולל בדיקת תוכנה מקיפה בכל מכשיר ודפדפן — ורק אז משחררים את הפרויקט לאוויר.",
+    items: ["אפיון ועיצוב ייחודי", "בנייה עד לשביעות רצון", "בדיקות תוכנה מלאות", "השקה ושחרור הפרויקט"],
+  },
+  {
+    num: "02",
+    name: "אתר + תחזוקה חודשית",
+    tag: "שקט נפשי",
+    text: "הכול ממסלול 1, ובנוסף ליווי חודשי: בדיקות תוכנה שוטפות, עדכוני גרסה, תיקונים קטנים ודאגה שהאתר יישאר יציב.",
+    items: ["הכול ממסלול 1", "בדיקות תוכנה חודשיות", "עדכוני גרסה", "תיקונים ועדכוני תוכן"],
+  },
+  {
+    num: "03",
+    name: "אתר + אוטומציות + תחזוקה",
+    tag: "המסלול המלא",
+    text: "אתר שעובד בשבילכם גם אחרי שהלקוח נכנס: טפסים, וואטסאפ, חיבורים למערכות, ותחזוקה שוטפת שמחזיקה הכול יחד.",
+    items: ["הכול ממסלול 2", "אוטומציות וחיבורים", "טפסים והתראות", "תחזוקה שוטפת"],
+  },
+  {
+    num: "04",
+    name: "נתאים יחד, באופן אישי",
+    tag: "מסלול מותאם",
+    text: "אין לכם צורך בחבילה סגורה? נשב יחד, נבין מה העסק באמת צריך — ונבנה לכם מסלול שמתאים בדיוק לכם, במחיר הוגן.",
+    items: ["שיחת היכרות בלי התחייבות", "התאמה להיקף ולתקציב", "רק מה שצריך — בלי תוספות מיותרות"],
+    featured: true,
+  },
+];
+---
+
+<section id="plans">
+  <div class="container">
+    <span class="eyebrow">מסלולים</span>
+    <h2 class="section-title">איך אפשר לעבוד יחד</h2>
+    <p class="section-subtitle">
+      ארבעה מסלולים ברורים. בלי הפתעות, בלי אותיות קטנות — ואתם בוחרים מה מתאים.
+    </p>
+    <div class="grid">
+      {
+        plans.map((p) => (
+          <article class:list={["card", "plan", "reveal", { featured: p.featured }]}>
+            <span class="num">{p.num}</span>
+            <span class="tag">{p.tag}</span>
+            <h3>{p.name}</h3>
+            <p>{p.text}</p>
+            <ul>
+              {p.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <a href="#contact" class={p.featured ? "btn btn-primary" : "btn btn-ghost"}>
+              {p.featured ? "בואו נתאים יחד" : "דברו איתי על המסלול"}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .plan {
+    padding: 26px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .plan.featured {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .num {
+    font-family: "Suez One", serif;
+    font-size: 0.95rem;
+    color: #fff;
+    background: var(--ink);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .featured .num {
+    background: var(--accent);
+  }
+
+  .tag {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .featured .tag {
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 1.45rem;
+  }
+
+  .plan > p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+
+  .featured > p {
+    color: #cfc6b8;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+
+  li {
+    position: relative;
+    padding-inline-start: 22px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  li::before {
+    content: "✦";
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--accent);
+  }
+
+  .plan .btn {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  .featured .btn-primary {
+    color: #fff;
+  }
+
+  @media (min-width: 820px) {
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .plan {
+      padding: 32px 28px;
+    }
+  }
+</style>
