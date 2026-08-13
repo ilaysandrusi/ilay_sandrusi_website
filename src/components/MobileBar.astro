@@ -6,7 +6,9 @@ import { phoneTel, whatsappLink } from "../data/contact";
   <a href={whatsappLink} class="bar-btn whatsapp" target="_blank" rel="noopener noreferrer">
     וואטסאפ
   </a>
-  <a href={`tel:${phoneTel}`} class="bar-btn call">התקשרו</a>
+  <a href={`tel:${phoneTel}`} class="bar-btn call" aria-label={`התקשרו ל-${phoneTel}`}>
+    התקשרו
+  </a>
 </div>
 
 <style>

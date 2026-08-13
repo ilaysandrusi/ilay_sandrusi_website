@@ -8,8 +8,8 @@ const links = [
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="#top" class="logo">איליי<span>.</span></a>
-    <nav class="nav" id="nav">
+    <a href="#top" class="logo" translate="no">איליי<span>.</span></a>
+    <nav class="nav" id="nav" aria-label="ניווט ראשי">
       {links.map((link) => <a href={link.href}>{link.label}</a>)}
       <a href="#choose" class="nav-cta">מה אתם צריכים?</a>
     </nav>

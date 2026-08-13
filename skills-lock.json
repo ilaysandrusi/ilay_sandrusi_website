@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility-inclusive-design": {
+      "source": "hueyexe/frontend-agent-skills",
+      "sourceType": "github",
+      "skillPath": "accessibility-inclusive-design/SKILL.md",
+      "computedHash": "ee329ce3702d2d26d358d4b9c483134ccee410b5232764e8d50752e5d4ac9dd8"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
+    },
+    "scroll-experience": {
+      "source": "liuchiawei/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/design/scroll-experience/SKILL.md",
+      "computedHash": "67208408ab85e746309bd6de93d55f756b3fd05993b37355a6fe49c7874e8c90"
+    },
+    "ux-writing-content-design": {
+      "source": "hueyexe/frontend-agent-skills",
+      "sourceType": "github",
+      "skillPath": "ux-writing-content-design/SKILL.md",
+      "computedHash": "05bd1955bb1181f83a080733e65c45504c1dd09a2b55b4d35cc6b4dd4c8ea0c8"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    }
+  }
+}

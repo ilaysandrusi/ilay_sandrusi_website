@@ -46,18 +46,18 @@ const plans = [
   <div class="plans-head">
     <p class="eyebrow">מסלולים</p>
     <h2>איך אפשר לעבוד יחד</h2>
-    <p class="lead">אחרי הבחירה למעלה — רק המסלולים הפתוחים ניתנים לבחירה.</p>
+    <p class="lead">אחרי בחירה למעלה — רק מסלולים פתוחים לחיצה. נעולים מסומנים.</p>
   </div>
 
-  <div class="rail" tabindex="0">
+  <div class="rail" tabindex="0" aria-label="כרטיסי מסלולים">
     {
       plans.map((p) => (
         <article
           class:list={["plan", "card", { featured: p.featured }]}
           data-fit={p.fit}
         >
-          <span class="lock-badge" aria-hidden="true">נעול</span>
-          <span class="num">{p.num}</span>
+          <span class="lock-badge">נעול למסלול הזה</span>
+          <span class="num" aria-hidden="true">{p.num}</span>
           <span class="tag">{p.tag}</span>
           <h3>{p.name}</h3>
           <p>{p.text}</p>
@@ -72,8 +72,9 @@ const plans = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {p.featured ? "נתאים יחד בוואטסאפ" : "לדבר על המסלול"}
+            {p.featured ? "שליחה בוואטסאפ — מסלול אישי" : `שליחה בוואטסאפ — מסלול ${p.num}`}
           </a>
+          <p class="locked-hint">בחרו כיוון אחר למעלה כדי לפתוח</p>
         </article>
       ))
     }
@@ -234,6 +235,22 @@ const plans = [
   .plan .btn {
     margin-top: auto;
     width: 100%;
+  }
+
+  .locked-hint {
+    display: none;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .plan.locked .locked-hint {
+    display: block;
+  }
+
+  .plan.featured .locked-hint {
+    color: #cfc6b8;
   }
 
   @media (min-width: 900px) {

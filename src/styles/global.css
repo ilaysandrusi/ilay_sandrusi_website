@@ -8,7 +8,6 @@
   --accent: #ff4b26;
   --accent-dark: #d93a1a;
   --card: #fffdf8;
-  /* Border shorthand — the design language uses bold ink outlines. */
   --line: 2px solid #171410;
   --shadow-sm: 4px 4px 0 rgba(23, 20, 16, 0.16);
   --shadow: 8px 8px 0 rgba(23, 20, 16, 0.16);
@@ -26,6 +25,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 76px;
+  color-scheme: light;
+  -webkit-tap-highlight-color: rgba(255, 75, 38, 0.18);
 }
 
 body {
@@ -34,14 +35,15 @@ body {
   color: var(--ink);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  /* Leave room for the sticky mobile action bar. */
   padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom));
+  touch-action: manipulation;
 }
 
 h1, h2, h3 {
   font-family: "Suez One", "Heebo", serif;
   font-weight: 400;
   line-height: 1.18;
+  text-wrap: balance;
 }
 
 a {
@@ -54,6 +56,25 @@ img {
   display: block;
 }
 
+.skip-link {
+  position: absolute;
+  inset-inline-start: 16px;
+  top: 12px;
+  z-index: 100;
+  background: var(--accent);
+  color: #fff;
+  border: var(--line);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -62,6 +83,10 @@ img {
 
 section {
   padding: 0;
+}
+
+.scene {
+  scroll-margin-top: 76px;
 }
 
 .eyebrow {
@@ -93,13 +118,15 @@ section {
   justify-content: center;
   gap: 10px;
   min-height: 54px;
+  min-width: 48px;
   padding: 12px 28px;
   border-radius: 14px;
   font-family: "Heebo", sans-serif;
   font-weight: 700;
   font-size: 1.05rem;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+  touch-action: manipulation;
 }
 
 .btn-primary {
@@ -141,7 +168,39 @@ summary:focus-visible {
   box-shadow: var(--shadow-sm);
 }
 
-/* Scroll-reveal (elements get .visible from the observer in Layout). */
+/* Progress dots for cinematic scenes */
+.scene-nav {
+  position: fixed;
+  inset-inline-end: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scene-nav a {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: transparent;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.scene-nav a[aria-current="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.2);
+}
+
+@media (min-width: 900px) {
+  .scene-nav {
+    display: flex;
+  }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(16px);
@@ -154,10 +213,21 @@ summary:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .reveal {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .btn,
+  .btn-primary:hover,
+  .btn-ghost:hover {
+    transition: none;
+    transform: none;
   }
 }
 

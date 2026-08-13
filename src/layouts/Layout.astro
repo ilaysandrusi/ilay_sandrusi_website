@@ -54,6 +54,7 @@ const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
     </noscript>
   </head>
   <body>
+    <a class="skip-link" href="#main">דלגו לתוכן</a>
     <slot />
     <script>
       const reveal = () => {
@@ -77,8 +78,32 @@ const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
           { threshold: 0.12 }
         );
         document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-        // Failsafe: never leave content permanently hidden if the observer misses.
         window.setTimeout(reveal, 2500);
+      }
+
+      // Scene progress nav — highlight current section
+      const sceneLinks = document.querySelectorAll<HTMLAnchorElement>(".scene-nav a");
+      const scenes = [...sceneLinks]
+        .map((a) => document.querySelector(a.getAttribute("href") || ""))
+        .filter(Boolean) as HTMLElement[];
+
+      if (scenes.length && sceneLinks.length) {
+        const mark = (id: string) => {
+          sceneLinks.forEach((a) => {
+            const current = a.getAttribute("href") === `#${id}`;
+            a.setAttribute("aria-current", current ? "true" : "false");
+          });
+        };
+        const io = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (visible?.target?.id) mark(visible.target.id);
+          },
+          { threshold: [0.35, 0.55, 0.75] }
+        );
+        scenes.forEach((s) => io.observe(s));
       }
     </script>
   </body>
