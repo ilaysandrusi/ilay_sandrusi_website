@@ -1,0 +1,104 @@
+---
+const reasons = [
+  {
+    title: "עין של מעצב",
+    text: "לפני שעיצבתי אתרים עיצבתי אופנה. העין העיצובית שפיתחתי שם — פרופורציות, צבע, פרטים קטנים — נכנסת לכל פיקסל באתר שלכם.",
+  },
+  {
+    title: "בודק תוכנה במקצועי",
+    text: "אני מגיע מעולם בדיקות התוכנה, עם ניסיון עבודה על מערכות. כל אתר עובר בדיקות קפדניות בכל מכשיר ודפדפן — לפני שהלקוחות שלכם רואים אותו.",
+  },
+  {
+    title: "Mobile First באמת",
+    text: "מעל 80% מהגולשים בישראל מגיעים מהנייד. כל אתר שלי מעוצב קודם למסך הקטן — ורק אז לדסקטופ.",
+  },
+  {
+    title: "ליווי אישי אחד-על-אחד",
+    text: "עובדים ישירות איתי, בלי מוקדים ובלי מתווכים. זמין בוואטסאפ לאורך כל הפרויקט.",
+  },
+  {
+    title: "מהירות שמרגישים",
+    text: "אתרים קלים שנטענים תוך שניות. גם הלקוחות מרוצים — וגם גוגל מתגמל במיקומים.",
+  },
+  {
+    title: "מחיר הוגן ושקוף",
+    text: "הצעת מחיר סגורה מראש, בלי הפתעות ובלי עלויות נסתרות.",
+  },
+];
+---
+
+<section class="why">
+  <div class="container">
+    <span class="eyebrow why-eyebrow">למה איתי</span>
+    <h2 class="section-title">למה עסקים בוחרים בי</h2>
+    <div class="grid">
+      {
+        reasons.map((r) => (
+          <div class="reason reveal">
+            <span class="check" aria-hidden="true">✓</span>
+            <div>
+              <h3>{r.title}</h3>
+              <p>{r.text}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .why-eyebrow {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 12px;
+  }
+
+  .reason {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .check {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  p {
+    color: #b8b0a3;
+    font-size: 0.98rem;
+  }
+
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+  }
+</style>

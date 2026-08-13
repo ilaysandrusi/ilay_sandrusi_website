@@ -1,0 +1,134 @@
+---
+const steps = [
+  {
+    title: "שיחת היכרות ואפיון",
+    text: "נדבר על העסק, המטרות והקהל. בסוף השיחה ברור לשנינו מה האתר צריך להשיג.",
+  },
+  {
+    title: "עיצוב",
+    text: "אני מעצב ומציג לכם הדמיה מלאה — קודם בגרסת המובייל. מלטשים יחד עד שמושלם.",
+  },
+  {
+    title: "בנייה",
+    text: "האתר נבנה בטכנולוגיה מודרנית: מהיר, מאובטח ומוכן לקידום בגוגל.",
+  },
+  {
+    title: "השקה וליווי",
+    text: "מחברים דומיין ועולים לאוויר. וגם אחרי — אני כאן לכל עדכון ושאלה.",
+  },
+];
+---
+
+<section id="process" class="process">
+  <div class="container">
+    <span class="eyebrow">איך זה עובד</span>
+    <h2 class="section-title">מהרעיון לאתר חי, ב-4 שלבים</h2>
+    <p class="section-subtitle">
+      תהליך פשוט ושקוף, בלי הפתעות ובלי ז'רגון טכני. אתם תמיד יודעים איפה
+      הפרויקט עומד.
+    </p>
+    <ol class="timeline">
+      {
+        steps.map((step, i) => (
+          <li class="step reveal">
+            <span class="dot">{i + 1}</span>
+            <div class="step-body">
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: var(--paper-soft);
+    border-top: var(--line);
+    border-bottom: var(--line);
+  }
+
+  .timeline {
+    list-style: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-inline-start: 0;
+  }
+
+  /* vertical connector line */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    inset-inline-start: 23px;
+    width: 2px;
+    background: var(--ink);
+  }
+
+  .step {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .dot {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Suez One", serif;
+    font-size: 1.15rem;
+    z-index: 1;
+  }
+
+  .step-body {
+    background: var(--card);
+    border: var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 22px;
+    flex: 1;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  .step-body p {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+  }
+
+  @media (min-width: 820px) {
+    .timeline {
+      flex-direction: row;
+      gap: 24px;
+    }
+
+    .timeline::before {
+      top: 23px;
+      bottom: auto;
+      height: 2px;
+      width: auto;
+      inset-inline: 40px;
+    }
+
+    .step {
+      flex-direction: column;
+      flex: 1;
+    }
+  }
+</style>

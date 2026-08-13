@@ -1,0 +1,101 @@
+---
+const services = [
+  {
+    num: "01",
+    title: "אתרי תדמית",
+    text: "אתר שמציג את העסק בגובה העיניים וגורם ללקוח להבין תוך שניות למה כדאי לו אתכם.",
+  },
+  {
+    num: "02",
+    title: "דפי נחיתה",
+    text: "דף עם מטרה אחת — להמיר. בנוי לקמפיינים, עם מסר חד, טופס לידים וכפתור וואטסאפ.",
+  },
+  {
+    num: "03",
+    title: "חנויות אונליין",
+    text: "חנות שנוח לקנות בה מהנייד: סליקה, מלאי ומשלוחים — מוכנים למכירה מהיום הראשון.",
+  },
+  {
+    num: "04",
+    title: "שדרוג ותחזוקה",
+    text: "אתר ישן או איטי? משדרגים עיצוב, משפרים מהירות ודואגים שהכול יישאר מעודכן ומאובטח.",
+  },
+];
+---
+
+<section id="services">
+  <div class="container">
+    <span class="eyebrow">מה אני עושה</span>
+    <h2 class="section-title">שירותים</h2>
+    <p class="section-subtitle">
+      כל מה שעסק צריך כדי להיראות טוב ברשת ולהביא לקוחות — אצל איש מקצוע אחד,
+      בלי להתרוצץ בין ספקים.
+    </p>
+    <div class="grid">
+      {
+        services.map((s) => (
+          <article class="card service reveal">
+            <span class="num">{s.num}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .service {
+    padding: 26px 24px;
+    position: relative;
+  }
+
+  .num {
+    font-family: "Suez One", serif;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--ink);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .service:nth-child(2) .num,
+  .service:nth-child(3) .num {
+    background: var(--accent);
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .service p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (min-width: 820px) {
+    .service {
+      padding: 34px 30px;
+    }
+  }
+</style>

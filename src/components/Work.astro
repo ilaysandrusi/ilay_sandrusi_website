@@ -1,0 +1,138 @@
+---
+// Placeholder projects — replace with real mobile screenshots and links.
+const projects = [
+  {
+    title: "אתר תדמית לעסק שירותים",
+    tag: "אתר תדמית",
+    bg: "#ffd9cf",
+  },
+  {
+    title: "דף נחיתה לקמפיין ממומן",
+    tag: "דף נחיתה",
+    bg: "#d9e8ff",
+  },
+  {
+    title: "חנות אונליין למותג מקומי",
+    tag: "חנות אונליין",
+    bg: "#dff2d9",
+  },
+  {
+    title: "שדרוג אתר קיים",
+    tag: "שדרוג",
+    bg: "#f6e6b8",
+  },
+];
+---
+
+<section id="work">
+  <div class="container">
+    <span class="eyebrow">תיק עבודות</span>
+    <h2 class="section-title">עבודות נבחרות</h2>
+    <p class="section-subtitle">
+      גללו הצידה ↓ כל פרויקט מוצג כמו שהלקוחות רואים אותו — על מסך של טלפון.
+    </p>
+  </div>
+  <div class="carousel" tabindex="0">
+    {
+      projects.map((p) => (
+        <article class="slide reveal">
+          <div class="slide-phone" style={`background:${p.bg}`}>
+            <span class="tag">{p.tag}</span>
+            <div class="ph-lines">
+              <span class="ph-line w70"></span>
+              <span class="ph-line w45"></span>
+              <span class="ph-btn"></span>
+            </div>
+          </div>
+          <h3>{p.title}</h3>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* Horizontal scroll-snap carousel — app-like on mobile */
+  .carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 4px 20px 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slide {
+    flex: 0 0 min(240px, 68vw);
+    scroll-snap-align: center;
+  }
+
+  .slide-phone {
+    aspect-ratio: 9 / 16;
+    border: var(--line);
+    border-radius: 26px;
+    box-shadow: var(--shadow-sm);
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .tag {
+    align-self: flex-start;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  .ph-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ph-line {
+    height: 14px;
+    border-radius: 5px;
+    background: var(--ink);
+    opacity: 0.85;
+  }
+
+  .w70 { width: 70%; }
+  .w45 { width: 45%; }
+
+  .ph-btn {
+    width: 100px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    margin-top: 4px;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin-top: 14px;
+    padding: 0 4px;
+  }
+
+  @media (min-width: 820px) {
+    .carousel {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 4px 24px 20px;
+    }
+
+    .slide {
+      flex: 1 1 0;
+    }
+  }
+</style>

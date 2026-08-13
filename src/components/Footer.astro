@@ -1,0 +1,49 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container footer-inner">
+    <p>© {year} איליי סנדרוסי · בניית אתרים לעסקים</p>
+    <nav>
+      <a href="#services">שירותים</a>
+      <a href="#work">עבודות</a>
+      <a href="#contact">יצירת קשר</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: var(--line);
+    padding: 28px 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  nav {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    font-weight: 600;
+  }
+
+  nav a:hover {
+    color: var(--ink);
+  }
+
+  @media (min-width: 820px) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: start;
+    }
+  }
+</style>

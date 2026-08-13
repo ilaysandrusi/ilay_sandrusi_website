@@ -1,0 +1,170 @@
+---
+const links = [
+  { href: "#services", label: "שירותים" },
+  { href: "#process", label: "תהליך" },
+  { href: "#work", label: "עבודות" },
+  { href: "#faq", label: "שאלות" },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="logo">איליי<span>.</span></a>
+    <nav class="nav" id="nav">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      <a href="#contact" class="nav-cta">דברו איתי</a>
+    </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="פתיחת תפריט" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle")!;
+  const nav = document.getElementById("nav")!;
+  toggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    toggle.classList.toggle("active", open);
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  nav.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).tagName === "A") {
+      nav.classList.remove("open");
+      toggle.classList.remove("active");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    background: rgba(246, 241, 231, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: var(--line);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+  }
+
+  .logo {
+    font-family: "Suez One", serif;
+    font-size: 1.5rem;
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  /* Mobile-first: nav is a full-width dropdown panel. */
+  .nav {
+    position: absolute;
+    top: 62px;
+    inset-inline: 0;
+    display: none;
+    flex-direction: column;
+    background: var(--paper);
+    border-bottom: var(--line);
+    padding: 8px 20px 20px;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    padding: 14px 4px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(23, 20, 16, 0.12);
+  }
+
+  .nav a:last-child {
+    border-bottom: none;
+  }
+
+  .nav-cta {
+    color: var(--accent);
+    font-family: "Suez One", serif;
+  }
+
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    width: 48px;
+    height: 48px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .menu-toggle span {
+    width: 26px;
+    height: 3px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.2s ease;
+  }
+
+  .menu-toggle.active span:first-child {
+    transform: translateY(5px) rotate(45deg);
+  }
+
+  .menu-toggle.active span:last-child {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  @media (min-width: 768px) {
+    .header-inner {
+      height: 74px;
+    }
+
+    .nav {
+      position: static;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 32px;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .nav a {
+      padding: 4px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      color: var(--ink-soft);
+      transition: color 0.15s ease;
+    }
+
+    .nav a:hover {
+      color: var(--ink);
+    }
+
+    .nav-cta,
+    .nav a.nav-cta {
+      color: var(--accent);
+    }
+
+    .nav a.nav-cta:hover {
+      color: var(--accent-dark);
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+const faqs = [
+  {
+    q: "כמה עולה אתר?",
+    a: "תלוי בהיקף: דף נחיתה, אתר תדמית וחנות אונליין הם פרויקטים בסדרי גודל שונים. אחרי שיחת אפיון קצרה תקבלו הצעת מחיר סגורה ומפורטת — בלי הפתעות בהמשך.",
+  },
+  {
+    q: "כמה זמן לוקח לבנות אתר?",
+    a: "דף נחיתה — בדרך כלל עד שבוע. אתר תדמית — שבועיים עד שלושה. חנות אונליין — תלוי בכמות המוצרים והתהליכים. בכל פרויקט נסגר לוח זמנים מראש.",
+  },
+  {
+    q: "האם האתר יופיע בגוגל?",
+    a: "כן. כל אתר נבנה עם תשתית SEO נכונה: מבנה תקין, מהירות טעינה גבוהה, התאמה למובייל ותגיות מטא. קידום ממומן או אורגני מתמשך אפשר להוסיף בהמשך.",
+  },
+  {
+    q: "האם אוכל לעדכן תוכן בעצמי?",
+    a: "בהחלט. לפי הצורך אני מחבר מערכת ניהול תוכן פשוטה, ומדריך אתכם איך לעדכן טקסטים ותמונות בכמה קליקים — בלי תלות באף אחד.",
+  },
+  {
+    q: "מה קורה אחרי ההשקה?",
+    a: "אני לא נעלם. יש אחריות על תקינות האתר, ואפשר לסגור חבילת תחזוקה חודשית שכוללת עדכונים, גיבויים ושינויי תוכן שוטפים.",
+  },
+  {
+    q: "יש לי כבר אתר ישן — אפשר לשדרג?",
+    a: "כן, זה אחד השירותים המבוקשים. משדרגים עיצוב, משפרים מהירות ומעבירים את התוכן — בלי לאבד את הדומיין או את המיקומים בגוגל.",
+  },
+];
+---
+
+<section id="faq">
+  <div class="container">
+    <span class="eyebrow">שאלות נפוצות</span>
+    <h2 class="section-title">כל מה שרציתם לדעת</h2>
+    <div class="faq-list">
+      {
+        faqs.map((f) => (
+          <details class="card reveal">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 760px;
+  }
+
+  details {
+    overflow: hidden;
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 18px 20px;
+    list-style: none;
+    position: relative;
+    padding-inline-end: 52px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: "+";
+    position: absolute;
+    inset-inline-end: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] summary::after {
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  details p {
+    padding: 0 20px 20px;
+    color: var(--ink-soft);
+  }
+
+  @media (min-width: 820px) {
+    summary {
+      font-size: 1.12rem;
+      padding: 20px 24px;
+      padding-inline-end: 56px;
+    }
+  }
+</style>
