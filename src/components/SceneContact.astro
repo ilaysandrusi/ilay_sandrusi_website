@@ -17,12 +17,12 @@ const formAction = `https://formsubmit.co/${email}`;
       <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <div class="field">
-        <label for="contact-name">שם</label>
-        <input id="contact-name" name="name" type="text" autocomplete="name" required />
+        <label for="contact-name">שם <span class="req" aria-hidden="true">*</span></label>
+        <input id="contact-name" name="name" type="text" autocomplete="name" required aria-required="true" />
       </div>
 
       <div class="field">
-        <label for="contact-phone">טלפון</label>
+        <label for="contact-phone">טלפון <span class="req" aria-hidden="true">*</span></label>
         <input
           id="contact-phone"
           name="phone"
@@ -31,11 +31,12 @@ const formAction = `https://formsubmit.co/${email}`;
           autocomplete="tel"
           dir="ltr"
           required
+          aria-required="true"
         />
       </div>
 
       <div class="field">
-        <label for="contact-email">מייל <span class="opt">לא חובה</span></label>
+        <label for="contact-email">מייל <span class="opt">(לא חובה)</span></label>
         <input
           id="contact-email"
           name="email"
@@ -46,7 +47,7 @@ const formAction = `https://formsubmit.co/${email}`;
       </div>
 
       <div class="field">
-        <label for="contact-message">במה אפשר לעזור <span class="opt">לא חובה</span></label>
+        <label for="contact-message">במה אפשר לעזור <span class="opt">(לא חובה)</span></label>
         <textarea id="contact-message" name="message" rows="4"></textarea>
       </div>
 
@@ -183,6 +184,11 @@ const formAction = `https://formsubmit.co/${email}`;
   .opt {
     font-weight: 500;
     color: #cfc6b8;
+  }
+
+  .req {
+    color: var(--accent);
+    font-weight: 700;
   }
 
   input,
