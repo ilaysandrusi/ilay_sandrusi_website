@@ -180,6 +180,8 @@ section {
   color: var(--paper);
 }
 
+input:focus-visible,
+textarea:focus-visible,
 .btn:focus-visible,
 a:focus-visible,
 button:focus-visible,

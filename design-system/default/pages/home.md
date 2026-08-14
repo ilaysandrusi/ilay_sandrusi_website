@@ -9,6 +9,7 @@ Inherits `../MASTER.md` brand lock.
 3. SceneWork — real sites that went live  
 4. SceneChoose — need picker (progressive disclosure)  
 5. ScenePlans — filtered packages + WhatsApp CTAs  
+6. SceneContact — leave details, emailed to Ilay  
 
 ## Notes from ui-ux-pro-max run
 

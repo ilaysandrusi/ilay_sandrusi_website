@@ -93,7 +93,10 @@ const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
             const current = a.getAttribute("href") === `#${id}`;
             a.setAttribute("aria-current", current ? "true" : "false");
           });
-          sceneLinks[0]?.parentElement?.classList.toggle("on-ink", id === "about");
+          sceneLinks[0]?.parentElement?.classList.toggle(
+            "on-ink",
+            id === "about" || id === "contact"
+          );
         };
         const io = new IntersectionObserver(
           (entries) => {

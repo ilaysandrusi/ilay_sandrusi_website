@@ -6,6 +6,7 @@ import SceneChoose from "../components/SceneChoose.astro";
 import ScenePlans from "../components/ScenePlans.astro";
 import SceneAbout from "../components/SceneAbout.astro";
 import SceneWork from "../components/SceneWork.astro";
+import SceneContact from "../components/SceneContact.astro";
 import Footer from "../components/Footer.astro";
 import MobileBar from "../components/MobileBar.astro";
 
@@ -15,6 +16,7 @@ const scenes = [
   { href: "#work", label: "פרויקטים" },
   { href: "#choose", label: "בחירה" },
   { href: "#plans", label: "מסלולים" },
+  { href: "#contact", label: "פרטים" },
 ];
 ---
 
@@ -36,6 +38,7 @@ const scenes = [
     <SceneWork />
     <SceneChoose />
     <ScenePlans />
+    <SceneContact />
   </main>
   <Footer />
   <MobileBar />
