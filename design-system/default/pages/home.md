@@ -4,10 +4,10 @@ Inherits `../MASTER.md` brand lock.
 
 ## Flow (keep)
 
-1. SceneOpen — brand + one CTA  
-2. SceneChoose — need picker (progressive disclosure)  
-3. ScenePlans — filtered packages + WhatsApp CTAs  
-4. SceneAbout — trust / personal proof  
+1. SceneOpen — meet Ilay first, one CTA into About  
+2. SceneAbout — personal proof / trust  
+3. SceneChoose — need picker (progressive disclosure)  
+4. ScenePlans — filtered packages + WhatsApp CTAs  
 
 ## Notes from ui-ux-pro-max run
 

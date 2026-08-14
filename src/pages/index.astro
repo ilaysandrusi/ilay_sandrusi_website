@@ -10,15 +10,15 @@ import MobileBar from "../components/MobileBar.astro";
 
 const scenes = [
   { href: "#top", label: "פתיחה" },
+  { href: "#about", label: "עליי" },
   { href: "#choose", label: "בחירה" },
   { href: "#plans", label: "מסלולים" },
-  { href: "#about", label: "עליי" },
 ];
 ---
 
 <Layout
   title="איליי סנדרוסי · בניית אתרים"
-  description="אתרי איקומרס ודפי נחיתה לעסקים שמתחילים. עיצוב מותאם, מחיר הוגן, ובדיקות לפני השקה."
+  description="איליי סנדרוסי. אתרי איקומרס ודפי נחיתה לעסקים שמתחילים. עיצוב, מחיר ברור, ובדיקות לפני השקה."
 >
   <Header />
   <nav class="scene-nav" aria-label="ניווט בין סצנות">
@@ -30,9 +30,9 @@ const scenes = [
   </nav>
   <main id="main">
     <SceneOpen />
+    <SceneAbout />
     <SceneChoose />
     <ScenePlans />
-    <SceneAbout />
   </main>
   <Footer />
   <MobileBar />

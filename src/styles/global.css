@@ -235,6 +235,10 @@ summary:focus-visible {
   transform: scale(1.25);
 }
 
+.scene-nav.on-ink a::before {
+  border-color: var(--paper);
+}
+
 .scene-nav a:hover::before,
 .scene-nav a:focus-visible::before {
   border-color: var(--accent);
