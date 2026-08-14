@@ -6,8 +6,9 @@ Inherits `../MASTER.md` brand lock.
 
 1. SceneOpen — meet Ilay first, one CTA into About  
 2. SceneAbout — personal proof / trust  
-3. SceneChoose — need picker (progressive disclosure)  
-4. ScenePlans — filtered packages + WhatsApp CTAs  
+3. SceneWork — real sites that went live  
+4. SceneChoose — need picker (progressive disclosure)  
+5. ScenePlans — filtered packages + WhatsApp CTAs  
 
 ## Notes from ui-ux-pro-max run
 

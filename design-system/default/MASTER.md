@@ -30,7 +30,7 @@ Pro Max suggested Liquid Glass + indigo + Noto Sans Hebrew.
 
 **Typography:** Suez One (display) + Heebo (body) — keep.
 
-**Pattern in use:** cinematic funnel — Open (meet Ilay) → About → Choose → Plans (not stacked marketing sections).
+**Pattern in use:** cinematic funnel — Open (meet Ilay) → About → Work → Choose → Plans (not stacked marketing sections).
 
 **Style keywords:** neo-brutal editorial, high contrast ink/paper, accent punch, personal/humble Hebrew voice.
 

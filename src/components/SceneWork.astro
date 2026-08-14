@@ -1,0 +1,223 @@
+---
+import { projects } from "../data/projects";
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
+---
+
+<section class="scene work" id="work">
+  <div class="work-inner">
+    <p class="eyebrow">פרויקטים</p>
+    <h2>דברים שבניתי</h2>
+    <p class="lead">אתרים שעלו לאוויר.</p>
+
+    <ol class="works">
+      {
+        projects.map((p, i) => {
+          const n = String(i + 1).padStart(2, "0");
+          const Tag = p.href ? "a" : "div";
+          const linkProps = p.href
+            ? { href: p.href, target: "_blank", rel: "noopener noreferrer" }
+            : {};
+          return (
+            <li class="piece reveal">
+              <Tag class="piece-link" {...linkProps}>
+                <div class="shot">
+                  {p.image ? (
+                    <img src={src(p.image)} alt={p.imageAlt || p.name} width="1200" height="750" />
+                  ) : (
+                    <div class="shot-empty" aria-hidden="true">
+                      <span class="blob"></span>
+                      <span class="mark">א.</span>
+                    </div>
+                  )}
+                </div>
+                <div class="meta">
+                  <span class="n">{n}</span>
+                  <div>
+                    <h3>{p.name}</h3>
+                    {p.kind && <p class="kind">{p.kind}</p>}
+                    {p.text && <p class="text">{p.text}</p>}
+                    {p.href && <span class="go">לצפייה באתר</span>}
+                  </div>
+                </div>
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <a href="#choose" class="btn btn-primary work-cta">בחרו מה אתם צריכים</a>
+  </div>
+</section>
+
+<style>
+  .scene.work {
+    min-height: 100svh;
+    background: var(--paper);
+    border-top: var(--line);
+    padding: 90px 0 calc(var(--bar-height) + 40px);
+  }
+
+  .work-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    margin-bottom: 10px;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    margin-bottom: 36px;
+    max-width: 34ch;
+  }
+
+  .works {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .piece-link {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: inherit;
+  }
+
+  a.piece-link {
+    border-radius: var(--radius);
+  }
+
+  a.piece-link:hover .shot,
+  a.piece-link:focus-visible .shot {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+  }
+
+  .shot {
+    border: var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--paper-soft);
+    box-shadow: var(--shadow-sm);
+    aspect-ratio: 16 / 10;
+    transition:
+      transform var(--motion) var(--ease),
+      box-shadow var(--motion) var(--ease);
+  }
+
+  .shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .shot-empty {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    width: 42%;
+    height: 58%;
+    top: 18%;
+    inset-inline-end: -6%;
+    background: var(--accent);
+    border: var(--line);
+    border-radius: 40% 60% 55% 45%;
+    transform: rotate(18deg);
+    opacity: 0.9;
+  }
+
+  .mark {
+    position: absolute;
+    bottom: 8%;
+    inset-inline-start: 8%;
+    font-family: "Suez One", serif;
+    font-size: clamp(4rem, 16vw, 7rem);
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.1;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .n {
+    font-family: "Suez One", serif;
+    font-size: 1.4rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 1.45rem;
+    margin-bottom: 4px;
+  }
+
+  .kind {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .text {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: 42ch;
+  }
+
+  .go {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 4px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .work-cta {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  @media (min-width: 768px) {
+    .work-inner {
+      padding: 0 32px;
+    }
+
+    .works {
+      gap: 56px;
+      max-width: 42rem;
+    }
+
+    .work-cta {
+      width: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a.piece-link:hover .shot,
+    a.piece-link:focus-visible .shot {
+      transform: none;
+    }
+  }
+</style>
