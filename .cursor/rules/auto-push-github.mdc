@@ -1,0 +1,17 @@
+---
+description: After file changes, commit and push to GitHub automatically
+alwaysApply: true
+---
+
+# Auto-push to GitHub
+
+This project uses https://github.com/ilaysandrusi/ilay_sandrusi_website.
+
+After finishing file changes in a task:
+
+1. Commit the relevant files (do not wait for the user to ask).
+2. Push to `origin` on the current branch (`git push -u origin HEAD` if needed).
+3. Do not force-push. Do not skip hooks. Do not commit secrets (`.env`, credentials).
+4. If the working tree is already clean, skip commit/push.
+
+This overrides the default "only commit when asked" behavior **for this repo**.
