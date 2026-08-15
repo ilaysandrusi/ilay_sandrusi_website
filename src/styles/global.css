@@ -255,12 +255,34 @@ summary:focus-visible {
 .reveal {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.55s var(--ease),
+    transform 0.55s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
 .reveal.visible {
   opacity: 1;
   transform: none;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 80;
+  height: 3px;
+  pointer-events: none;
+  background: transparent;
+}
+
+.scroll-progress__bar {
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 80ms linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -280,6 +302,10 @@ summary:focus-visible {
   .btn:active:not(.is-disabled) {
     transition: none;
     transform: none;
+  }
+
+  .scroll-progress {
+    display: none;
   }
 }
 

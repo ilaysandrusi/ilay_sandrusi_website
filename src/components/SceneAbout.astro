@@ -29,7 +29,7 @@ const points = [
     <div class="points">
       {
         points.map((p, i) => (
-          <div class="point">
+          <div class="point reveal" style={`--reveal-delay: ${i * 90}ms`}>
             <span class="n">{String(i + 1).padStart(2, "0")}</span>
             <div>
               <h3>{p.title}</h3>
@@ -41,7 +41,7 @@ const points = [
         ))
       }
     </div>
-    <a href="#choose" class="btn btn-primary about-cta">בחרו מה בונים</a>
+    <a href="#choose" class="btn btn-primary about-cta reveal" style="--reveal-delay: 360ms">בחרו מה בונים</a>
   </div>
 </section>
 

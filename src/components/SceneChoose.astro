@@ -29,10 +29,11 @@ const choices = [
 
     <div class="choices" role="group" aria-label="בחירת סוג אתר">
       {
-        choices.map((c) => (
+        choices.map((c, i) => (
           <button
             type="button"
-            class="choice card"
+            class="choice card reveal"
+            style={`--reveal-delay: ${i * 80}ms`}
             data-choice={c.id}
             aria-pressed="false"
           >
@@ -43,12 +44,21 @@ const choices = [
         ))
       }
     </div>
+    <p class="filter-status" id="plans-filter-status" aria-live="polite"></p>
   </div>
 </section>
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-choice]");
   const plans = document.getElementById("plans");
+  const status = document.getElementById("plans-filter-status");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const labels: Record<string, string> = {
+    ecommerce: "חנות אונליין",
+    landing: "דף נחיתה",
+    unique: "משהו אחר",
+  };
 
   const applyFilter = (choice: string | undefined) => {
     if (!plans) return;
@@ -78,20 +88,41 @@ const choices = [
         }
       }
     });
+
+    if (status) {
+      status.textContent = choice
+        ? `נפתחו מסלולים ל${labels[choice] || choice}.`
+        : "";
+    }
+  };
+
+  const setChoice = (choice: string, scroll = false) => {
+    buttons.forEach((b) => {
+      const on = b.dataset.choice === choice;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    applyFilter(choice);
+    const url = new URL(window.location.href);
+    url.searchParams.set("need", choice);
+    history.replaceState(null, "", url);
+    if (scroll) {
+      plans?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    }
   };
 
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const choice = btn.dataset.choice;
-      buttons.forEach((b) => {
-        const on = b === btn;
-        b.classList.toggle("active", on);
-        b.setAttribute("aria-pressed", on ? "true" : "false");
-      });
-      applyFilter(choice);
-      plans?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (!choice) return;
+      setChoice(choice, true);
     });
   });
+
+  const initial = new URLSearchParams(window.location.search).get("need");
+  if (initial && [...buttons].some((b) => b.dataset.choice === initial)) {
+    setChoice(initial, false);
+  }
 
   // Block clicks on locked plan CTAs
   plans?.addEventListener("click", (e) => {
@@ -192,6 +223,26 @@ const choices = [
   .choice.active .choice-hint,
   .choice:hover .choice-hint {
     color: var(--accent);
+  }
+
+  .filter-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .choice,
+    .choice:hover,
+    .choice.active,
+    .choice:active {
+      transition: none;
+      transform: none;
+    }
   }
 
   @media (min-width: 768px) {

@@ -112,16 +112,21 @@ const structuredData = {
     </noscript>
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true">
+      <div class="scroll-progress__bar" id="scroll-progress-bar"></div>
+    </div>
     <a class="skip-link" href="#main">דלגו לתוכן</a>
     <slot />
     <script>
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
       const reveal = () => {
         document.querySelectorAll(".reveal:not(.visible)").forEach((el) => {
           el.classList.add("visible");
         });
       };
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (reduceMotion) {
         reveal();
       } else {
         const observer = new IntersectionObserver(
@@ -133,10 +138,22 @@ const structuredData = {
               }
             }
           },
-          { threshold: 0.12 }
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
         );
         document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
         window.setTimeout(reveal, 2500);
+      }
+
+      const progressBar = document.getElementById("scroll-progress-bar");
+      if (progressBar && !reduceMotion) {
+        const updateProgress = () => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+          progressBar.style.transform = `scaleX(${p})`;
+        };
+        updateProgress();
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", updateProgress);
       }
 
       // Scene progress nav — highlight current section

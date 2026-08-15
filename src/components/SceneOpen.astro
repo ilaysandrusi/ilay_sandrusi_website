@@ -121,6 +121,64 @@
     opacity: 0.08;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .open-kicker,
+    .open-inner h1,
+    .open-lead,
+    .open-cta {
+      animation: open-rise 0.7s var(--ease) both;
+    }
+
+    .open-inner h1 {
+      animation-delay: 0.08s;
+    }
+
+    .open-lead {
+      animation-delay: 0.16s;
+    }
+
+    .open-cta {
+      animation-delay: 0.24s;
+    }
+
+    .blob-a {
+      animation: blob-drift-a 14s ease-in-out infinite alternate;
+    }
+
+    .blob-b {
+      animation: blob-drift-b 18s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes open-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes blob-drift-a {
+    from {
+      transform: rotate(18deg) translate(0, 0);
+    }
+    to {
+      transform: rotate(26deg) translate(-14px, 12px);
+    }
+  }
+
+  @keyframes blob-drift-b {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(10px, -14px);
+    }
+  }
+
   @media (min-width: 768px) {
     .open-inner {
       padding: 120px 32px 80px;
