@@ -43,6 +43,7 @@ const formAction = `https://formsubmit.co/${email}`;
           type="email"
           autocomplete="email"
           dir="ltr"
+          spellcheck="false"
         />
       </div>
 
@@ -53,7 +54,7 @@ const formAction = `https://formsubmit.co/${email}`;
 
       <p class="form-status" id="contact-status" aria-live="polite"></p>
 
-      <button class="btn btn-primary submit" type="submit">שלחו פרטים</button>
+      <button class="btn btn-primary submit" type="submit">שלחו ואחזור אליכם</button>
     </form>
   </div>
 </section>
@@ -111,7 +112,7 @@ const formAction = `https://formsubmit.co/${email}`;
     } finally {
       if (submit) {
         submit.disabled = false;
-        submit.textContent = "שלחו פרטים";
+        submit.textContent = "שלחו ואחזור אליכם";
       }
     }
   });

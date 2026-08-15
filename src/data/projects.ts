@@ -8,19 +8,5 @@ export type Project = {
   href?: string;
 };
 
-export const projects: Project[] = [
-  {
-    name: "פרויקט ראשון",
-    kind: "",
-    text: "",
-    image: "",
-    imageAlt: "",
-  },
-  {
-    name: "פרויקט שני",
-    kind: "",
-    text: "",
-    image: "",
-    imageAlt: "",
-  },
-];
+/** Empty until real launched sites are ready. Do not invent portfolio items. */
+export const projects: Project[] = [];

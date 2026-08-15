@@ -10,44 +10,56 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   <div class="work-inner">
     <p class="eyebrow">פרויקטים</p>
     <h2>דברים שבניתי</h2>
-    <p class="lead">אתרים שכבר עלו לאוויר.</p>
+    <p class="lead">
+      {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "הדוגמאות יתווספו כאן אחרי השקות."}
+    </p>
 
-    <ol class="works">
-      {
-        projects.map((p, i) => {
-          const n = String(i + 1).padStart(2, "0");
-          const Tag = p.href ? "a" : "div";
-          const linkProps = p.href
-            ? { href: p.href, target: "_blank", rel: "noopener noreferrer" }
-            : {};
-          return (
-            <li class="piece reveal">
-              <Tag class="piece-link" {...linkProps}>
-                <div class="shot">
-                  {p.image ? (
-                    <img src={src(p.image)} alt={p.imageAlt || p.name} width="1200" height="750" />
-                  ) : (
-                    <div class="shot-empty" aria-hidden="true">
-                      <span class="blob"></span>
-                      <span class="mark">א.</span>
-                    </div>
-                  )}
-                </div>
-                <div class="meta">
-                  <span class="n">{n}</span>
-                  <div>
-                    <h3>{p.name}</h3>
-                    {p.kind && <p class="kind">{p.kind}</p>}
-                    {p.text && <p class="text">{p.text}</p>}
-                    {p.href && <span class="go">לצפייה באתר</span>}
+    {
+      projects.length > 0 ? (
+        <ol class="works">
+          {projects.map((p, i) => {
+            const n = String(i + 1).padStart(2, "0");
+            const Tag = p.href ? "a" : "div";
+            const linkProps = p.href
+              ? { href: p.href, target: "_blank", rel: "noopener noreferrer" }
+              : {};
+            return (
+              <li class="piece reveal">
+                <Tag class="piece-link" {...linkProps}>
+                  <div class="shot">
+                    {p.image ? (
+                      <img
+                        src={src(p.image)}
+                        alt={p.imageAlt || p.name}
+                        width="1200"
+                        height="750"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="shot-empty" aria-hidden="true">
+                        <span class="blob"></span>
+                        <span class="mark">א.</span>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </Tag>
-            </li>
-          );
-        })
-      }
-    </ol>
+                  <div class="meta">
+                    <span class="n">{n}</span>
+                    <div>
+                      <h3>{p.name}</h3>
+                      {p.kind && <p class="kind">{p.kind}</p>}
+                      {p.text && <p class="text">{p.text}</p>}
+                      {p.href && <span class="go">לצפייה באתר</span>}
+                    </div>
+                  </div>
+                </Tag>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <p class="work-empty" role="status">אין עדיין דוגמאות להצגה. בינתיים אפשר לבחור כיוון ולפתוח מסלול.</p>
+      )
+    }
 
     <a href="#choose" class="btn btn-primary work-cta">בחרו מה אתם צריכים</a>
   </div>
@@ -78,6 +90,14 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
     font-size: 1.08rem;
     margin-bottom: 36px;
     max-width: 34ch;
+  }
+
+  .work-empty {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 40ch;
+    margin: 0 0 36px;
+    line-height: 1.5;
   }
 
   .works {
