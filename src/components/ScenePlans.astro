@@ -6,6 +6,7 @@ const plans = [
     num: "01",
     name: "אתר עד שאתם מרוצים",
     tag: "מסלול בסיסי",
+    outcome: "אתר מוכן להשקה, בלי לעצור באמצע.",
     text: "בונים עד שזה מרגיש נכון. אני בודק, ואז משחרר לאוויר.",
     items: ["אפיון ועיצוב", "בנייה עד שאתם מרוצים", "בדיקות תוכנה", "השקה"],
     fit: "ecommerce landing",
@@ -15,6 +16,7 @@ const plans = [
     num: "02",
     name: "אתר + תחזוקה חודשית",
     tag: "עם ליווי",
+    outcome: "האתר חי, ואני נשאר איתו אחרי ההשקה.",
     text: "מסלול 1, ועוד ליווי חודשי: בדיקות, עדכוני גרסה ותיקונים קטנים.",
     items: ["הכול ממסלול 1", "בדיקות חודשיות", "עדכוני גרסה", "תיקונים קטנים"],
     fit: "ecommerce landing",
@@ -24,6 +26,7 @@ const plans = [
     num: "03",
     name: "אתר + תחזוקה + אוטומציות",
     tag: "מסלול מלא",
+    outcome: "אתר עם חיבורים שעובדים ברקע.",
     text: "מסלול 2, ועוד חיבורים לטפסים, וואטסאפ ומערכות.",
     items: ["הכול ממסלול 2", "אוטומציות וחיבורים", "טפסים והתראות", "תחזוקה שוטפת"],
     fit: "ecommerce",
@@ -33,7 +36,8 @@ const plans = [
     num: "04",
     name: "נתאים יחד",
     tag: "מסלול אישי",
-    text: "נשב, נבין מה צריך, ונבנה לפי היקף ותקציב.",
+    outcome: "רק מה שאתם צריכים, לפי היקף ותקציב.",
+    text: "נשב, נבין מה צריך, ונבנה מסלול משלכם.",
     items: ["שיחת היכרות", "התאמה להיקף ולתקציב", "רק מה שצריך"],
     fit: "unique",
     featured: true,
@@ -47,6 +51,7 @@ const plans = [
     <p class="eyebrow">מסלולים</p>
     <h2>בחרו מסלול והמשיכו בוואטסאפ</h2>
     <p class="lead">אחרי הבחירה למעלה נפתחים רק המסלולים שמתאימים. השאר נשארים נעולים.</p>
+    <p class="note">המחיר נקבע בשיחה. בדרך כלל פרויקט אחד בכל פעם.</p>
   </div>
 
   <div class="rail" tabindex="0" aria-label="כרטיסי מסלולים">
@@ -60,6 +65,7 @@ const plans = [
           <span class="num" aria-hidden="true">{p.num}</span>
           <span class="tag">{p.tag}</span>
           <h3>{p.name}</h3>
+          <p class="outcome">{p.outcome}</p>
           <p>{p.text}</p>
           <ul>
             {p.items.map((item) => (
@@ -99,6 +105,19 @@ const plans = [
 
   .lead {
     color: var(--ink-soft);
+  }
+
+  .note {
+    margin-top: 10px;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    max-width: 42ch;
+  }
+
+  .outcome {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 1.02rem;
   }
 
   /* Horizontal cinematic rail on mobile; grid on desktop */

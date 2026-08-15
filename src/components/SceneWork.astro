@@ -9,7 +9,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
 <section class="scene work" id="work">
   <div class="work-inner">
     <p class="eyebrow">פרויקטים</p>
-    <h2>דברים שבניתי</h2>
+    <h2>{projects.length > 0 ? "דברים שבניתי" : "עוד מעט כאן"}</h2>
     <p class="lead">
       {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "הדוגמאות יתווספו כאן אחרי השקות."}
     </p>
@@ -61,7 +61,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
       )
     }
 
-    <a href="#choose" class="btn btn-primary work-cta">בחרו מה אתם צריכים</a>
+    <a href="#choose" class="btn btn-primary work-cta">בחרו מה בונים</a>
   </div>
 </section>
 

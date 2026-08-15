@@ -1,5 +1,5 @@
 ---
-import { email } from "../data/contact";
+import { email, whatsappLink } from "../data/contact";
 
 const formAction = `https://formsubmit.co/${email}`;
 ---
@@ -8,7 +8,7 @@ const formAction = `https://formsubmit.co/${email}`;
   <div class="contact-inner">
     <p class="eyebrow contact-eye">פרטים</p>
     <h2>השאירו פרטים ואחזור אליכם</h2>
-    <p class="lead">שם וטלפון מספיקים.</p>
+    <p class="lead">שם וטלפון מספיקים. בלי התחייבות.</p>
 
     <form class="form" id="contact-form" action={formAction} method="POST" novalidate>
       <input type="hidden" name="_subject" value="פנייה מהאתר של איליי" />
@@ -17,12 +17,18 @@ const formAction = `https://formsubmit.co/${email}`;
       <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <div class="field">
-        <label for="contact-name"><span class="req" aria-hidden="true">*</span> שם</label>
+        <label for="contact-name">
+          <span class="req" aria-hidden="true">*</span> שם
+          <span class="sr-only">, חובה</span>
+        </label>
         <input id="contact-name" name="name" type="text" autocomplete="name" required aria-required="true" />
       </div>
 
       <div class="field">
-        <label for="contact-phone"><span class="req" aria-hidden="true">*</span> טלפון</label>
+        <label for="contact-phone">
+          <span class="req" aria-hidden="true">*</span> טלפון
+          <span class="sr-only">, חובה</span>
+        </label>
         <input
           id="contact-phone"
           name="phone"
@@ -56,6 +62,11 @@ const formAction = `https://formsubmit.co/${email}`;
 
       <button class="btn btn-primary submit" type="submit">שלחו ואחזור אליכם</button>
     </form>
+
+    <p class="alt">
+      מעדיפים וואטסאפ?
+      <a href={whatsappLink} target="_blank" rel="noopener noreferrer">כתבו לי כאן</a>
+    </p>
   </div>
 </section>
 
@@ -171,6 +182,16 @@ const formAction = `https://formsubmit.co/${email}`;
     white-space: nowrap;
   }
 
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   .field {
     display: flex;
     flex-direction: column;
@@ -225,6 +246,23 @@ const formAction = `https://formsubmit.co/${email}`;
   .submit:disabled {
     opacity: 0.7;
     cursor: wait;
+  }
+
+  .alt {
+    margin-top: 22px;
+    color: #d2cbc0;
+    font-size: 0.98rem;
+  }
+
+  .alt a {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .alt a:hover {
+    color: var(--accent);
   }
 
   .form-status {
