@@ -6,7 +6,7 @@ const plans = [
     num: "01",
     name: "אתר עד שאתם מרוצים",
     tag: "מסלול בסיסי",
-    text: "בונים יחד עד שזה מרגיש נכון. אני בודק את האתר ואז משחרר.",
+    text: "בונים יחד עד שזה מרגיש נכון. אני בודק, ואז משחרר.",
     items: ["אפיון ועיצוב", "בנייה עד שאתם מרוצים", "בדיקות תוכנה", "השקה"],
     fit: "ecommerce landing",
     wa: "היי איליי, מעניין אותי מסלול 1, אתר עד שאתם מרוצים",
@@ -33,7 +33,7 @@ const plans = [
     num: "04",
     name: "נתאים יחד",
     tag: "מסלול אישי",
-    text: "אתם קובעים. נשב, נבין מה צריך, ונבנה מסלול לפי ההיקף והתקציב שלכם.",
+    text: "נשב, נבין מה צריך, ונבנה מסלול לפי ההיקף והתקציב.",
     items: ["שיחת היכרות", "התאמה להיקף ולתקציב", "רק מה שצריך"],
     fit: "unique",
     featured: true,
@@ -46,7 +46,7 @@ const plans = [
   <div class="plans-head">
     <p class="eyebrow">מסלולים</p>
     <h2>איך אפשר לעבוד יחד</h2>
-    <p class="lead">אחרי הבחירה למעלה נפתחים רק המסלולים הרלוונטיים. השאר נעולים.</p>
+    <p class="lead">אחרי הבחירה למעלה נפתחים רק המסלולים שמתאימים. השאר נשארים נעולים.</p>
   </div>
 
   <div class="rail" tabindex="0" aria-label="כרטיסי מסלולים">
@@ -56,7 +56,7 @@ const plans = [
           class:list={["plan", "card", { featured: p.featured }]}
           data-fit={p.fit}
         >
-          <span class="lock-badge">נעול למסלול הזה</span>
+          <span class="lock-badge">לא מתאים לבחירה שלכם</span>
           <span class="num" aria-hidden="true">{p.num}</span>
           <span class="tag">{p.tag}</span>
           <h3>{p.name}</h3>
@@ -72,9 +72,9 @@ const plans = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {p.featured ? "שליחה בוואטסאפ, מסלול אישי" : `שליחה בוואטסאפ, מסלול ${p.num}`}
+            {p.featured ? "וואטסאפ · מסלול אישי" : `וואטסאפ · מסלול ${p.num}`}
           </a>
-          <p class="locked-hint">בחרו כיוון אחר למעלה כדי לפתוח את המסלול</p>
+          <p class="locked-hint">בחרו כיוון אחר למעלה כדי לפתוח את המסלול הזה</p>
         </article>
       ))
     }
