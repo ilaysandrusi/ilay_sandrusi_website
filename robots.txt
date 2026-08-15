@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ilaysandrusi.github.io/ilay_sandrusi_website/sitemap.xml
