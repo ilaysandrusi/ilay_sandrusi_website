@@ -270,10 +270,10 @@ summary:focus-visible {
   position: fixed;
   top: 0;
   inset-inline: 0;
-  z-index: 80;
-  height: 3px;
+  z-index: 200;
+  height: 5px;
   pointer-events: none;
-  background: transparent;
+  background: rgba(23, 20, 16, 0.08);
 }
 
 .scroll-progress__bar {
@@ -282,7 +282,7 @@ summary:focus-visible {
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 80ms linear;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -302,10 +302,6 @@ summary:focus-visible {
   .btn:active:not(.is-disabled) {
     transition: none;
     transform: none;
-  }
-
-  .scroll-progress {
-    display: none;
   }
 }
 

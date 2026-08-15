@@ -145,7 +145,7 @@ const structuredData = {
       }
 
       const progressBar = document.getElementById("scroll-progress-bar");
-      if (progressBar && !reduceMotion) {
+      if (progressBar) {
         const updateProgress = () => {
           const max = document.documentElement.scrollHeight - window.innerHeight;
           const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
