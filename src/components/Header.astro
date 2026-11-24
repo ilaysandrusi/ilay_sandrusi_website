@@ -4,14 +4,13 @@ const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 /** On the home page the links scroll; on any other page they lead back home. */
 const home = path === base ? "" : base;
-const inGuides = path.startsWith(`${base}guides/`);
+const inBlog = path.startsWith(`${base}blog/`);
 
 const links = [
   { href: `${home}#about`, label: "עליי" },
   { href: `${home}#work`, label: "פרויקטים" },
   { href: `${home}#choose`, label: "בחירה" },
   { href: `${home}#plans`, label: "מסלולים" },
-  { href: `${base}guides/`, label: "מדריכים", current: inGuides },
   { href: `${home}#contact`, label: "פרטים" },
 ];
 ---
@@ -21,13 +20,10 @@ const links = [
     <a href={home || "#top"} class="logo" translate="no">איליי<span>.</span></a>
     <nav class="nav" id="nav" aria-label="ניווט ראשי">
       {
-        links.map((link) => (
-          <a href={link.href} aria-current={link.current ? "page" : undefined}>
-            {link.label}
-          </a>
-        ))
+        links.map((link) => <a href={link.href}>{link.label}</a>)
       }
       <a href={`${home}#choose`} class="nav-cta">בחרו מה בונים</a>
+      <a href={`${base}blog/`} aria-current={inBlog ? "page" : undefined}>בלוג</a>
     </nav>
     <button
       class="menu-toggle"

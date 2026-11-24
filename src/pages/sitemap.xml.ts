@@ -10,9 +10,9 @@ export const GET: APIRoute = async ({ site }) => {
 
   const urls = [
     { loc: abs(""), changefreq: "monthly", priority: "1.0" },
-    { loc: abs("guides/"), changefreq: "weekly", priority: "0.8" },
+    { loc: abs("blog/"), changefreq: "weekly", priority: "0.8" },
     ...guides.map((g) => ({
-      loc: abs(`guides/${g.id}/`),
+      loc: abs(`blog/${g.id}/`),
       lastmod: g.data.date.toISOString().slice(0, 10),
       changefreq: "monthly",
       priority: "0.7",

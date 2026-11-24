@@ -11,13 +11,13 @@ const guides = await getGuides();
 ---
 
 <Layout
-  title="מדריכים · איליי סנדרוסי"
-  description="מדריכים של איליי סנדרוסי: מה שאני מראה באינסטגרם, כתוב כאן צעד אחרי צעד."
+  title="בלוג · איליי סנדרוסי"
+  description="הבלוג של איליי סנדרוסי: מה שאני מראה באינסטגרם, כתוב כאן צעד אחרי צעד."
 >
   <Header />
   <main id="main" class="guides">
     <div class="guides-inner">
-      <p class="eyebrow">מדריכים</p>
+      <p class="eyebrow">בלוג</p>
       <h1>צעד אחרי צעד</h1>
       <p class="lead">
         מה שאני מראה באינסטגרם, כתוב כאן בנחת: מה עושים, ובאיזה סדר.
@@ -28,7 +28,7 @@ const guides = await getGuides();
           <ol class="list">
             {guides.map((g, i) => (
               <li class="reveal" style={`--reveal-delay: ${Math.min(i, 5) * 70}ms`}>
-                <a class="guide" href={`${base}guides/${g.id}/`}>
+                <a class="guide" href={`${base}blog/${g.id}/`}>
                   <span class="n">{String(guides.length - i).padStart(2, "0")}</span>
                   <div class="body">
                     <p class="meta">
