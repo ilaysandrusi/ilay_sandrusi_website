@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 const { Content } = await render(guide);
-const { title, description, date, tag, instagram, draft } = guide.data;
+const { title, description, date, tag, instagram, draft, video, poster, videoNote } = guide.data;
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
@@ -50,6 +50,21 @@ const article = {
         <h1>{title}</h1>
         <p class="lead">{description}</p>
       </header>
+
+      {
+        video && (
+          <figure class="video">
+            <video
+              src={`${base}${video}`}
+              poster={poster ? `${base}${poster}` : undefined}
+              controls
+              preload="metadata"
+              playsinline
+            />
+            {videoNote && <figcaption>{videoNote}</figcaption>}
+          </figure>
+        )
+      }
 
       <div class="prose">
         <Content />
@@ -149,6 +164,27 @@ const article = {
     max-width: 40ch;
   }
 
+  .video {
+    margin-bottom: 40px;
+  }
+
+  .video video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    border: var(--line);
+    border-radius: var(--radius);
+    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+  }
+
+  .video figcaption {
+    margin-top: 16px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
   /* Markdown content is not scoped, so everything below goes through :global. */
   .prose {
     font-size: 1.09rem;
@@ -186,6 +222,38 @@ const article = {
 
   .prose :global(strong) {
     font-weight: 700;
+    unicode-bidi: isolate;
+  }
+
+  .prose :global(em) {
+    display: inline-block;
+    font-style: normal;
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+  }
+
+  /* Checklists: "- [ ] item" in Markdown. */
+  .prose :global(ul.contains-task-list > li) {
+    padding-inline-start: 0;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .prose :global(ul.contains-task-list > li::before) {
+    content: none;
+  }
+
+  .prose :global(li.task-list-item input) {
+    flex: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    translate: 0 3px;
+    background: var(--card);
+    border: var(--line);
+    border-radius: 6px;
   }
 
   .prose :global(ul),

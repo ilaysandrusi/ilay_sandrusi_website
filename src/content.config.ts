@@ -16,6 +16,10 @@ const guides = defineCollection({
     tag: z.string().optional(),
     /** Link to the Instagram post or reel this guide belongs to. */
     instagram: z.string().url().optional(),
+    /** Optional video shown under the title. Paths are inside /public, e.g. "media/my-guide/guide.mp4". */
+    video: z.string().optional(),
+    poster: z.string().optional(),
+    videoNote: z.string().optional(),
     /** Drafts show only in `npm run dev`, never on the live site. */
     draft: z.boolean().default(false),
   }),
