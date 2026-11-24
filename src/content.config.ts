@@ -20,6 +20,8 @@ const guides = defineCollection({
     video: z.string().optional(),
     poster: z.string().optional(),
     videoNote: z.string().optional(),
+    /** Credit line under the video (music licence, etc). May contain links. */
+    videoCredit: z.string().optional(),
     /** Drafts show only in `npm run dev`, never on the live site. */
     draft: z.boolean().default(false),
   }),

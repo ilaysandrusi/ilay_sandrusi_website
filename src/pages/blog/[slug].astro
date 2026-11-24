@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 const { Content } = await render(guide);
-const { title, description, date, tag, instagram, draft, video, poster, videoNote } = guide.data;
+const { title, description, date, tag, instagram, draft, video, poster, videoNote, videoCredit } = guide.data;
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
@@ -61,7 +61,14 @@ const article = {
               preload="metadata"
               playsinline
             />
-            {videoNote && <figcaption>{videoNote}</figcaption>}
+            {
+              (videoNote || videoCredit) && (
+                <figcaption>
+                  {videoNote && <p>{videoNote}</p>}
+                  {videoCredit && <p class="credit" set:html={videoCredit} />}
+                </figcaption>
+              )
+            }
           </figure>
         )
       }
@@ -183,6 +190,16 @@ const article = {
     margin-top: 16px;
     color: var(--ink-soft);
     font-size: 0.95rem;
+  }
+
+  .video .credit {
+    margin-top: 6px;
+    font-size: 0.85rem;
+  }
+
+  .video .credit :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Markdown content is not scoped, so everything below goes through :global. */
