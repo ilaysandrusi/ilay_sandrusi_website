@@ -5,9 +5,11 @@ import { email, phoneTel, whatsappLink } from "../data/contact";
 interface Props {
   title: string;
   description: string;
+  /** "article" for a single guide; everything else is a "website". */
+  ogType?: "website" | "article";
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogType = "website" } = Astro.props;
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const siteUrl = new URL(base, Astro.site).href;
@@ -79,7 +81,7 @@ const structuredData = {
     <meta property="og:site_name" content="איליי סנדרוסי" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="he_IL" />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
@@ -102,6 +104,7 @@ const structuredData = {
     />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <slot name="head" />
     <noscript>
       <style>
         .reveal {

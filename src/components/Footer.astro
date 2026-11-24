@@ -1,16 +1,21 @@
 ---
 const year = new Date().getFullYear();
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const home = path === base ? "" : base;
 ---
 
 <footer>
   <div class="container footer-inner">
     <p>© {year} איליי סנדרוסי</p>
     <nav>
-      <a href="#about">עליי</a>
-      <a href="#work">פרויקטים</a>
-      <a href="#choose">בחירה</a>
-      <a href="#plans">מסלולים</a>
-      <a href="#contact">פרטים</a>
+      <a href={`${home}#about`}>עליי</a>
+      <a href={`${home}#work`}>פרויקטים</a>
+      <a href={`${home}#choose`}>בחירה</a>
+      <a href={`${home}#plans`}>מסלולים</a>
+      <a href={`${base}guides/`}>מדריכים</a>
+      <a href={`${home}#contact`}>פרטים</a>
     </nav>
   </div>
 </footer>

@@ -1,19 +1,33 @@
 ---
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+/** On the home page the links scroll; on any other page they lead back home. */
+const home = path === base ? "" : base;
+const inGuides = path.startsWith(`${base}guides/`);
+
 const links = [
-  { href: "#about", label: "עליי" },
-  { href: "#work", label: "פרויקטים" },
-  { href: "#choose", label: "בחירה" },
-  { href: "#plans", label: "מסלולים" },
-  { href: "#contact", label: "פרטים" },
+  { href: `${home}#about`, label: "עליי" },
+  { href: `${home}#work`, label: "פרויקטים" },
+  { href: `${home}#choose`, label: "בחירה" },
+  { href: `${home}#plans`, label: "מסלולים" },
+  { href: `${base}guides/`, label: "מדריכים", current: inGuides },
+  { href: `${home}#contact`, label: "פרטים" },
 ];
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="#top" class="logo" translate="no">איליי<span>.</span></a>
+    <a href={home || "#top"} class="logo" translate="no">איליי<span>.</span></a>
     <nav class="nav" id="nav" aria-label="ניווט ראשי">
-      {links.map((link) => <a href={link.href}>{link.label}</a>)}
-      <a href="#choose" class="nav-cta">בחרו מה בונים</a>
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={link.current ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+      <a href={`${home}#choose`} class="nav-cta">בחרו מה בונים</a>
     </nav>
     <button
       class="menu-toggle"
@@ -165,8 +179,13 @@ const links = [
       transition: color var(--motion) var(--ease);
     }
 
-    .nav a:hover {
+    .nav a:hover,
+    .nav a[aria-current="page"] {
       color: var(--ink);
+    }
+
+    .nav a[aria-current="page"] {
+      box-shadow: 0 3px 0 var(--accent);
     }
 
     .nav-cta,

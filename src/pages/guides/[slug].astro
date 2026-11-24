@@ -1,0 +1,343 @@
+---
+import { render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MobileBar from "../../components/MobileBar.astro";
+import { formatDate, getGuides } from "../../data/guides";
+
+export async function getStaticPaths() {
+  const guides = await getGuides();
+  return guides.map((guide) => ({ params: { slug: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+const { title, description, date, tag, instagram, draft } = guide.data;
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const isoDate = date.toISOString().slice(0, 10);
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: isoDate,
+  inLanguage: "he-IL",
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  author: { "@type": "Person", name: "איליי סנדרוסי", url: new URL(base, Astro.site).href },
+};
+---
+
+<Layout title={`${title} · איליי סנדרוסי`} description={description} ogType="article">
+  <Fragment slot="head">
+    {draft && <meta name="robots" content="noindex" />}
+    <script type="application/ld+json" set:html={JSON.stringify(article)} />
+  </Fragment>
+  <Header />
+  <main id="main" class="guide-page">
+    <article class="guide-inner">
+      <a class="back" href={`${base}guides/`}>כל המדריכים</a>
+
+      <header class="head">
+        <p class="meta">
+          {tag && <span class="tag">{tag}</span>}
+          {draft && <span class="tag draft">טיוטה</span>}
+          <time datetime={isoDate}>{formatDate(date)}</time>
+        </p>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="end card">
+        <h2>רוצים אתר שיושב במקום?</h2>
+        <p>אפשר לבחור כיוון ולפתוח מסלול.</p>
+        <div class="end-actions">
+          <a class="btn btn-primary" href={`${base}#choose`}>בחרו מה בונים</a>
+          {
+            instagram && (
+              <a class="btn btn-ghost" href={instagram} target="_blank" rel="noopener noreferrer">
+                לפוסט באינסטגרם
+              </a>
+            )
+          }
+        </div>
+      </footer>
+    </article>
+  </main>
+  <Footer />
+  <MobileBar />
+</Layout>
+
+<style>
+  .guide-page {
+    min-height: 100svh;
+    padding: calc(62px + 32px + env(safe-area-inset-top)) 0 64px;
+  }
+
+  .guide-inner {
+    width: 100%;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: color var(--motion) var(--ease);
+  }
+
+  .back::before {
+    content: "→";
+    margin-inline-end: 8px;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  .head {
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    border-bottom: var(--line);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .tag {
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 3px 14px;
+    border-radius: 999px;
+  }
+
+  .tag.draft {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  h1 {
+    font-size: clamp(2.1rem, 9vw, 3.4rem);
+    margin-bottom: 12px;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    font-size: 1.15rem;
+    max-width: 40ch;
+  }
+
+  /* Markdown content is not scoped, so everything below goes through :global. */
+  .prose {
+    font-size: 1.09rem;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+  }
+
+  .prose :global(> * + *) {
+    margin-top: 1.1em;
+  }
+
+  .prose :global(h2) {
+    font-size: clamp(1.6rem, 6.5vw, 2.1rem);
+    margin-top: 2em;
+    scroll-margin-top: 90px;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.35rem;
+    margin-top: 1.7em;
+    scroll-margin-top: 90px;
+  }
+
+  .prose :global(a) {
+    color: var(--accent-dark);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(a:hover) {
+    color: var(--ink);
+  }
+
+  .prose :global(strong) {
+    font-weight: 700;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .prose :global(ul > li) {
+    position: relative;
+    padding-inline-start: 26px;
+  }
+
+  .prose :global(ul > li::before) {
+    content: "";
+    position: absolute;
+    inset-inline-start: 4px;
+    top: 0.72em;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+
+  .prose :global(ol) {
+    counter-reset: step;
+  }
+
+  .prose :global(ol > li) {
+    counter-increment: step;
+    position: relative;
+    padding-inline-start: 46px;
+    min-height: 32px;
+  }
+
+  .prose :global(ol > li::before) {
+    content: counter(step);
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.1em;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    font-family: "Suez One", serif;
+    font-size: 1rem;
+    line-height: 1;
+    color: #fff;
+    background: var(--accent);
+    border: var(--line);
+    border-radius: 10px;
+  }
+
+  .prose :global(blockquote) {
+    background: var(--card);
+    border: var(--line);
+    border-inline-start: 8px solid var(--accent);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 20px;
+    font-weight: 500;
+  }
+
+  .prose :global(:not(pre) > code) {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-size: 0.9em;
+    background: var(--paper-soft);
+    border: 1px solid rgba(23, 20, 16, 0.25);
+    border-radius: 6px;
+    padding: 1px 6px;
+  }
+
+  .prose :global(pre) {
+    direction: ltr;
+    text-align: left;
+    background: var(--ink) !important;
+    border: var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .prose :global(img) {
+    height: auto;
+    border: var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: var(--line);
+    margin-block: 2em;
+  }
+
+  .prose :global(table) {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid rgba(23, 20, 16, 0.3);
+    padding: 8px 12px;
+    text-align: start;
+  }
+
+  .end {
+    margin-top: 56px;
+    padding: 26px 22px;
+  }
+
+  .end h2 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+
+  .end p {
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+
+  .end-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  @media (min-width: 768px) {
+    .guide-page {
+      padding-top: calc(74px + 48px);
+      padding-bottom: 96px;
+    }
+
+    .guide-inner {
+      padding: 0 32px;
+    }
+
+    .end {
+      padding: 32px;
+    }
+
+    .end-actions {
+      flex-direction: row;
+    }
+  }
+</style>

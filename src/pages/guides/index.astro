@@ -1,0 +1,240 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MobileBar from "../../components/MobileBar.astro";
+import { formatDate, getGuides, instagramLink } from "../../data/guides";
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const guides = await getGuides();
+---
+
+<Layout
+  title="מדריכים · איליי סנדרוסי"
+  description="מדריכים של איליי סנדרוסי: מה שאני מראה באינסטגרם, כתוב כאן צעד אחרי צעד."
+>
+  <Header />
+  <main id="main" class="guides">
+    <div class="guides-inner">
+      <p class="eyebrow">מדריכים</p>
+      <h1>צעד אחרי צעד</h1>
+      <p class="lead">
+        מה שאני מראה באינסטגרם, כתוב כאן בנחת: מה עושים, ובאיזה סדר.
+      </p>
+
+      {
+        guides.length > 0 ? (
+          <ol class="list">
+            {guides.map((g, i) => (
+              <li class="reveal" style={`--reveal-delay: ${Math.min(i, 5) * 70}ms`}>
+                <a class="guide" href={`${base}guides/${g.id}/`}>
+                  <span class="n">{String(guides.length - i).padStart(2, "0")}</span>
+                  <div class="body">
+                    <p class="meta">
+                      {g.data.tag && <span class="tag">{g.data.tag}</span>}
+                      {g.data.draft && <span class="tag draft">טיוטה</span>}
+                      <time datetime={g.data.date.toISOString().slice(0, 10)}>
+                        {formatDate(g.data.date)}
+                      </time>
+                    </p>
+                    <h2>{g.data.title}</h2>
+                    <p class="text">{g.data.description}</p>
+                    <span class="go">לקריאה</span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="empty card" role="status">
+            <h2>עוד מעט כאן</h2>
+            <p>המדריך הראשון בדרך. בינתיים הכול עולה קודם באינסטגרם.</p>
+          </div>
+        )
+      }
+
+      <a
+        class="btn btn-ghost insta"
+        href={instagramLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        translate="no"
+      >
+        ‎@ilaybuilds באינסטגרם
+      </a>
+    </div>
+  </main>
+  <Footer />
+  <MobileBar />
+</Layout>
+
+<style>
+  .guides {
+    min-height: 100svh;
+    padding: calc(62px + 56px + env(safe-area-inset-top)) 0 64px;
+  }
+
+  .guides-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 10vw, 4rem);
+    margin-bottom: 10px;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    max-width: 36ch;
+    margin-bottom: 40px;
+  }
+
+  .list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 46rem;
+  }
+
+  .guide {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 22px 20px;
+    background: var(--card);
+    border: var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--motion) var(--ease),
+      box-shadow var(--motion) var(--ease);
+  }
+
+  .guide:hover,
+  .guide:focus-visible {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+  }
+
+  .guide:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 rgba(23, 20, 16, 0.2);
+  }
+
+  .n {
+    font-family: "Suez One", serif;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: var(--accent);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  .tag {
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 2px 12px;
+    border-radius: 999px;
+  }
+
+  .tag.draft {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+    margin-bottom: 6px;
+  }
+
+  .text {
+    color: var(--ink-soft);
+    max-width: 48ch;
+  }
+
+  .go {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    margin-top: 6px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .go::after {
+    content: "←";
+    margin-inline-start: 8px;
+    transition: transform var(--motion) var(--ease);
+  }
+
+  .guide:hover .go::after {
+    transform: translateX(-4px);
+  }
+
+  .empty {
+    max-width: 30rem;
+    padding: 28px 24px;
+  }
+
+  .empty h2 {
+    font-size: 1.8rem;
+  }
+
+  .empty p {
+    color: var(--ink-soft);
+  }
+
+  .insta {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  @media (min-width: 768px) {
+    .guides {
+      padding-top: calc(74px + 72px);
+      padding-bottom: 96px;
+    }
+
+    .guides-inner {
+      padding: 0 32px;
+    }
+
+    .guide {
+      grid-template-columns: 56px 1fr;
+      padding: 28px;
+    }
+
+    .insta {
+      width: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .guide,
+    .guide:hover,
+    .guide:focus-visible,
+    .guide:hover .go::after {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
