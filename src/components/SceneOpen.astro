@@ -131,6 +131,12 @@ const img = (name: string) => `${base}character/${name}.png`;
   .closed-note::after { width: 8px; height: 8px; right: 6px; bottom: -30px; }
   .reopen { position: absolute; left: 0; bottom: 18px; z-index: 6; font: 600 15px var(--head); color: var(--ink); background: var(--card); border: var(--line); border-radius: 14px; padding: 9px 16px; box-shadow: var(--shadow-sm); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s 0.45s, transform 0.18s var(--ease), box-shadow 0.18s var(--ease); }
 
+  /* hidden pieces are out of the tab order and away from screen readers until their state shows them */
+  .reopen, .closed-note, .mx-note, .away-sign { visibility: hidden; }
+  .stage.is-closed .reopen, .stage.is-closed .closed-note, .stage.is-max .mx-note { visibility: visible; }
+  :global(body.away) .away-sign { visibility: visible; }
+  .stage.is-closed .win { visibility: hidden; transition: transform 0.55s var(--ease), opacity 0.3s, visibility 0s linear 0.3s; }
+
   /* ---------- states ---------- */
   .stage.is-boot .win { transform: scale(0.15) translateY(60px); opacity: 0; transition: none; }
   .stage.is-boot .badge { opacity: 0; transform: scale(0.4); transition: none; }

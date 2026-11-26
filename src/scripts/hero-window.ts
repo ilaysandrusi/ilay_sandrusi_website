@@ -44,10 +44,13 @@ export function initHeroWindow(): HeroWindow | null {
   };
 
   // every state starts from the remembered spot; maximized grows around it, kept inside the area
-  const fit = (lo: number, hi: number, v: number) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
+  // when the box is wider than the area, pin it to the area's start so the × button stays on screen
+  const fit = (lo: number, hi: number, v: number) => (lo > hi ? lo : Math.min(hi, Math.max(lo, v)));
   const applyPos = () => {
     let tx = pos.x, ty = pos.y;
-    if (has("is-max")) {
+    if (!wide.matches) {
+      tx = 0; ty = 0; // stacked layout: the window stays centered in its stage
+    } else if (has("is-max")) {
       const st = stage.getBoundingClientRect(), b = area();
       const W = Math.min(560, innerWidth * 0.92), H = 430;
       const cx = st.left + st.width / 2, cy = st.top + st.height / 2;
@@ -127,7 +130,9 @@ export function initHeroWindow(): HeroWindow | null {
   let drag: { x: number; y: number; dx: number; dy: number; base: Box; moved: boolean } | null = null;
   const syncDragMode = () => {
     document.documentElement.classList.toggle("can-drag", wide.matches);
-    if (!wide.matches && (pos.x || pos.y)) { pos.x = 0; pos.y = 0; applyPos(); changed(); }
+    if (!wide.matches) { pos.x = 0; pos.y = 0; }
+    applyPos();
+    changed();
   };
   bar.addEventListener("pointerdown", (e) => {
     if (!wide.matches || e.button !== 0 || morphing) return;
@@ -161,8 +166,8 @@ export function initHeroWindow(): HeroWindow | null {
   syncDragMode();
   // keep it inside the area if the screen size changes
   addEventListener("resize", () => {
+    if (has("is-max")) { applyPos(); changed(); return; }
     if (!wide.matches || (!pos.x && !pos.y) || has("is-min")) return;
-    if (has("is-max")) { applyPos(); return; }
     const r = (has("is-closed") && closedBox ? closedBox : win).getBoundingClientRect(), b = area();
     if (r.right > b.right) pos.x -= r.right - b.right;
     if (r.bottom > b.bottom) pos.y -= r.bottom - b.bottom;

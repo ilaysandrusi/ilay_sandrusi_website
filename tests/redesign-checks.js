@@ -274,6 +274,75 @@
     return f;
   };
 
+  // ---------- final-review fixes ----------
+  // Maximize stays fully on screen (call at 375 and at 1024 on a fresh load).
+  C.maxOnScreen = async () => {
+    const f = [];
+    await wait(1500); finish();
+    document.querySelector('.dot[data-act="max"]').click(); await wait(80); finish();
+    const r = document.getElementById('win').getBoundingClientRect();
+    if (r.left < 0 || r.right > innerWidth) f.push(`maximized window off screen: ${Math.round(r.left)}..${Math.round(r.right)} of ${innerWidth}`);
+    const x = document.querySelector('.dot[data-act="close"]').getBoundingClientRect();
+    if (x.left < 0) f.push('× button off screen when maximized');
+    document.querySelector('.dot[data-act="max"]').click(); await wait(80); finish();
+    return f;
+  };
+  // Maximized then resized across 960px: refit (call at 1366, then it resizes itself via the caller).
+  C.maxAfterResize = async () => {
+    const f = [];
+    await wait(1400);
+    dispatchEvent(new Event('resize')); // a hidden preview pane does not deliver resize events by itself
+    await wait(50); finish();
+    const r = document.getElementById('win').getBoundingClientRect();
+    if (r.left < 0 || r.right > innerWidth) f.push(`after resize the maximized window is off screen: ${Math.round(r.left)}..${Math.round(r.right)}`);
+    return f;
+  };
+  // Review Focus 3: loaded at #contact, after the boot: no slide from the off-screen window.
+  C.noSlideWhenScrolled = async () => {
+    const f = [];
+    document.documentElement.style.scrollBehavior = 'auto';
+    scrollTo(0, document.getElementById('contact').offsetTop); // the hash jump does not run in a hidden pane
+    await wait(1600); finish();
+    // make the window "open" again while the hero is far above: minimize, then restore from the dock
+    document.querySelector('.dot[data-act="min"]').click(); await wait(800); climb();
+    document.getElementById('bar').click(); await wait(700);
+    climb(); // first frame after it is open again
+    const t1 = parseFloat(document.getElementById('climber').style.top);
+    await wait(700); climb();
+    const t2 = parseFloat(document.getElementById('climber').style.top);
+    if (Math.abs(t1 - t2) > 1) f.push(`climber slides in after boot (${t1.toFixed(0)} → ${t2.toFixed(0)})`);
+    return f;
+  };
+  // Form status readable on the cream card.
+  C.statusReadable = async () => {
+    const f = [];
+    const s = document.getElementById('contact-status');
+    for (const k of ['ok', 'err']) {
+      s.className = 'form-status ' + k; s.textContent = 'בדיקה';
+      const [r, g, b] = getComputedStyle(s).color.match(/\d+/g).map(Number);
+      const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      if (lum > 0.45) f.push(`status "${k}" color too light on the card (luminance ${lum.toFixed(2)})`);
+    }
+    s.className = 'form-status'; s.textContent = '';
+    return f;
+  };
+  // Hidden controls are not reachable.
+  C.hiddenNotReachable = async () => {
+    const f = [];
+    await wait(1500); finish();
+    const vis = (el) => getComputedStyle(el).visibility !== 'hidden';
+    if (vis(document.getElementById('reopen'))) f.push('#reopen reachable while the window is open');
+    if (vis(document.querySelector('.closed-note'))) f.push('closed note visible to screen readers while open');
+    if (vis(document.querySelector('.mx-note'))) f.push('maximize note visible to screen readers while not maximized');
+    if (vis(document.querySelector('.away-sign'))) f.push('away sign visible to screen readers while home');
+    document.querySelector('.dot[data-act="close"]').click(); await wait(800); finish();
+    if (vis(document.getElementById('win'))) f.push('window buttons reachable while closed');
+    if (!vis(document.getElementById('reopen'))) f.push('#reopen not reachable while closed');
+    document.getElementById('reopen').click(); await wait(80); finish();
+    if (!vis(document.getElementById('win'))) f.push('window not visible after reopen');
+    return f;
+  };
+
   // Review Focus 4 + 5: header link to #contact, then the form status grows.
   C.ropeLink = async () => {
     const f = [];

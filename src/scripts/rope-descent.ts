@@ -25,8 +25,10 @@ export function initRopeDescent(hero: HeroWindow): void {
   const setAway = (v: boolean) => {
     if (v === away) return;
     away = v;
-    // loaded already past the start: no slide out of the window
-    exitT0 = first ? -Infinity : performance.now();
+    // slide out of the window only when he is visibly in it; otherwise appear on his planned spot
+    const r = hero.inWinChar.getBoundingClientRect();
+    const onScreen = r.bottom > 0 && r.top < innerHeight;
+    exitT0 = v && !first && onScreen ? performance.now() : -Infinity;
     document.body.classList.toggle("away", v);
     if (!v) setLanded(false);
   };
