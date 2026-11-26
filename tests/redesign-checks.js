@@ -35,4 +35,33 @@
     }
     return f;
   };
+
+  C.heroStatic = async () => {
+    const f = [];
+    const stage = document.getElementById('stage');
+    if (!stage) return ['#stage missing'];
+    stage.classList.remove('is-boot');
+    finish();
+    await wait(50);
+    const text = document.querySelector('.hero-text');
+    if (!text) f.push('.hero-text missing');
+    else if (innerWidth >= 1200 && text.getBoundingClientRect().left < stage.getBoundingClientRect().right - 1) f.push('hero text is not right of the stage');
+    const win = document.getElementById('win');
+    if (!win) f.push('#win missing');
+    else if (getComputedStyle(win).boxShadow !== 'none') f.push('window has a shadow');
+    const svgs = [...document.querySelectorAll('.win .dot svg')];
+    if (svgs.length !== 3) f.push(`expected 3 dot icons, got ${svgs.length}`);
+    if (svgs.some((s) => getComputedStyle(s).opacity !== '1')) f.push('dot icons are not always visible');
+    const imgs = [...document.querySelectorAll('.win .char img, .alone img')];
+    if (imgs.length < 3) f.push('character images missing');
+    await Promise.all(imgs.map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
+    if (imgs.some((i) => !i.naturalWidth)) f.push('a character image did not load');
+    const badge = document.querySelector('.win .badge');
+    if (!badge || badge.textContent.trim() !== 'עובד על זה עכשיו') f.push('badge text wrong');
+    for (const [sel, txt] of [['.mx-note', 'יש פה מספיק מקום לפרויקט שלך'], ['.closed-note', 'בלי החלון אני לא יכול ללוות אתכם למטה. תשאירו אותו פתוח?'], ['#reopen', 'פתחו לי את החלון']]) {
+      const el = document.querySelector(sel);
+      if (!el || el.textContent.trim() !== txt) f.push(`${sel} text wrong`);
+    }
+    return f;
+  };
 })();

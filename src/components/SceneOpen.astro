@@ -1,211 +1,173 @@
 ---
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const img = (name: string) => `${base}character/${name}.png`;
 ---
 
-<section class="scene open" id="top" aria-labelledby="open-heading">
-  <div class="open-inner">
-    <p class="open-kicker">איליי סנדרוסי</p>
-    <h1 id="open-heading">
-      תכירו אותי<br />
-      <em>קודם.</em>
-    </h1>
-    <p class="open-lead">
-      אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.
-    </p>
-    <a href="#about" class="btn btn-primary open-cta">
-      הכירו אותי
-      <svg class="cta-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-      </svg>
-    </a>
-  </div>
-  <div class="open-marks" aria-hidden="true">
-    <span class="blob blob-a"></span>
-    <span class="blob blob-b"></span>
-    <span class="stamp">א.</span>
+<section class="scene hero" id="top" aria-labelledby="open-heading">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">איליי סנדרוסי</p>
+      <h1 id="open-heading">תכירו אותי<em>קודם.</em></h1>
+      <p class="lead">אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.</p>
+      <a href="#about" class="btn btn-primary">
+        הכירו אותי
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <div class="stage is-boot" id="stage">
+      <span class="blob b1" aria-hidden="true"></span>
+      <span class="blob b2" aria-hidden="true"></span>
+
+      <div class="closed-box" id="closedBox">
+        <div class="alone" aria-hidden="true"><img class="px" src={img("think")} alt="" width="624" height="732" /></div>
+        <p class="closed-note">בלי החלון אני לא יכול ללוות אתכם למטה. תשאירו אותו פתוח?</p>
+        <button class="reopen" type="button" id="reopen">פתחו לי את החלון</button>
+      </div>
+
+      <div class="win" id="win" role="group" aria-label="חלון עם הדמות של איליי">
+        <div class="bar" id="bar">
+          <button class="dot close" type="button" data-act="close" aria-label="סגירת החלון">
+            <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          </button>
+          <button class="dot min" type="button" data-act="min" aria-label="מזעור החלון">
+            <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          </button>
+          <button class="dot max" type="button" data-act="max" aria-label="הגדלת החלון">
+            <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M6 2h2v2M4 8H2V6M8 2L5.5 4.5M2 8l2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <span class="url">ilay.site</span>
+        </div>
+        <div class="grid" aria-hidden="true"></div>
+        <span class="away-sign">יצאתי לרגע<small>גללו למטה</small></span>
+        <span class="mx-note">יש פה מספיק מקום לפרויקט שלך</span>
+        <div class="char" aria-hidden="true">
+          <img class="px" src={img("laptop_show")} alt="" width="624" height="732" />
+          <img class="px excited" src={img("excited")} alt="" width="624" height="732" />
+        </div>
+        <span class="badge">עובד על זה עכשיו</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .scene.open {
+  .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: calc(100svh - 70px);
     display: flex;
-    align-items: flex-end;
-    padding: 0;
+    align-items: center;
     overflow: hidden;
+    padding: 60px 0 80px;
   }
-
-  .open-inner {
-    position: relative;
-    z-index: 2;
+  .hero-grid {
     width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 100px 20px calc(var(--bar-height) + 40px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: center;
   }
+  .hero-text > * { animation: rise 0.8s var(--ease) both; }
+  .hero-text > :nth-child(2) { animation-delay: 0.08s; }
+  .hero-text > :nth-child(3) { animation-delay: 0.16s; }
+  .hero-text > :nth-child(4) { animation-delay: 0.24s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  h1 { font-size: clamp(52px, 8.4vw, 112px); line-height: 0.9; margin-bottom: 24px; }
+  h1 em { font-style: normal; color: var(--accent-text); display: block; }
+  .lead { font-size: clamp(18px, 1.6vw, 21px); color: var(--ink-soft); max-width: 34ch; margin-bottom: 34px; }
 
-  .open-kicker {
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 18px;
-    color: var(--ink-soft);
+  .px { image-rendering: pixelated; image-rendering: crisp-edges; display: block; width: 100%; height: auto; }
+  .blob { position: absolute; border: var(--line); border-radius: 40% 60% 55% 45%; pointer-events: none; }
+
+  .stage { position: relative; height: 380px; }
+  .stage .b1 { width: 210px; height: 210px; background: var(--accent); left: 0; bottom: 10px; transform: rotate(18deg); }
+  .stage .b2 { width: 130px; height: 130px; background: var(--paper); right: 10px; top: 0; box-shadow: var(--shadow); }
+
+  /* ---------- the window ---------- */
+  .win {
+    position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px;
+    background: var(--card); border: var(--line); border-radius: 18px; box-shadow: none; overflow: hidden; z-index: 3;
+    transform-origin: 20% 100%;
+    transition: transform 0.55s var(--ease), opacity 0.3s, width 0.55s var(--ease), height 0.55s var(--ease), margin 0.55s var(--ease), top 0.55s var(--ease), translate 0.55s var(--ease);
   }
+  .bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; background: var(--card); position: relative; z-index: 2; user-select: none; }
+  .bar .url { margin-left: 10px; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+  .dot { color: var(--ink); width: 17px; height: 17px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform 0.15s, background 0.15s; }
+  .dot svg { width: 62%; height: 62%; }
+  .dot:hover { transform: scale(1.2); }
+  .dot.close { background: var(--accent); color: #fff; }
+  .dot.min:hover, .dot.max:hover { background: var(--ink); color: var(--paper); }
+  .win .grid { position: absolute; inset: 40px 0 0 0; background-image: linear-gradient(rgba(23, 20, 16, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(23, 20, 16, 0.06) 1px, transparent 1px); background-size: 28px 28px; }
+  .win .char { position: absolute; left: 50%; bottom: 0; width: 190px; transform: translateX(-50%); transition: width 0.55s var(--ease), opacity 0.25s, transform 0.35s var(--ease); }
+  .win .char img + img { display: none; }
 
-  h1 {
-    font-size: clamp(2.8rem, 12vw, 5.4rem);
-    margin-bottom: 20px;
-    max-width: 12ch;
-  }
+  /* thought bubbles */
+  .badge, .mx-note, .closed-note { position: absolute; background: var(--card); color: var(--ink); border: var(--line); font-family: var(--head); font-weight: 600; }
+  .badge::before, .badge::after, .mx-note::before, .mx-note::after, .closed-note::before, .closed-note::after { content: ""; position: absolute; background: var(--card); border: var(--line); border-radius: 50%; }
+  .badge { left: 14px; top: 64px; z-index: 3; font-size: 13.5px; line-height: 1.25; border-radius: 20px; padding: 8px 13px; box-shadow: 3px 3px 0 rgba(23, 20, 16, 0.12); white-space: nowrap; transform-origin: 85% 100%; transition: opacity 0.3s, transform 0.45s var(--pop); }
+  .badge::before { width: 12px; height: 12px; right: 4px; bottom: -15px; }
+  .badge::after { width: 7px; height: 7px; right: -6px; bottom: -25px; }
+  .mx-note { left: calc(50% - 235px); top: 74px; z-index: 3; font-size: 15px; line-height: 1.25; border-radius: 20px; padding: 9px 15px; box-shadow: 3px 3px 0 rgba(23, 20, 16, 0.12); white-space: nowrap; opacity: 0; transform: scale(0.5); transform-origin: 85% 100%; transition: opacity 0.3s 0.25s, transform 0.45s 0.25s var(--pop); }
+  .mx-note::before { width: 13px; height: 13px; right: 6px; bottom: -17px; }
+  .mx-note::after { width: 8px; height: 8px; right: -5px; bottom: -29px; }
+  .away-sign { position: absolute; inset: 40px 0 0 0; display: grid; place-content: center; text-align: center; font: 700 26px/1.1 var(--head); color: var(--ink); opacity: 0; transform: scale(0.9); transition: opacity 0.3s, transform 0.4s var(--pop); z-index: 2; }
+  .away-sign small { display: block; font: 500 15px var(--body); color: var(--ink-soft); margin-top: 6px; }
 
-  h1 em {
-    font-style: normal;
-    color: var(--accent);
-  }
+  /* closed state */
+  .closed-box { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px; z-index: 4; pointer-events: none; transition: translate 0.55s var(--ease); }
+  .alone { position: absolute; right: 10px; bottom: 0; width: 150px; z-index: 1; opacity: 0; transform: translateY(20px); transition: opacity 0.35s 0.25s, transform 0.45s 0.25s var(--ease); pointer-events: none; }
+  .closed-note { left: 0; top: 0; z-index: 6; max-width: 240px; border-radius: 20px; padding: 12px 16px; font-size: 16px; line-height: 1.35; box-shadow: var(--shadow-sm); opacity: 0; transform: scale(0.6); transform-origin: 90% 100%; transition: opacity 0.3s 0.4s, transform 0.45s 0.4s var(--pop); pointer-events: none; }
+  .closed-note::before { width: 14px; height: 14px; right: 18px; bottom: -18px; }
+  .closed-note::after { width: 8px; height: 8px; right: 6px; bottom: -30px; }
+  .reopen { position: absolute; left: 0; bottom: 18px; z-index: 6; font: 600 15px var(--head); color: var(--ink); background: var(--card); border: var(--line); border-radius: 14px; padding: 9px 16px; box-shadow: var(--shadow-sm); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s 0.45s, transform 0.18s var(--ease), box-shadow 0.18s var(--ease); }
 
-  .open-lead {
-    color: var(--ink-soft);
-    font-size: 1.12rem;
-    max-width: 34ch;
-    margin-bottom: 32px;
-  }
+  /* ---------- states ---------- */
+  .stage.is-boot .win { transform: scale(0.15) translateY(60px); opacity: 0; transition: none; }
+  .stage.is-boot .badge { opacity: 0; transform: scale(0.4); transition: none; }
+  .stage.is-opening .win { transition: transform 0.7s var(--pop), opacity 0.25s, width 0.55s var(--ease), height 0.55s var(--ease), margin 0.55s var(--ease), top 0.55s var(--ease), translate 0.55s var(--ease); }
+  .stage.is-opening .badge { transition: opacity 0.3s 0.55s, transform 0.45s 0.55s var(--pop); }
 
-  .open-cta {
-    width: 100%;
-    max-width: 320px;
-  }
+  .stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: calc(var(--bar-height) + env(safe-area-inset-bottom) + 12px); height: 44px; width: 290px; margin: 0; z-index: 45; box-shadow: var(--shadow-sm); translate: none !important; }
+  .stage.is-min .bar { cursor: pointer; }
+  .stage.is-min .bar .url::after { content: " · לחצו לפתיחה"; color: var(--accent-text); font-family: var(--head); font-weight: 600; }
+  .stage.is-min .win .grid, .stage.is-min .win .char, .stage.is-min .win .badge, .stage.is-min .win .mx-note { opacity: 0; transition: opacity 0.2s; }
+  .stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
 
-  .cta-icon {
-    flex-shrink: 0;
-  }
+  .stage.is-max .win { width: min(560px, 92vw); height: 430px; margin: -215px 0 0 calc(min(560px, 92vw) / -2); z-index: 10; }
+  .stage.is-max .char { width: 250px; }
+  .stage.is-max .char img:first-child { display: none; }
+  .stage.is-max .char img.excited { display: block; }
+  .stage.is-max .mx-note { opacity: 1; transform: none; }
 
-  .open-marks {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-  }
+  .stage.is-closed .win { transform: scale(0.2); opacity: 0; pointer-events: none; }
+  .stage.is-closed .alone { opacity: 1; transform: none; }
+  .stage.is-closed .closed-note { opacity: 1; transform: none; }
+  .stage.is-closed .reopen { opacity: 1; pointer-events: auto; animation: beat 1.6s ease-in-out 0.9s infinite; }
+  .stage.is-closed .reopen:hover, .stage.is-closed .reopen:focus-visible { animation: none; transform: translate(-3px, -3px); box-shadow: var(--shadow-hot); }
+  .stage.is-closed .reopen:active { transform: none; box-shadow: none; }
+  @keyframes beat { 0%, 60%, 100% { transform: scale(1); } 20% { transform: scale(1.07); } 40% { transform: scale(0.98); } }
 
-  .blob {
-    position: absolute;
-    border: var(--line);
-    border-radius: 40% 60% 55% 45%;
-  }
+  /* drag (desktop) */
+  .win.dragging { transition: none !important; }
+  .win.dragging .bar { cursor: grabbing; }
+  :global(.can-drag) .stage:not(.is-min):not(.is-max):not(.is-closed) .bar { cursor: grab; touch-action: none; }
 
-  .blob-a {
-    width: 180px;
-    height: 180px;
-    background: var(--accent);
-    top: 18%;
-    inset-inline-end: -40px;
-    transform: rotate(18deg);
-    opacity: 0.9;
-  }
-
-  .blob-b {
-    width: 120px;
-    height: 120px;
-    background: var(--paper);
-    top: 42%;
-    inset-inline-end: 40px;
-    box-shadow: var(--shadow);
-  }
-
-  .stamp {
-    position: absolute;
-    bottom: calc(var(--bar-height) + 24px);
-    inset-inline-end: 20px;
-    font-family: var(--head);
-    font-size: 4.5rem;
-    line-height: 1;
-    color: var(--ink);
-    opacity: 0.08;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .open-kicker,
-    .open-inner h1,
-    .open-lead,
-    .open-cta {
-      animation: open-rise 0.7s var(--ease) both;
-    }
-
-    .open-inner h1 {
-      animation-delay: 0.08s;
-    }
-
-    .open-lead {
-      animation-delay: 0.16s;
-    }
-
-    .open-cta {
-      animation-delay: 0.24s;
-    }
-
-    .blob-a {
-      animation: blob-drift-a 14s ease-in-out infinite alternate;
-    }
-
-    .blob-b {
-      animation: blob-drift-b 18s ease-in-out infinite alternate;
-    }
-  }
-
-  @keyframes open-rise {
-    from {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @keyframes blob-drift-a {
-    from {
-      transform: rotate(18deg) translate(0, 0);
-    }
-    to {
-      transform: rotate(26deg) translate(-14px, 12px);
-    }
-  }
-
-  @keyframes blob-drift-b {
-    from {
-      transform: translate(0, 0);
-    }
-    to {
-      transform: translate(10px, -14px);
-    }
-  }
+  /* the character has left on the rope */
+  :global(body.away) .win .char { opacity: 0; transition: none; }
+  :global(body.away) .away-sign { opacity: 1; transform: none; }
+  :global(body.away) .badge { opacity: 0; transform: scale(0.4); }
 
   @media (min-width: 768px) {
-    .open-inner {
-      padding: 120px 32px 80px;
-      align-self: center;
-    }
-
-    .open-cta {
-      width: auto;
-    }
-
-    .blob-a {
-      width: 280px;
-      height: 280px;
-      inset-inline-end: 8%;
-      top: 22%;
-    }
-
-    .blob-b {
-      width: 160px;
-      height: 160px;
-      inset-inline-end: 22%;
-    }
-
-    .stamp {
-      font-size: 9rem;
-      bottom: 40px;
-      inset-inline-end: 8%;
-    }
+    .stage.is-min .win { bottom: 24px; }
+  }
+  @media (min-width: 960px) {
+    .hero-grid { grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 90px); }
+    .stage { height: 440px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-text > *, .win, .badge, .mx-note, .away-sign, .alone, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
   }
 </style>
