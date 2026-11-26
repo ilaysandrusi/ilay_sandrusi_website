@@ -22,6 +22,13 @@
   --space-2xl: 48px;
   --motion: 180ms;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --accent-text: #f0421f;
+  --shadow-hot: 7px 7px 0 #ff4b26d9;
+  --head: "Fredoka", "Varela Round", sans-serif;
+  --body: "Varela Round", "Fredoka", sans-serif;
+  --sp-section: clamp(88px, 11vw, 150px);
+  --sp-section-lg: clamp(110px, 14vw, 190px);
 }
 
 * {
@@ -38,11 +45,11 @@ html {
 }
 
 body {
-  font-family: "Heebo", system-ui, sans-serif;
+  font-family: var(--body);
   background: var(--paper);
   color: var(--ink);
-  line-height: 1.65;
-  font-size: 1rem;
+  line-height: 1.7;
+  font-size: 17px;
   -webkit-font-smoothing: antialiased;
   padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom));
   touch-action: manipulation;
@@ -57,9 +64,10 @@ summary,
 }
 
 h1, h2, h3 {
-  font-family: "Suez One", "Heebo", serif;
-  font-weight: 400;
-  line-height: 1.18;
+  font-family: var(--head);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
   text-wrap: balance;
 }
 
@@ -110,9 +118,10 @@ section {
   display: inline-block;
   background: var(--ink);
   color: var(--paper);
-  font-size: 0.85rem;
+  font-family: var(--head);
+  font-size: 14px;
   font-weight: 600;
-  padding: 4px 14px;
+  padding: 5px 14px;
   border-radius: 999px;
   margin-bottom: 14px;
 }
@@ -138,9 +147,9 @@ section {
   min-width: 48px;
   padding: 12px 28px;
   border-radius: 14px;
-  font-family: "Heebo", sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-family: var(--head);
+  font-weight: 600;
+  font-size: 17px;
   cursor: pointer;
   transition:
     transform var(--motion) var(--ease),
@@ -164,9 +173,8 @@ section {
 }
 
 .btn-primary:hover {
-  background: var(--accent-dark);
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 rgba(23, 20, 16, 0.2);
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-hot);
 }
 
 .btn-ghost {
@@ -176,8 +184,8 @@ section {
 }
 
 .btn-ghost:hover {
-  background: var(--ink);
-  color: var(--paper);
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-hot);
 }
 
 input:focus-visible,
@@ -200,7 +208,7 @@ summary:focus-visible {
 /* Progress dots for cinematic scenes — 44px hit area, small visual */
 .scene-nav {
   position: fixed;
-  inset-inline-end: 6px;
+  inset-inline-start: 6px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 40;
