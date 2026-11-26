@@ -160,4 +160,99 @@
     }
     return f;
   };
+
+  // ---------- rope descent ----------
+  const climb = () => { if (window.__climbForTest) window.__climbForTest(); };
+  const tieExpected = () => {
+    const w = document.getElementById('win').getBoundingClientRect();
+    if (innerWidth < 960) return { x: w.left + w.width / 2, y: w.bottom - 2 };
+    const h = document.querySelector('.hero').getBoundingClientRect();
+    const aL = h.left + 12, aR = h.left + h.width / 2 - 12;
+    const minC = aL + w.width / 2, maxC = aR - w.width / 2;
+    const side = maxC > minC ? Math.min(1, Math.max(0, (w.left + w.width / 2 - minC) / (maxC - minC))) : 0.5;
+    return { x: (w.right - 16) + ((w.left + 16) - (w.right - 16)) * side, y: w.bottom - 2 };
+  };
+
+  // Run on a fresh load at the size under test.
+  C.rope = async () => {
+    const f = [];
+    if (!window.__climbForTest) return ['__climbForTest not exposed'];
+    document.documentElement.style.scrollBehavior = 'auto';
+    await wait(1500); finish();
+    const c = document.getElementById('climber'), rope = document.getElementById('rope'), send = document.getElementById('send');
+    if (!c || !rope || !send) return ['#climber / #rope / #send missing'];
+    scrollTo(0, 200); climb(); await wait(700); climb();
+    const H = document.documentElement.scrollHeight - innerHeight;
+    let prev = null, maxJ = 0, tieErr = 0;
+    for (let y = 200; y <= H; y += 10) {
+      scrollTo(0, y); climb();
+      const L = parseFloat(c.style.left);
+      if (prev !== null) maxJ = Math.max(maxJ, Math.abs(L - prev));
+      prev = L;
+      if (!c.classList.contains('landed') && parseFloat(rope.style.height) > 0) {
+        const t = tieExpected();
+        tieErr = Math.max(tieErr, Math.abs(parseFloat(rope.style.left) - t.x), Math.abs(parseFloat(rope.style.top) - t.y));
+      }
+    }
+    if (maxJ > 4) f.push(`climber jumps ${maxJ.toFixed(1)}px sideways`);
+    if (tieErr > 1) f.push(`rope top is ${tieErr.toFixed(1)}px off the tie point`);
+    if (!c.classList.contains('landed')) f.push('not landed at the end');
+    const b = send.getBoundingClientRect(), cr = c.getBoundingClientRect();
+    const dc = Math.abs((cr.top + cr.height / 2) - (b.top + b.height / 2));
+    if (dc > 1) f.push(`landing off center by ${dc.toFixed(1)}px`);
+    if (innerWidth >= 1200) {
+      const gap = b.left - (parseFloat(c.style.left) + c.offsetWidth);
+      if (Math.abs(gap - 14) > 1) f.push(`gap to button is ${gap.toFixed(1)}px`);
+    }
+    // only while the window is open
+    scrollTo(0, 0); climb(); await wait(100);
+    document.querySelector('.dot[data-act="min"]').click(); await wait(800);
+    scrollTo(0, 1500); climb();
+    if (document.body.classList.contains('away')) f.push('descends while the window is minimized');
+    scrollTo(0, 0); climb(); document.getElementById('bar').click(); await wait(800); finish();
+    // tie point follows the window's place in its area (desktop)
+    if (innerWidth >= 960) {
+      for (const [dx, want] of [[4000, 'left'], [-4000, 'right']]) {
+        C._drag(dx, 0); finish();
+        scrollTo(0, 200); climb(); await wait(700); climb();
+        const w = document.getElementById('win').getBoundingClientRect();
+        const fromEdge = want === 'left' ? parseFloat(rope.style.left) - w.left : w.right - parseFloat(rope.style.left);
+        if (Math.abs(fromEdge - 16) > 1) f.push(`window at area ${want === 'left' ? 'right' : 'left'} end: rope ${fromEdge.toFixed(1)}px from ${want} edge`);
+        scrollTo(0, 0); climb(); await wait(100);
+      }
+    }
+    return f;
+  };
+
+  // Review Focus 3: run right after loading with #contact in the URL.
+  C.ropeHash = async () => {
+    const f = [];
+    climb();
+    const c = document.getElementById('climber').getBoundingClientRect(), w = document.querySelector('.win .char').getBoundingClientRect();
+    if (!document.body.classList.contains('away') && document.getElementById('stage').classList.contains('is-boot') === false) f.push('not away after loading at #contact');
+    const overlap = !(c.right < w.left || c.left > w.right || c.bottom < w.top || c.top > w.bottom);
+    if (overlap) f.push('climber starts inside the window instead of its planned spot');
+    return f;
+  };
+
+  // Review Focus 4 + 5: header link to #contact, then the form status grows.
+  C.ropeLink = async () => {
+    const f = [];
+    document.documentElement.style.scrollBehavior = '';
+    scrollTo(0, 0); await wait(1600); finish();
+    document.querySelector('.site-header a[href$="#contact"]').click();
+    await wait(1800);
+    const c = document.getElementById('climber'), send = document.getElementById('send');
+    const dist = () => { const a = c.getBoundingClientRect(), b = send.getBoundingClientRect(); return Math.abs((a.top + a.height / 2) - (b.top + b.height / 2)); };
+    if (!document.body.classList.contains('away')) f.push('not away after the #contact link');
+    scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }); await wait(400);
+    if (!c.classList.contains('landed')) f.push('not landed after reaching the bottom');
+    const status = document.getElementById('contact-status');
+    status.textContent = 'שורה ארוכה מאוד לבדיקה שמשנה את הגובה של הטופס ושל מה שמתחתיו בעמוד הזה';
+    status.style.display = 'block';
+    await wait(200); climb(); // rAF is paused in a hidden preview pane; run the frame by hand
+    if (dist() > 1) f.push(`after the status text the climber is ${dist().toFixed(1)}px off the button`);
+    status.textContent = '';
+    return f;
+  };
 })();

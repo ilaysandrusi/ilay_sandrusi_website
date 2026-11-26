@@ -56,7 +56,9 @@ const img = (name: string) => `${base}character/${name}.png`;
 
 <script>
   import { initHeroWindow } from "../scripts/hero-window";
-  initHeroWindow();
+  import { initRopeDescent } from "../scripts/rope-descent";
+  const hero = initHeroWindow();
+  if (hero) initRopeDescent(hero);
 </script>
 
 <style>
