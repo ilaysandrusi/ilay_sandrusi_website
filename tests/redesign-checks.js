@@ -64,4 +64,44 @@
     }
     return f;
   };
+
+  // Run on a fresh load.
+  C.windowStates = async () => {
+    const f = [];
+    const stage = document.getElementById('stage'), win = document.getElementById('win'), bar = document.getElementById('bar');
+    const click = (act) => stage.querySelector(`.dot[data-act="${act}"]`).click();
+    const rect = () => { const r = win.getBoundingClientRect(); return [r.left, r.top, r.width, r.height].map(Math.round); };
+    const states = ['is-boot', 'is-min', 'is-max', 'is-closed'];
+    await wait(1500); finish();
+    if (stage.classList.contains('is-boot')) f.push('window still booting after 1500ms');
+    click('max'); await wait(60); finish();
+    if (!stage.classList.contains('is-max')) f.push('max did not maximize');
+    if (getComputedStyle(document.querySelector('.mx-note')).opacity !== '1') f.push('mx-note not shown when maximized');
+    click('max'); await wait(60); finish();
+    if (stage.classList.contains('is-max')) f.push('second max click did not restore');
+    const before = rect();
+    click('min'); await wait(750);
+    const docked = rect();
+    if (docked[2] !== 290 || docked[0] !== 24) f.push(`docked rect wrong: ${docked}`);
+    bar.click(); await wait(750); finish();
+    const back = rect();
+    if (back.some((v, i) => Math.abs(v - before[i]) > 1)) f.push(`restore rect ${back} != ${before}`);
+    click('close'); await wait(60); finish();
+    if (getComputedStyle(document.querySelector('#closedBox .closed-note')).opacity !== '1') f.push('closed note not shown');
+    if (getComputedStyle(document.getElementById('reopen')).animationName !== 'beat') f.push('reopen does not pulse');
+    document.getElementById('reopen').click(); await wait(60); finish();
+    if (states.some((s) => stage.classList.contains(s))) f.push(`after reopen stage is ${stage.className}`);
+    // Review Focus 1: rapid clicks must not leave it stuck
+    click('min'); click('min'); click('min'); await wait(800);
+    const s1 = stage.classList.contains('is-min');
+    if (s1) bar.click(); else click('min');
+    await wait(800);
+    if (stage.classList.contains('is-min') === s1) f.push('window stuck after rapid clicks');
+    if (stage.classList.contains('is-min')) { bar.click(); await wait(800); }
+    // Esc returns to normal
+    click('max'); await wait(60);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); await wait(60);
+    if (stage.classList.contains('is-max')) f.push('Esc did not restore');
+    return f;
+  };
 })();
