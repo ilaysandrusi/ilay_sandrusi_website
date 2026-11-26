@@ -7,7 +7,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
 ---
 
 <section class="scene work" id="work">
-  <div class="work-inner">
+  <div class:list={["work-inner", { "is-empty": projects.length === 0 }]}>
     <p class="eyebrow">פרויקטים</p>
     <h2>{projects.length > 0 ? "דברים שבניתי" : "עוד מעט כאן"}</h2>
     <p class="lead">
@@ -58,6 +58,12 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
         </ol>
       ) : (
         <p class="work-empty" role="status">אין עדיין דוגמאות להצגה. בינתיים אפשר לבחור כיוון ולפתוח מסלול.</p>
+        <div class="site-box" aria-hidden="true">
+          <div class="box-bar"><i></i><i></i><i></i><span>project-01</span></div>
+          <div class="stripes"></div>
+          <div class="ghost-lines"><i style="width:180px"></i><i style="width:120px"></i><i style="width:150px"></i></div>
+          <span class="tape">בבנייה</span>
+        </div>
       )
     }
 
@@ -67,11 +73,20 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
 
 <style>
   .scene.work {
-    min-height: 100svh;
     background: var(--paper);
     border-top: var(--line);
-    padding: 90px 0 calc(var(--bar-height) + 40px);
+    padding: var(--sp-section) 0;
   }
+
+  .site-box { position: relative; background: var(--card); border: var(--line); border-radius: 20px; box-shadow: var(--shadow); height: 320px; overflow: hidden; margin-bottom: 32px; }
+  .box-bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; }
+  .box-bar i { width: 15px; height: 15px; border-radius: 50%; border: var(--line); }
+  .box-bar i:first-child { background: var(--accent); }
+  .box-bar span { margin-left: 10px; font-size: 13px; color: var(--ink-soft); }
+  .stripes { position: absolute; inset: 40px 0 0 0; background: repeating-linear-gradient(-45deg, transparent 0 22px, rgba(255, 75, 38, 0.08) 22px 44px); }
+  .ghost-lines { position: absolute; top: 64px; right: 24px; display: grid; gap: 10px; }
+  .ghost-lines i { display: block; height: 12px; border-radius: 6px; background: rgba(23, 20, 16, 0.08); }
+  .tape { position: absolute; z-index: 3; top: 110px; right: -40px; transform: rotate(18deg); background: var(--accent); color: #fff; border-block: var(--line); font: 600 16px var(--head); padding: 7px 70px; }
 
   .work-inner {
     width: 100%;
@@ -81,8 +96,9 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   }
 
   h2 {
-    font-size: clamp(2.2rem, 9vw, 3.6rem);
-    margin-bottom: 10px;
+    font-size: clamp(38px, 5.2vw, 68px);
+    line-height: 0.95;
+    margin-bottom: 16px;
   }
 
   .lead {
@@ -223,6 +239,17 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
     .work-inner {
       padding: 0 32px;
     }
+  }
+
+  @media (min-width: 960px) {
+    .work-inner.is-empty {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(32px, 6vw, 90px);
+      align-items: start;
+    }
+    .work-inner.is-empty > * { grid-column: 1; justify-self: start; }
+    .work-inner.is-empty .site-box { grid-column: 2; grid-row: 1 / span 5; justify-self: stretch; height: 380px; margin: 0; }
 
     .works {
       gap: 56px;

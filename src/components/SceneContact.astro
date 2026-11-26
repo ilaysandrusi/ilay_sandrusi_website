@@ -6,9 +6,12 @@ const formAction = `https://formsubmit.co/${email}`;
 
 <section class="scene contact" id="contact">
   <div class="contact-inner">
+    <div class="contact-head">
     <p class="eyebrow contact-eye">פרטים</p>
     <h2>השאירו פרטים ואחזור אליכם</h2>
     <p class="lead">שם וטלפון מספיקים. בלי התחייבות.</p>
+    </div>
+    <div class="contact-form-col">
 
     <form class="form" id="contact-form" action={formAction} method="POST" novalidate>
       <input type="hidden" name="_subject" value="פנייה מהאתר של איליי" />
@@ -67,6 +70,7 @@ const formAction = `https://formsubmit.co/${email}`;
       מעדיפים וואטסאפ?
       <a href={whatsappLink} target="_blank" rel="noopener noreferrer">כתבו לי כאן</a>
     </p>
+    </div>
   </div>
 </section>
 
@@ -131,12 +135,9 @@ const formAction = `https://formsubmit.co/${email}`;
 
 <style>
   .scene.contact {
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
     background: var(--ink);
     color: var(--paper);
-    padding: 90px 0 calc(var(--bar-height) + 40px);
+    padding: var(--sp-section-lg) 0;
     border-top: var(--line);
   }
 
@@ -153,8 +154,9 @@ const formAction = `https://formsubmit.co/${email}`;
   }
 
   h2 {
-    font-size: clamp(2.2rem, 9vw, 3.6rem);
-    margin-bottom: 10px;
+    font-size: clamp(38px, 5.2vw, 68px);
+    line-height: 0.95;
+    margin-bottom: 18px;
     max-width: 14ch;
   }
 
@@ -169,7 +171,12 @@ const formAction = `https://formsubmit.co/${email}`;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-width: 32rem;
+    background: var(--card);
+    color: var(--ink);
+    border: var(--line);
+    border-radius: 22px;
+    box-shadow: 10px 10px 0 #ff4b26d9;
+    padding: 28px;
   }
 
   .honey {
@@ -199,13 +206,15 @@ const formAction = `https://formsubmit.co/${email}`;
   }
 
   label {
-    font-weight: 700;
-    font-size: 0.95rem;
+    font-family: var(--head);
+    font-weight: 600;
+    font-size: 15px;
   }
 
   .opt {
-    font-weight: 500;
-    color: #cfc6b8;
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink-soft);
   }
 
   .req {
@@ -220,7 +229,7 @@ const formAction = `https://formsubmit.co/${email}`;
     padding: 12px 14px;
     border: var(--line);
     border-radius: 14px;
-    background: var(--card);
+    background: var(--paper);
     color: var(--ink);
     font-family: inherit;
     font-size: 1.02rem;
@@ -239,8 +248,17 @@ const formAction = `https://formsubmit.co/${email}`;
 
   .submit {
     width: 100%;
-    max-width: 320px;
     margin-top: 8px;
+  }
+
+  @media (min-width: 960px) {
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: clamp(32px, 6vw, 90px);
+      align-items: center;
+    }
+    .form { padding: 32px; }
   }
 
   .submit:disabled {

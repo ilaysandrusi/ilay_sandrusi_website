@@ -235,17 +235,57 @@
     return f;
   };
 
+  // Run at 1366x820 on a fresh load.
+  C.sections = async () => {
+    const f = [];
+    document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visible'));
+    await wait(100); finish();
+    const landing = document.querySelector('[data-choice="landing"]');
+    if (!landing) f.push('choice "landing" missing');
+    else {
+      landing.click(); await wait(100);
+      document.querySelectorAll('[data-fit]').forEach((p) => {
+        const fits = p.dataset.fit.split(/\s+/).includes('landing');
+        if (fits === p.classList.contains('locked')) f.push(`plan lock state wrong for data-fit="${p.dataset.fit}"`);
+      });
+      if (!location.search.includes('need=landing')) f.push('URL does not get need=landing');
+    }
+    const form = document.getElementById('contact-form');
+    if (!form || !form.getAttribute('action').includes('formsubmit.co')) f.push('contact form action changed');
+    const aboutText = document.querySelector('.about .about-inner, .about [data-about-col]');
+    const heroText = document.querySelector('.hero-text');
+    if (aboutText && heroText && innerWidth >= 1200) {
+      const d = Math.abs(aboutText.getBoundingClientRect().right - heroText.getBoundingClientRect().right);
+      if (d > 2) f.push(`about column right edge off the hero text by ${d.toFixed(0)}px`);
+    } else if (!aboutText) f.push('about column not found');
+    if (innerWidth >= 1200) {
+      const head = document.querySelector('#contact h2'), fr = form && form.getBoundingClientRect();
+      if (head && fr && !(fr.left < head.getBoundingClientRect().left && fr.right <= head.getBoundingClientRect().left + 1)) f.push('contact is not two columns (form left of heading)');
+      const grid = document.querySelector('#plans .rail');
+      if (grid && getComputedStyle(grid).gridTemplateColumns.split(' ').length !== 4) f.push('plans grid is not 4 columns at 1366');
+    }
+    const strays = [...document.querySelectorAll('img[src*="character/"]')].filter((i) => !i.closest('#stage') && !i.closest('#climber'));
+    if (strays.length) f.push(`character image outside hero/climber: ${strays.length}`);
+    const tape = document.querySelector('#work .tape');
+    if (document.querySelector('#work .work-empty') && (!tape || tape.textContent.trim() !== 'בבנייה')) f.push('work empty state has no "בבנייה" tape');
+    const num = document.querySelector('#plans .num');
+    if (num && !getComputedStyle(num).webkitTextStrokeWidth.startsWith('2')) f.push('plan numbers are not outlined');
+    if (getComputedStyle(document.querySelector('#about')).paddingTop.replace('px', '') < 100) f.push('about section spacing too small');
+    return f;
+  };
+
   // Review Focus 4 + 5: header link to #contact, then the form status grows.
   C.ropeLink = async () => {
     const f = [];
-    document.documentElement.style.scrollBehavior = '';
+    // smooth scrolling and rAF are paused in a hidden preview pane: jump instantly and run the frame by hand
+    document.documentElement.style.scrollBehavior = 'auto';
     scrollTo(0, 0); await wait(1600); finish();
     document.querySelector('.site-header a[href$="#contact"]').click();
-    await wait(1800);
+    await wait(300); climb();
     const c = document.getElementById('climber'), send = document.getElementById('send');
     const dist = () => { const a = c.getBoundingClientRect(), b = send.getBoundingClientRect(); return Math.abs((a.top + a.height / 2) - (b.top + b.height / 2)); };
     if (!document.body.classList.contains('away')) f.push('not away after the #contact link');
-    scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }); await wait(400);
+    scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }); await wait(400); climb();
     if (!c.classList.contains('landed')) f.push('not landed after reaching the bottom');
     const status = document.getElementById('contact-status');
     status.textContent = 'שורה ארוכה מאוד לבדיקה שמשנה את הגובה של הטופס ושל מה שמתחתיו בעמוד הזה';

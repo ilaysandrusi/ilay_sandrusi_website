@@ -23,7 +23,8 @@ const points = [
 ---
 
 <section class="scene about" id="about">
-  <div class="about-inner">
+  <div class="container">
+  <div class="about-inner" data-about-col>
     <p class="eyebrow about-eye">קצת עליי</p>
     <h2>מה חשוב לדעת עליי</h2>
     <div class="points">
@@ -43,23 +44,18 @@ const points = [
     </div>
     <a href="#choose" class="btn btn-primary about-cta reveal" style="--reveal-delay: 360ms">בחרו מה בונים</a>
   </div>
+  </div>
 </section>
 
 <style>
   .scene.about {
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
     background: var(--ink);
     color: var(--paper);
-    padding: 90px 0 calc(var(--bar-height) + 40px);
+    padding: var(--sp-section-lg) 0;
   }
 
   .about-inner {
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 20px;
+    max-width: 860px;
   }
 
   .about-eye {
@@ -68,8 +64,9 @@ const points = [
   }
 
   h2 {
-    font-size: clamp(2.2rem, 9vw, 3.6rem);
-    margin-bottom: 36px;
+    font-size: clamp(38px, 5.2vw, 68px);
+    line-height: 0.95;
+    margin-bottom: 40px;
   }
 
   .points {
@@ -78,35 +75,41 @@ const points = [
     gap: 28px;
   }
 
+  .points {
+    gap: 0;
+  }
+
   .point {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 14px;
+    grid-template-columns: 64px 1fr;
+    gap: 6px 18px;
     align-items: start;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(246, 241, 231, 0.18);
+    padding: 28px 0;
+    border-top: 1px solid rgba(246, 241, 231, 0.16);
   }
 
   .point:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+    border-bottom: 1px solid rgba(246, 241, 231, 0.16);
   }
 
   .n {
     font-family: var(--head);
-    font-size: 1.4rem;
-    color: var(--accent);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #ff6a4a;
   }
 
   h3 {
-    font-size: 1.3rem;
+    font-size: 26px;
+    letter-spacing: -0.02em;
     margin-bottom: 6px;
   }
 
   .point p {
-    color: #d2cbc0;
-    font-size: 1rem;
-    max-width: 46ch;
+    color: #d8d1c3;
+    max-width: 52ch;
   }
 
   .point p + p {
@@ -114,20 +117,12 @@ const points = [
   }
 
   .about-cta {
-    margin-top: 36px;
+    margin-top: 40px;
     width: 100%;
     max-width: 320px;
   }
 
   @media (min-width: 768px) {
-    .about-inner {
-      padding: 0 32px;
-    }
-
-    .points {
-      max-width: 42rem;
-      gap: 8px;
-    }
 
     .about-cta {
       width: auto;
