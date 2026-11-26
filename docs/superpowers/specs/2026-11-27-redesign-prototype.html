@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>איליי סנדרוסי · טיוטת עיצוב</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Varela+Round&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f6f1e7; --paper-soft: #efe7d8; --ink: #171410; --ink-soft: #5a5348; --accent: #ff4b26; --accent-text: #f0421f; --card: #fffdf8;
+  --line: 2px solid #171410; --shadow-sm: 4px 4px 0 rgba(23,20,16,.16); --shadow: 8px 8px 0 rgba(23,20,16,.16); --shadow-hot: 8px 8px 0 #ff4b26d9;
+  --ease: cubic-bezier(.22,1,.36,1); --pop: cubic-bezier(.34,1.56,.64,1);
+  --max: 1180px; --gutter: clamp(20px, 4vw, 40px);
+  --sp-section: clamp(88px, 11vw, 150px); --sp-section-lg: clamp(110px, 14vw, 190px);
+  --head: "Fredoka", "Varela Round", sans-serif; --body: "Varela Round", "Fredoka", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body { font-family: var(--body); background: var(--paper); color: var(--ink); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* type */
+h1, h2, h3, h4 { font-family: var(--head); font-weight: 700; letter-spacing: -.035em; text-wrap: balance; }
+.display { font-size: clamp(52px, 8.4vw, 112px); line-height: .9; }
+.title { font-size: clamp(38px, 5.2vw, 68px); line-height: .95; }
+h1 em, h2 em { font-style: normal; color: var(--accent-text); display: block; }
+.lead { font-size: clamp(18px, 1.6vw, 21px); color: var(--ink-soft); max-width: 34ch; }
+.eyebrow { display: inline-block; font: 600 14px var(--head); letter-spacing: .01em; background: var(--ink); color: var(--paper); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
+.eyebrow.hot { background: var(--accent); color: #fff; }
+b, strong { font-family: var(--head); font-weight: 600; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 17px var(--head); border: var(--line); border-radius: 14px; padding: 13px 24px; box-shadow: var(--shadow-sm); transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s; cursor: pointer; }
+.btn:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 #ff4b26d9; }
+.btn:active { transform: none; box-shadow: none; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* header */
+.site-header { position: sticky; top: 0; z-index: 50; background: rgba(246,241,231,.92); backdrop-filter: saturate(1.2); border-bottom: var(--line); }
+.header-inner { height: 70px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font: 700 26px var(--head); letter-spacing: -.03em; } .logo span { color: var(--accent); }
+.nav { display: flex; gap: 26px; align-items: center; font: 500 16px var(--head); color: var(--ink-soft); }
+.nav a:hover { color: var(--ink); }
+.nav .nav-cta { color: var(--accent-text); font-weight: 600; }
+
+/* section rhythm */
+section { position: relative; }
+.sec { padding: var(--sp-section) 0; }
+.sec-lg { padding: var(--sp-section-lg) 0; }
+.two { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(32px, 6vw, 90px); align-items: center; }
+.blob { position: absolute; border: var(--line); border-radius: 40% 60% 55% 45%; pointer-events: none; }
+
+/* ---------- HERO ---------- */
+.hero { min-height: calc(100svh - 70px); display: flex; align-items: center; overflow: hidden; padding: 60px 0 80px; }
+.hero .two { width: 100%; }
+.hero-text > * { animation: rise .8s var(--ease) both; }
+.hero-text > :nth-child(2) { animation-delay: .08s; } .hero-text > :nth-child(3) { animation-delay: .16s; } .hero-text > :nth-child(4) { animation-delay: .24s; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.hero h1 { margin-bottom: 24px; }
+.hero .lead { margin-bottom: 34px; }
+.stage { position: relative; height: 440px; }
+.stage .b1 { width: 210px; height: 210px; background: var(--accent); left: 0; bottom: 10px; transform: rotate(18deg); }
+.stage .b2 { width: 130px; height: 130px; background: var(--paper); right: 10px; top: 0; box-shadow: var(--shadow); }
+.win { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px; background: var(--card); border: var(--line); border-radius: 18px; box-shadow: none; overflow: hidden; z-index: 3; transform-origin: 20% 100%;
+  transition: transform .55s var(--ease), opacity .3s, width .55s var(--ease), height .55s var(--ease), margin .55s var(--ease), top .55s var(--ease), translate .55s var(--ease); }
+.bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; background: var(--card); position: relative; z-index: 2; }
+.bar .url { margin-left: 10px; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+.dot { color: var(--ink); width: 17px; height: 17px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s, background .15s; }
+.dot svg { width: 62%; height: 62%; }
+.dot:hover { transform: scale(1.2); }
+.dot.close { background: var(--accent); color: #fff; }
+.dot.min:hover, .dot.max:hover { background: var(--ink); color: var(--paper); }
+.win .grid { position: absolute; inset: 40px 0 0 0; background-image: linear-gradient(rgba(23,20,16,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(23,20,16,.06) 1px, transparent 1px); background-size: 28px 28px; }
+.win .char { position: absolute; left: 50%; bottom: 0; width: 190px; transform: translateX(-50%); transition: width .55s var(--ease); }
+.win .char img + img { display: none; }
+.mx-note { position: absolute; left: calc(50% - 235px); top: 74px; z-index: 3; font: 600 15px/1.25 var(--head); color: var(--ink); background: var(--card); border: var(--line); border-radius: 20px; padding: 9px 15px; box-shadow: 3px 3px 0 rgba(23,20,16,.12); white-space: nowrap; direction: rtl; opacity: 0; transform: scale(.5); transform-origin: 85% 100%; transition: opacity .3s .25s, transform .45s .25s var(--pop); }
+.mx-note::before, .mx-note::after { content: ""; position: absolute; background: var(--card); border: var(--line); border-radius: 50%; }
+.mx-note::before { width: 13px; height: 13px; right: 6px; bottom: -17px; }
+.mx-note::after { width: 8px; height: 8px; right: -5px; bottom: -29px; }
+.badge { position: absolute; left: 14px; top: 64px; z-index: 3; font: 600 13.5px/1.25 var(--head); background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; padding: 8px 13px; box-shadow: 3px 3px 0 rgba(23,20,16,.12); white-space: nowrap; transform-origin: 85% 100%; transition: opacity .3s, transform .45s var(--pop); }
+.badge::before, .badge::after { content: ""; position: absolute; background: var(--card); border: var(--line); border-radius: 50%; }
+.badge::before { width: 12px; height: 12px; right: 4px; bottom: -15px; }
+.badge::after { width: 7px; height: 7px; right: -6px; bottom: -25px; }
+.closed-box { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px; z-index: 4; pointer-events: none; transition: translate .55s var(--ease); }
+.alone { position: absolute; right: 10px; bottom: 0; width: 150px; z-index: 1; opacity: 0; transform: translateY(20px); transition: opacity .35s .25s, transform .45s .25s var(--ease); pointer-events: none; }
+.closed-note { position: absolute; left: 0; top: 0; z-index: 6; max-width: 240px; background: var(--card); border: var(--line); border-radius: 20px; padding: 12px 16px; font: 600 16px/1.35 var(--head); box-shadow: var(--shadow-sm); opacity: 0; transform: scale(.6); transform-origin: 90% 100%; transition: opacity .3s .4s, transform .45s .4s var(--pop); pointer-events: none; }
+.closed-note::before, .closed-note::after { content: ""; position: absolute; background: var(--card); border: var(--line); border-radius: 50%; }
+.closed-note::before { width: 14px; height: 14px; right: 18px; bottom: -18px; } .closed-note::after { width: 8px; height: 8px; right: 6px; bottom: -30px; }
+.stage.is-closed .closed-note { opacity: 1; transform: none; }
+.reopen { position: absolute; left: 0; bottom: 18px; z-index: 6; font: 600 15px var(--head); background: var(--card); border: var(--line); border-radius: 14px; padding: 9px 16px; box-shadow: var(--shadow-sm); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s .45s; }
+.stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: 24px; height: 44px; width: 290px; margin: 0; z-index: 45; box-shadow: var(--shadow-sm); }
+.stage.is-min .bar .url::after { content: " · לחצו לפתיחה"; color: var(--accent-text); font-family: var(--head); font-weight: 600; }
+.stage.is-min .win .grid, .stage.is-min .win .char, .stage.is-min .win .badge { opacity: 0; transition: opacity .2s; }
+.stage.is-min .bar { cursor: pointer; }
+.stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
+.stage.is-max .win { width: 560px; height: 430px; margin: -215px 0 0 -280px; z-index: 10; }
+.stage.is-max .char { width: 250px; } .stage.is-max .char img:first-child { display: none; } .stage.is-max .char img.excited { display: block; }
+.stage.is-max .mx-note { opacity: 1; transform: none; }
+.stage.is-closed .win { transform: scale(.2); opacity: 0; pointer-events: none; }
+.stage.is-closed .alone { opacity: 1; transform: none; }
+.stage.is-closed .reopen { opacity: 1; pointer-events: auto; }
+/* drag by the title bar, inside the left half of the hero */
+.bar { cursor: grab; touch-action: none; user-select: none; }
+.win.dragging .bar { cursor: grabbing; }
+.win.dragging { transition: none !important; }
+.stage.is-min .win { translate: none !important; }
+.stage.is-min .bar, .stage.is-max .bar, .stage.is-closed .bar { cursor: default; }
+.stage.is-min .bar { cursor: pointer; }
+.reopen { transition: opacity .3s .45s, transform .18s var(--ease), box-shadow .18s var(--ease); }
+.stage.is-closed .reopen { animation: beat 1.6s ease-in-out .9s infinite; }
+@keyframes beat { 0%, 60%, 100% { transform: scale(1); } 20% { transform: scale(1.07); } 40% { transform: scale(.98); } }
+.stage.is-closed .reopen:hover, .stage.is-closed .reopen:focus-visible { animation: none; transform: translate(-3px,-3px); box-shadow: 7px 7px 0 #ff4b26d9; }
+.stage.is-closed .reopen:active { transform: none; box-shadow: none; }
+.stage.is-boot .win { transform: scale(.15) translateY(60px); opacity: 0; transition: none; }
+.stage.is-boot .badge { opacity: 0; transform: scale(.4); transition: none; }
+.stage.is-opening .win { transition: transform .7s var(--pop), opacity .25s, width .55s var(--ease), height .55s var(--ease), margin .55s var(--ease), top .55s var(--ease), translate .55s var(--ease); }
+.stage.is-opening .badge { transition: opacity .3s .55s, transform .45s .55s var(--pop); }
+
+/* ---------- ABOUT ---------- */
+.about { background: var(--ink); color: var(--paper); }
+.about .two { align-items: start; grid-template-columns: 1fr; }
+.about .two > div { max-width: 860px; }
+.about h2 { margin-bottom: 40px; }
+.point { display: grid; grid-template-columns: 64px 1fr; gap: 6px 18px; padding: 28px 0; border-top: 1px solid rgba(246,241,231,.16); }
+.point:last-child { border-bottom: 1px solid rgba(246,241,231,.16); }
+.point .n { font: 700 34px/1 var(--head); color: #ff6a4a; letter-spacing: -.04em; }
+.point h3 { font-size: 26px; margin-bottom: 6px; letter-spacing: -.02em; }
+.point p { color: #d8d1c3; max-width: 52ch; }
+.point p + p { margin-top: 8px; }
+.about-side { position: sticky; top: 120px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.about-side .think { width: 220px; }
+.about-side .ring { position: relative; width: 300px; height: 300px; display: grid; place-items: end center; }
+.about-side .ring::before { content: ""; position: absolute; inset: 20px; border: 2px dashed rgba(246,241,231,.25); border-radius: 50%; }
+.about-side .ring .blob { width: 130px; height: 130px; background: var(--accent); left: 6px; bottom: 6px; transform: rotate(14deg); border-color: var(--paper); }
+.about-side .ring img { position: relative; z-index: 2; }
+.about-side .cap { font: 500 15px var(--head); color: #d8d1c3; text-align: center; }
+.about .btn-primary { margin-top: 40px; }
+
+/* ---------- WORK ---------- */
+.work .two { grid-template-columns: 1fr 1fr; }
+.work h2 { margin-bottom: 20px; }
+.work .lead { margin-bottom: 30px; }
+.site-box { position: relative; background: var(--card); border: var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 0 0 0; height: 380px; overflow: hidden; }
+.site-box .bar { border-radius: 0; }
+.site-box .stripes { position: absolute; inset: 40px 0 0 0; background: repeating-linear-gradient(-45deg, transparent 0 22px, rgba(255,75,38,.08) 22px 44px); }
+.site-box .worker { position: absolute; left: 50%; bottom: 0; width: 200px; transform: translateX(-50%); }
+.tape { position: absolute; z-index: 3; top: 92px; right: -40px; transform: rotate(18deg); background: var(--accent); color: #fff; border-block: var(--line); font: 600 16px var(--head); padding: 7px 70px; letter-spacing: .02em; }
+.ghost-lines { position: absolute; top: 64px; right: 24px; display: grid; gap: 10px; }
+.ghost-lines i { display: block; height: 12px; border-radius: 6px; background: rgba(23,20,16,.08); }
+
+/* ---------- CHOOSE ---------- */
+.choose { background: var(--paper-soft); border-block: var(--line); }
+.head { max-width: 640px; margin-bottom: 48px; }
+.head h2 { margin-bottom: 16px; }
+.choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.choice { position: relative; text-align: right; font: inherit; background: var(--card); border: var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 30px 28px 26px; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s; display: flex; flex-direction: column; gap: 8px; min-height: 230px; }
+.choice:hover { transform: translate(-4px,-4px); box-shadow: var(--shadow-hot); }
+.choice .ic { width: 52px; height: 52px; border: var(--line); border-radius: 14px; display: grid; place-items: center; background: var(--paper); margin-bottom: 10px; }
+.choice .ic svg { width: 26px; height: 26px; }
+.choice .t { font: 700 26px var(--head); letter-spacing: -.02em; }
+.choice .x { color: var(--ink-soft); }
+.choice .hint { margin-top: auto; font: 600 14px var(--head); color: var(--accent-text); }
+.choice[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: var(--shadow-hot); }
+.choice[aria-pressed="true"] .x { color: #d8d1c3; } .choice[aria-pressed="true"] .ic { background: var(--accent); color: #fff; }
+
+/* ---------- PLANS ---------- */
+.plans .head { max-width: 700px; }
+.note { font: 500 15px var(--head); color: var(--ink-soft); margin-top: 8px; }
+.plan-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: stretch; }
+.plan { position: relative; background: var(--card); border: var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 28px 24px 24px; display: flex; flex-direction: column; transition: transform .2s var(--ease), box-shadow .2s var(--ease), opacity .3s, filter .3s; }
+.plan:hover { transform: translate(-4px,-4px); box-shadow: var(--shadow-hot); }
+.plan .num { font: 700 56px/1 var(--head); letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 2px var(--ink); margin-bottom: 14px; }
+.plan .tag { font: 600 14px var(--head); color: var(--accent-text); }
+.plan h3 { font-size: 24px; line-height: 1.1; letter-spacing: -.02em; margin: 4px 0 10px; }
+.plan .outcome { font-family: var(--head); font-weight: 500; margin-bottom: 6px; }
+.plan p { font-size: 16px; color: var(--ink-soft); }
+.plan ul { list-style: none; margin: 16px 0 22px; display: grid; gap: 6px; font-size: 15.5px; }
+.plan li { display: flex; gap: 10px; align-items: center; }
+.plan li::before { content: ""; flex: none; width: 10px; height: 10px; background: var(--accent); border: var(--line); border-radius: 3px; }
+.plan .btn { margin-top: auto; justify-content: center; font-size: 15.5px; padding: 11px 16px; }
+.plan.featured { background: var(--ink); color: var(--paper); }
+.plan.featured .num { -webkit-text-stroke-color: var(--accent); }
+.plan.featured p { color: #d8d1c3; }
+.plan.featured li::before { border-color: var(--paper); }
+.plan.locked { opacity: .35; filter: grayscale(1); }
+.plan.locked:hover { transform: none; box-shadow: var(--shadow); }
+.plan .lock { display: none; position: absolute; top: 16px; left: 16px; font: 600 12px var(--head); background: var(--ink); color: var(--paper); padding: 3px 10px; border-radius: 999px; }
+.plan.locked .lock { display: block; }
+
+/* ---------- CONTACT ---------- */
+.contact { background: var(--ink); color: var(--paper); overflow: hidden; }
+.contact .two { grid-template-columns: .95fr 1.05fr; align-items: center; }
+.contact h2 { margin-bottom: 18px; }
+.contact .lead { color: #d8d1c3; margin-bottom: 30px; }
+.waver { position: relative; width: 210px; aspect-ratio: 624/732; }
+.waver img { position: absolute; inset: 0; width: 100%; opacity: 0; animation: wv 1.2s steps(1) infinite; }
+.waver img:nth-child(2) { animation-delay: .2s; } .waver img:nth-child(3) { animation-delay: .4s; }
+.waver img:first-child { animation-name: wv0; }
+@keyframes wv { 0% { opacity: 1; } 16.6% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes wv0 { 0% { opacity: 1; } 16.6% { opacity: 0; } 50% { opacity: 1; } 66% { opacity: 0; } 100% { opacity: 0; } }
+.contact .speech { position: absolute; top: 4px; left: 150px; background: var(--card); color: var(--ink); border: var(--line); border-radius: 14px; padding: 7px 14px; font: 600 15px var(--head); white-space: nowrap; }
+.contact-side { position: relative; display: flex; gap: 24px; align-items: flex-end; margin-top: 10px; }
+.form { background: var(--card); color: var(--ink); border: var(--line); border-radius: 22px; box-shadow: 10px 10px 0 #ff4b26d9; padding: 32px; display: grid; gap: 16px; }
+.form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field label { display: block; font: 600 15px var(--head); margin-bottom: 6px; }
+.field .req { color: var(--accent-text); }
+.field .opt { font-family: var(--body); font-weight: 400; color: var(--ink-soft); font-size: 14px; }
+.field input, .field textarea { width: 100%; font: 16px var(--body); background: var(--paper); border: var(--line); border-radius: 12px; padding: 12px 14px; color: var(--ink); }
+.field textarea { min-height: 110px; resize: vertical; }
+.form .btn { justify-content: center; }
+.alt { margin-top: 18px; color: #d8d1c3; font-size: 16px; }
+.alt a { color: #ff8a70; font-family: var(--head); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+
+/* ---------- scroll descent: builder on a rope ---------- */
+.away-sign { position: absolute; inset: 40px 0 0 0; display: grid; place-content: center; text-align: center; font: 700 26px/1.1 var(--head); color: var(--ink); opacity: 0; transform: scale(.9); transition: opacity .3s, transform .4s var(--pop); z-index: 2; }
+.away-sign small { display: block; font: 500 15px var(--body); color: var(--ink-soft); margin-top: 6px; }
+.win .char { transition: width .55s var(--ease), opacity .25s, transform .35s var(--ease); }
+body.away .win .char { opacity: 0; transition: none; }
+body.away .away-sign { opacity: 1; transform: none; }
+body.away .badge { opacity: 0; transform: scale(.4); }
+.rope::before { content: ""; position: absolute; top: -5px; left: 50%; width: 12px; height: 8px; margin-left: -6px; background: #171410; border-radius: 3px; }
+.rope { position: fixed; top: 0; left: 0; width: 4px; height: 0; z-index: 40; pointer-events: none; opacity: 0; transform-origin: 50% 0; margin-left: -2px;
+  background: repeating-linear-gradient(180deg, #d8c39a 0 6px, #b9a276 6px 9px); border-inline: 1.5px solid #171410; }
+.climber { position: fixed; top: 0; left: 0; width: 118px; z-index: 41; pointer-events: none; opacity: 0; transform-origin: 75% 0; will-change: transform, top; }
+.climber img { width: 100%; }
+.climber .land { display: none; }
+body.away .climber, body.away .rope { opacity: 1; }
+.climber.landed .hang { display: none; } .climber.landed .land { display: block; animation: nudge .52s steps(1) infinite; }
+@keyframes nudge { 50% { transform: translateX(3px); } }
+.form-col { position: relative; }
+@media (max-width: 960px) { .climber { width: 84px; } }
+
+/* footer */
+footer { border-top: var(--line); padding: 26px 0; }
+.foot { display: flex; justify-content: space-between; align-items: center; font: 500 15px var(--head); color: var(--ink-soft); }
+.foot nav { display: flex; gap: 20px; }
+
+/* reveal on scroll */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* draft banner */
+.draft { position: fixed; bottom: 14px; right: 14px; z-index: 80; font: 600 13px var(--head); background: var(--ink); color: var(--paper); border-radius: 999px; padding: 6px 14px; box-shadow: var(--shadow-sm); }
+
+@media (max-width: 960px) {
+  .two, .about .two, .work .two, .contact .two { grid-template-columns: 1fr; }
+  .nav { display: none; }
+  .stage { height: 380px; order: 2; }
+  .about-side { position: static; order: -1; }
+  .about-side .ring { width: 220px; height: 220px; } .about-side .think { width: 160px; }
+  .choices, .plan-grid { grid-template-columns: 1fr; }
+  .form .row { grid-template-columns: 1fr; }
+  .stage.is-max .win { width: 92vw; margin-left: -46vw; }
+  .foot { flex-direction: column; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  .waver img:first-child { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="#top" class="logo">איליי<span>.</span></a>
+    <nav class="nav"><a href="#about">עליי</a><a href="#work">פרויקטים</a><a href="#choose">בחירה</a><a href="#plans">מסלולים</a><a href="#contact">פרטים</a><a href="#choose" class="nav-cta">בחרו מה בונים</a><a href="#">בלוג</a></nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap two">
+      <div class="hero-text">
+        <span class="eyebrow">איליי סנדרוסי</span>
+        <h1 class="display">תכירו אותי<em>קודם.</em></h1>
+        <p class="lead">אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.</p>
+        <a href="#about" class="btn btn-primary">הכירו אותי <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="stage is-boot" id="stage">
+        <span class="blob b1"></span><span class="blob b2"></span>
+        <div class="closed-box" id="closedBox">
+          <div class="alone" aria-hidden="true"><img class="px" src="{{think}}" alt="" /></div>
+          <p class="closed-note">בלי החלון אני לא יכול ללוות אתכם למטה. תשאירו אותו פתוח?</p>
+          <button class="reopen" type="button" id="reopen">פתחו לי את החלון</button>
+        </div>
+        <div class="win" id="win" role="group" aria-label="חלון עם הדמות של איליי">
+          <div class="bar" id="bar">
+            <button class="dot close" type="button" data-act="close" aria-label="סגירת החלון"><svg viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            <button class="dot min" type="button" data-act="min" aria-label="מזעור החלון"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            <button class="dot max" type="button" data-act="max" aria-label="הגדלת החלון"><svg viewBox="0 0 10 10" fill="none"><path d="M6 2h2v2M4 8H2V6M8 2L5.5 4.5M2 8l2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <span class="url">ilay.site</span>
+          </div>
+          <div class="grid"></div>
+          <span class="away-sign">יצאתי לרגע<small>גללו למטה</small></span>
+          <span class="mx-note">יש פה מספיק מקום לפרויקט שלך</span>
+          <div class="char"><img class="px" src="{{laptop_show}}" alt="" /><img class="px excited" src="{{excited}}" alt="" /></div>
+          <span class="badge">עובד על זה עכשיו</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about sec-lg" id="about">
+    <div class="wrap two">
+      <div>
+        <span class="eyebrow hot">קצת עליי</span>
+        <h2 class="title">מה חשוב<em>לדעת עליי</em></h2>
+        <div class="point reveal"><span class="n">01</span><div><h3>בודק תוכנה</h3><p>ביום־יום אני בודק תוכנה בפרויקטים ממשלתיים ומערכות מורכבות. אני מחפש בדיוק את מה שאחרים מפספסים.</p><p>לפני עלייה לאוויר אני בודק טפסים, קישורים ומסכים שונים.</p></div></div>
+        <div class="point reveal"><span class="n">02</span><div><h3>עין עיצובית</h3><p>עיצוב תמיד היה חלק ממני. לפני האתרים היה לי מותג אופנה, ועיצבתי בעצמי. משם מגיעה העין לפרטים ולצבעים.</p></div></div>
+        <div class="point reveal"><span class="n">03</span><div><h3>עסקים מתחילים</h3><p>הייתי שם בעצמי: הקמתי עסק מאפס, למדתי, טעיתי וחקרתי בדרך. מאז עבדתי גם עם עסקים בתחילת הדרך, ואני מכיר את השאלות והבלגן של ההתחלה. באתר שלכם אני רוצה שיהיה ברור מהר.</p></div></div>
+        <div class="point reveal"><span class="n">04</span><div><h3>אחד בכל פעם</h3><p>בניית אתרים היא לצד העבודה שלי. לכן אני לוקח בדרך כלל פרויקט אחד בכל פעם, כדי לתת לכל עסק את הזמן שמגיע לו.</p></div></div>
+        <a href="#choose" class="btn btn-primary">בחרו מה בונים</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work sec" id="work">
+    <div class="wrap two">
+      <div class="reveal">
+        <span class="eyebrow">פרויקטים</span>
+        <h2 class="title">עוד מעט<em>כאן.</em></h2>
+        <p class="lead">הדוגמאות יתווספו כאן אחרי השקות. בינתיים אפשר לבחור כיוון ולפתוח מסלול.</p>
+        <a href="#choose" class="btn btn-ghost">בחרו מה בונים</a>
+      </div>
+      <div class="site-box reveal" aria-hidden="true">
+        <div class="bar"><span class="dot close"></span><span class="dot"></span><span class="dot"></span><span class="url">project-01</span></div>
+        <div class="stripes"></div>
+        <div class="ghost-lines"><i style="width:180px"></i><i style="width:120px"></i><i style="width:150px"></i></div>
+        <span class="tape">בבנייה</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHOOSE -->
+  <section class="choose sec" id="choose">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow">בחירה</span>
+        <h2 class="title">מה בונים<em>עכשיו?</em></h2>
+        <p class="lead">בחרו כיוון. אפתח רק את המסלולים שמתאימים.</p>
+      </div>
+      <div class="choices" role="group" aria-label="בחירת סוג אתר">
+        <button class="choice reveal" type="button" data-choice="ecommerce" aria-pressed="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1.5 9h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/><circle cx="9.5" cy="19.5" r="1"/><circle cx="15" cy="19.5" r="1"/></svg></span>
+          <span class="t">חנות אונליין</span><span class="x">קטלוג, סליקה וסדר מההתחלה.</span><span class="hint">מסלולים 1–3</span>
+        </button>
+        <button class="choice reveal" type="button" data-choice="landing" aria-pressed="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5"/><path d="M8 16h4" stroke="#ff4b26"/></svg></span>
+          <span class="t">דף נחיתה</span><span class="x">עמוד אחד שמביא פנייה.</span><span class="hint">מסלולים 1–2</span>
+        </button>
+        <button class="choice reveal" type="button" data-choice="unique" aria-pressed="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L20 9l-4.3 3.8L17 18.5 12 15.6 7 18.5l1.3-5.7L4 9l5.8-.7z"/></svg></span>
+          <span class="t">משהו אחר</span><span class="x">תגידו מה צריך ונבנה מסלול משלנו.</span><span class="hint">מסלול 4 בלבד</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <section class="plans sec" id="plans">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow">מסלולים</span>
+        <h2 class="title">בחרו מסלול<em>והמשיכו בוואטסאפ</em></h2>
+        <p class="lead">אחרי הבחירה למעלה נפתחים רק המסלולים שמתאימים. השאר נשארים נעולים.</p>
+        <p class="note">המחיר נקבע בשיחה. בדרך כלל פרויקט אחד בכל פעם.</p>
+      </div>
+      <div class="plan-grid">
+        <article class="plan reveal" data-fit="ecommerce landing"><span class="lock">לא מתאים לבחירה</span><span class="num">01</span><span class="tag">מסלול בסיסי</span><h3>אתר עד שאתם מרוצים</h3><p class="outcome">אתר מוכן להשקה, בלי לעצור באמצע.</p><p>בונים עד שזה מרגיש נכון. אני בודק, ואז משחרר לאוויר.</p><ul><li>אפיון ועיצוב</li><li>בנייה עד שאתם מרוצים</li><li>בדיקות תוכנה</li><li>השקה</li></ul><a class="btn btn-ghost" href="#">דברו איתי על מסלול 01</a></article>
+        <article class="plan reveal" data-fit="ecommerce landing"><span class="lock">לא מתאים לבחירה</span><span class="num">02</span><span class="tag">עם ליווי</span><h3>אתר + תחזוקה חודשית</h3><p class="outcome">האתר חי, ואני נשאר איתו אחרי ההשקה.</p><p>מסלול 1, ועוד ליווי חודשי: בדיקות, עדכוני גרסה ותיקונים קטנים.</p><ul><li>הכול ממסלול 1</li><li>בדיקות חודשיות</li><li>עדכוני גרסה</li><li>תיקונים קטנים</li></ul><a class="btn btn-ghost" href="#">דברו איתי על מסלול 02</a></article>
+        <article class="plan reveal" data-fit="ecommerce"><span class="lock">לא מתאים לבחירה</span><span class="num">03</span><span class="tag">מסלול מלא</span><h3>אתר + תחזוקה + אוטומציות</h3><p class="outcome">אתר עם חיבורים שעובדים ברקע.</p><p>מסלול 2, ועוד חיבורים לטפסים, וואטסאפ ומערכות.</p><ul><li>הכול ממסלול 2</li><li>אוטומציות וחיבורים</li><li>טפסים והתראות</li><li>תחזוקה שוטפת</li></ul><a class="btn btn-ghost" href="#">דברו איתי על מסלול 03</a></article>
+        <article class="plan featured reveal" data-fit="unique"><span class="lock">לא מתאים לבחירה</span><span class="num">04</span><span class="tag">מסלול אישי</span><h3>נתאים יחד</h3><p class="outcome">רק מה שאתם צריכים, לפי היקף ותקציב.</p><p>נשב, נבין מה צריך, ונבנה מסלול משלכם.</p><ul><li>שיחת היכרות</li><li>התאמה להיקף ולתקציב</li><li>רק מה שצריך</li></ul><a class="btn btn-primary" href="#">דברו איתי על מסלול אישי</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact sec-lg" id="contact">
+    <div class="wrap two">
+      <div class="reveal">
+        <span class="eyebrow hot">פרטים</span>
+        <h2 class="title">השאירו פרטים<em>ואחזור אליכם</em></h2>
+        <p class="lead">שם וטלפון מספיקים. בלי התחייבות.</p>
+      </div>
+      <div class="reveal form-col">
+        <form class="form" onsubmit="event.preventDefault()">
+          <div class="row">
+            <div class="field"><label for="n"><span class="req">*</span> שם</label><input id="n" type="text" autocomplete="name" /></div>
+            <div class="field"><label for="p"><span class="req">*</span> טלפון</label><input id="p" type="tel" dir="ltr" autocomplete="tel" /></div>
+          </div>
+          <div class="field"><label for="e">מייל <span class="opt">(לא חובה)</span></label><input id="e" type="email" dir="ltr" /></div>
+          <div class="field"><label for="m">במה אפשר לעזור <span class="opt">(לא חובה)</span></label><textarea id="m"></textarea></div>
+          <button class="btn btn-primary" type="submit" id="send">שלחו ואחזור אליכם</button>
+        </form>
+        <p class="alt">מעדיפים וואטסאפ? <a href="#">כתבו לי כאן</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap foot"><p>© 2026 איליי סנדרוסי</p><nav><a href="#about">עליי</a><a href="#work">פרויקטים</a><a href="#choose">בחירה</a><a href="#plans">מסלולים</a><a href="#contact">פרטים</a><a href="#">בלוג</a></nav></div></footer>
+
+<div class="rope" id="rope" aria-hidden="true"></div>
+<div class="climber" id="climber" aria-hidden="true"><img class="px hang" src="{{rope_hang}}" alt="" /><img class="px land" src="{{rope_point}}" alt="" /></div>
+
+<span class="draft">טיוטת עיצוב · עוד לא באתר</span>
+
+<script>
+  // hero window
+  const stage = document.getElementById('stage');
+  const winEl = document.getElementById('win');
+  const DOCK = () => ({ left: 24, top: innerHeight - 24 - 44, width: 290, height: 44 });
+  const box = (r) => ({ left: r.left, top: r.top, width: r.width, height: r.height });
+  const px = (b) => ({ left: b.left + 'px', top: b.top + 'px', width: b.width + 'px', height: b.height + 'px', bottom: 'auto', margin: '0px', position: 'fixed' });
+  let morphing = false;
+  // where the visitor left the window (offset from its home spot); every state starts from here
+  const closedBox = document.getElementById('closedBox'), heroBox = document.querySelector('.hero');
+  const pos = { x: 0, y: 0 };
+  const dragBounds = () => { const h = heroBox.getBoundingClientRect(), pad = 12; return { left: h.left + pad, right: h.left + h.width / 2 - pad, top: h.top + pad, bottom: h.bottom - pad }; };
+  const fit = (lo, hi, v) => lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v));
+  const applyPos = () => {
+    let tx = pos.x, ty = pos.y;
+    if (stage.classList.contains('is-max')) {
+      // grow around where the window is, but stay inside the area
+      const st = stage.getBoundingClientRect(), b = dragBounds();
+      const W = Math.min(560, innerWidth * 0.92), H = 430;
+      const cx = st.left + st.width / 2, cy = st.top + st.height / 2;
+      tx = fit(b.left - (cx - W / 2), b.right - (cx + W / 2), pos.x);
+      ty = fit(b.top - (cy - H / 2), b.bottom - (cy + H / 2), pos.y);
+    }
+    winEl.style.translate = tx + 'px ' + ty + 'px';
+    closedBox.style.translate = pos.x + 'px ' + pos.y + 'px';
+  };
+  // glide the window between two on-screen boxes; the classes hold the end state
+  const morph = (from, to, done) => {
+    morphing = true;
+    winEl.style.transition = 'none';
+    const ms = reduce ? 0 : 620;
+    const a = winEl.animate([px(from), px(to)], { duration: ms, easing: 'cubic-bezier(.22,1,.36,1)' });
+    let over = false;
+    const finish = () => { if (over) return; over = true; a.cancel(); winEl.style.transition = ''; morphing = false; done && done(); };
+    a.onfinish = finish;
+    setTimeout(finish, ms + 60);   // safety net if the finish event is late
+  };
+  const minimize = () => {
+    const from = box(winEl.getBoundingClientRect());
+    stage.classList.remove('is-max', 'is-closed');
+    stage.classList.add('is-min');
+    morph(from, DOCK());
+  };
+  const restore = (then) => {
+    const from = box(winEl.getBoundingClientRect());
+    winEl.style.transition = 'none';
+    stage.classList.remove('is-min');
+    void winEl.offsetWidth;
+    const to = box(winEl.getBoundingClientRect());
+    morph(from, to, () => { if (then) { stage.classList.add('is-' + then); applyPos(); } });
+  };
+  const set = (s) => {
+    if (morphing) return;
+    const wasMin = stage.classList.contains('is-min');
+    if (s === 'min') { if (!wasMin) minimize(); return; }
+    if (wasMin) { restore(s); return; }
+    stage.classList.remove('is-max', 'is-closed');
+    if (s) stage.classList.add('is-' + s);
+    applyPos();
+  };
+  stage.querySelectorAll('.win .dot').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation(); const now = b.dataset.act === 'close' ? 'closed' : b.dataset.act;
+    set(stage.classList.contains('is-' + now) && now !== 'min' ? null : (now === 'min' && stage.classList.contains('is-min') ? null : now));
+  }));
+  let justDragged = false;
+  document.getElementById('bar').addEventListener('click', () => { if (justDragged) return; if (stage.classList.contains('is-min')) set(null); });
+
+  // ---- drag the window by its bar, kept inside the left half of the hero ----
+  (() => {
+    const bar = document.getElementById('bar'), heroEl = document.querySelector('.hero');
+    let drag = null;
+    const bounds = dragBounds;
+    bar.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || e.target.closest('.dot') || morphing) return;
+      if (['is-min', 'is-max', 'is-closed', 'is-boot'].some((c) => stage.classList.contains(c))) return;
+      const r = winEl.getBoundingClientRect();
+      drag = { x: e.clientX, y: e.clientY, dx: pos.x, dy: pos.y, base: { left: r.left - pos.x, top: r.top - pos.y, w: r.width, h: r.height }, moved: false };
+      try { bar.setPointerCapture(e.pointerId); } catch (_) {}
+      winEl.classList.add('dragging');
+    });
+    bar.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const b = bounds(), mx = e.clientX - drag.x, my = e.clientY - drag.y;
+      if (Math.abs(mx) + Math.abs(my) > 3) drag.moved = true;
+      pos.x = Math.min(b.right - drag.base.w - drag.base.left, Math.max(b.left - drag.base.left, drag.dx + mx));
+      pos.y = Math.min(b.bottom - drag.base.h - drag.base.top, Math.max(b.top - drag.base.top, drag.dy + my));
+      applyPos();
+      if (window.__climb) window.__climb();
+    });
+    const end = (e) => {
+      if (!drag) return;
+      justDragged = drag.moved; setTimeout(() => { justDragged = false; }, 0);
+      drag = null; winEl.classList.remove('dragging');
+      try { bar.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    bar.addEventListener('pointerup', end);
+    bar.addEventListener('pointercancel', end);
+    // keep it inside the area if the screen size changes
+    addEventListener('resize', () => {
+      if (!pos.x && !pos.y) return;
+      if (stage.classList.contains('is-min')) return;
+      const r = (stage.classList.contains('is-closed') ? closedBox : winEl).getBoundingClientRect(), bb = bounds();
+      if (stage.classList.contains('is-max')) { applyPos(); return; }
+      if (r.right > bb.right) pos.x -= r.right - bb.right;
+      if (r.bottom > bb.bottom) pos.y -= r.bottom - bb.bottom;
+      if (r.left < bb.left) pos.x += bb.left - r.left;
+      applyPos();
+    });
+  })();
+  document.getElementById('reopen').addEventListener('click', () => set(null));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(null); });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) stage.classList.remove('is-boot');
+  else setTimeout(() => { stage.classList.add('is-opening'); stage.classList.remove('is-boot'); setTimeout(() => stage.classList.remove('is-opening'), 1200); }, 1200);
+
+  // reveal
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+  setTimeout(() => document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')), 2500);
+
+  // choose -> plans
+  const choices = document.querySelectorAll('.choice');
+  choices.forEach((c) => c.addEventListener('click', () => {
+    const on = c.getAttribute('aria-pressed') !== 'true';
+    choices.forEach((x) => x.setAttribute('aria-pressed', x === c && on ? 'true' : 'false'));
+    document.querySelectorAll('.plan').forEach((p) => p.classList.toggle('locked', on && !p.dataset.fit.split(' ').includes(c.dataset.choice)));
+    if (on) document.getElementById('plans').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  }));
+
+  // ---------- scroll descent: leaves the window on a rope tied to its bottom edge ----------
+  (() => {
+    const climber = document.getElementById('climber'), rope = document.getElementById('rope');
+    const send = document.getElementById('send'), hero = document.querySelector('.hero');
+    const win = document.getElementById('win'), inWin = win.querySelector('.char');
+    const ROPE_AT = 0.75;   // rope column inside the sprite (ilay_character.py ROPE_X)
+    const EXIT_MS = 520;
+    let away = false, landed = false, raf = 0, exitT0 = 0, back = false;
+    const lerp = (a, b, k) => a + (b - a) * k;
+    const ease = (k) => 1 - Math.pow(1 - k, 3);
+    const windowOpen = () => !stage.classList.contains('is-min') && !stage.classList.contains('is-closed') && !stage.classList.contains('is-boot');
+    const setAway = (v) => { if (v === away) return; away = v; exitT0 = performance.now(); document.body.classList.toggle('away', v); if (!v) { landed = false; climber.classList.remove('landed'); } };
+    const place = () => {
+      raf = 0;
+      const vh = innerHeight, sY = scrollY, cw = climber.offsetWidth, ch = climber.offsetHeight;
+      const s0 = hero.offsetHeight * 0.12;                               // scroll where he leaves the window
+      setAway(sY > s0 && windowOpen());
+      if (!away) return;
+
+      // everything in page coordinates, so the path is planned once and stays exact
+      const w = win.getBoundingClientRect(), bt = send.getBoundingClientRect();
+      // rope tie point slides along the window's bottom edge with where the window sits in its area:
+      // window at the area's right end -> tied at its left corner; at the left end -> its right corner
+      const area = dragBounds(), inset = 16;
+      const minC = area.left + w.width / 2, maxC = area.right - w.width / 2;
+      const side = maxC > minC ? Math.min(1, Math.max(0, (w.left + w.width / 2 - minC) / (maxC - minC))) : 0.5;
+      const cornerX = lerp(w.right - inset, w.left + inset, side), cornerPageY = w.bottom - 2 + sY;
+      let lx = bt.left - cw - 14, landPageY = bt.top + sY + bt.height / 2 - ch * 0.5;   // landing: left of the send button
+      if (lx < 6) lx = Math.max(4, bt.left - cw * 0.45);              // narrow screens: on the button's empty left end, same row
+      const maxScroll = document.documentElement.scrollHeight - vh;
+
+      // where on screen he touches down, and the exact scroll at which that happens
+      let yEnd = Math.min(vh - ch - 96, Math.max(120, vh * 0.58));
+      let sEnd = landPageY - yEnd;
+      if (sEnd > maxScroll) { sEnd = maxScroll; yEnd = landPageY - maxScroll; }
+      sEnd = Math.max(sEnd, s0 + 1);
+
+      // one planned path: from just under the window corner to the landing spot, over the whole descent
+      const p = Math.min(1, Math.max(0, (sY - s0) / (sEnd - s0)));
+      const hangX = cornerX - cw * ROPE_AT;
+      let x = lerp(hangX, lx, ease(p));
+      const y0 = cornerPageY - s0 + 18;
+      let y = lerp(y0, yEnd, p);
+      const isLanded = sY >= sEnd - 0.5;
+      if (isLanded) { x = lx; y = landPageY - sY; }                      // from here he rides with the button
+      if (isLanded !== landed) { landed = isLanded; climber.classList.toggle('landed', landed); }
+
+      // the rope stays tied to that point on the window (it scrolls away with the window)
+      const ax = cornerX, ay = cornerPageY - sY;
+
+      // exit: slide out of the window from where the sprite sat inside it
+      const k = Math.min(1, (performance.now() - exitT0) / EXIT_MS);
+      if (k < 1) {
+        const r = inWin.getBoundingClientRect();
+        const e = ease(k);
+        x = lerp(r.left + (r.width - cw) / 2, x, e); y = lerp(r.bottom - ch, y, e);
+        raf = requestAnimationFrame(place);
+      }
+      climber.style.left = x + 'px';
+      climber.style.top = y + 'px';
+
+      const hx = x + cw * ROPE_AT, hy = y + 6;
+      const dx = hx - ax, dy = hy - ay, len = Math.hypot(dx, dy);
+      const showRope = !landed && dy > 0;
+      rope.style.left = ax + 'px';
+      rope.style.top = ay + 'px';
+      rope.style.height = (showRope ? len : 0) + 'px';
+      rope.style.transform = 'rotate(' + (-Math.atan2(dx, dy)) + 'rad)';
+      climber.style.transform = 'rotate(' + (showRope ? Math.max(-12, Math.min(12, -Math.atan2(dx, dy) * 57.3 * 0.5)) : 0) + 'deg)';
+    };
+    const req = () => { if (!raf) raf = requestAnimationFrame(place); };
+    addEventListener('scroll', req, { passive: true });
+    addEventListener('resize', req);
+    new MutationObserver(req).observe(stage, { attributes: true, attributeFilter: ['class'] });
+    place();
+    window.__climb = place;
+  })();
+</script>
+</body>
+</html>
