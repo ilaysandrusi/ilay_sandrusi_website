@@ -11,6 +11,7 @@ export interface HeroWindow {
   dragEnabled(): boolean;
   area(): Area;
   onChange(cb: () => void): void;
+  pos: { x: number; y: number };
 }
 
 const OPEN_DELAY = 1200;
@@ -34,9 +35,27 @@ export function initHeroWindow(): HeroWindow | null {
   const changed = () => listeners.forEach((cb) => cb());
   const has = (c: string) => stage.classList.contains(c);
 
+  const closedBox = document.getElementById("closedBox");
+  const pos = { x: 0, y: 0 }; // where the visitor left the window, as an offset from home
+
   const area = (): Area => {
     const h = hero.getBoundingClientRect(), pad = 12;
     return { left: h.left + pad, right: h.left + h.width / 2 - pad, top: h.top + pad, bottom: h.bottom - pad };
+  };
+
+  // every state starts from the remembered spot; maximized grows around it, kept inside the area
+  const fit = (lo: number, hi: number, v: number) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
+  const applyPos = () => {
+    let tx = pos.x, ty = pos.y;
+    if (has("is-max")) {
+      const st = stage.getBoundingClientRect(), b = area();
+      const W = Math.min(560, innerWidth * 0.92), H = 430;
+      const cx = st.left + st.width / 2, cy = st.top + st.height / 2;
+      tx = fit(b.left - (cx - W / 2), b.right - (cx + W / 2), pos.x);
+      ty = fit(b.top - (cy - H / 2), b.bottom - (cy + H / 2), pos.y);
+    }
+    win.style.translate = `${tx}px ${ty}px`;
+    if (closedBox) closedBox.style.translate = `${pos.x}px ${pos.y}px`;
   };
 
   // ---- glide between two on-screen boxes; the classes hold the end state ----
@@ -79,7 +98,7 @@ export function initHeroWindow(): HeroWindow | null {
     stage.classList.remove("is-min");
     void win.offsetWidth;
     const to = box(win.getBoundingClientRect());
-    morph(from, to, () => { if (then) stage.classList.add(`is-${then}`); });
+    morph(from, to, () => { if (then) { stage.classList.add(`is-${then}`); applyPos(); } });
   };
   const set = (s: State) => {
     if (morphing) return;
@@ -88,6 +107,7 @@ export function initHeroWindow(): HeroWindow | null {
     if (wasMin) { restore(s); return; }
     stage.classList.remove("is-max", "is-closed");
     if (s) stage.classList.add(`is-${s}`);
+    applyPos();
     changed();
   };
 
@@ -100,7 +120,56 @@ export function initHeroWindow(): HeroWindow | null {
       set(has(`is-${next}`) ? null : next);
     })
   );
-  bar.addEventListener("click", () => { if (has("is-min")) set(null); });
+  let justDragged = false;
+  bar.addEventListener("click", () => { if (justDragged) return; if (has("is-min")) set(null); });
+
+  // ---- drag by the bar, desktop only, inside the left half of the hero ----
+  let drag: { x: number; y: number; dx: number; dy: number; base: Box; moved: boolean } | null = null;
+  const syncDragMode = () => {
+    document.documentElement.classList.toggle("can-drag", wide.matches);
+    if (!wide.matches && (pos.x || pos.y)) { pos.x = 0; pos.y = 0; applyPos(); changed(); }
+  };
+  bar.addEventListener("pointerdown", (e) => {
+    if (!wide.matches || e.button !== 0 || morphing) return;
+    if ((e.target as Element).closest(".dot")) return;
+    if (["is-min", "is-max", "is-closed", "is-boot"].some(has)) return;
+    const r = win.getBoundingClientRect();
+    drag = { x: e.clientX, y: e.clientY, dx: pos.x, dy: pos.y, base: { left: r.left - pos.x, top: r.top - pos.y, width: r.width, height: r.height }, moved: false };
+    try { bar.setPointerCapture(e.pointerId); } catch { /* synthetic pointer */ }
+    win.classList.add("dragging");
+  });
+  bar.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const b = area(), mx = e.clientX - drag.x, my = e.clientY - drag.y;
+    if (Math.abs(mx) + Math.abs(my) > 3) drag.moved = true;
+    pos.x = Math.min(b.right - drag.base.width - drag.base.left, Math.max(b.left - drag.base.left, drag.dx + mx));
+    pos.y = Math.min(b.bottom - drag.base.height - drag.base.top, Math.max(b.top - drag.base.top, drag.dy + my));
+    applyPos();
+    changed();
+  });
+  const endDrag = (e: PointerEvent) => {
+    if (!drag) return;
+    justDragged = drag.moved;
+    setTimeout(() => { justDragged = false; }, 0);
+    drag = null;
+    win.classList.remove("dragging");
+    try { bar.releasePointerCapture(e.pointerId); } catch { /* synthetic pointer */ }
+  };
+  bar.addEventListener("pointerup", endDrag);
+  bar.addEventListener("pointercancel", endDrag);
+  wide.addEventListener("change", syncDragMode);
+  syncDragMode();
+  // keep it inside the area if the screen size changes
+  addEventListener("resize", () => {
+    if (!wide.matches || (!pos.x && !pos.y) || has("is-min")) return;
+    if (has("is-max")) { applyPos(); return; }
+    const r = (has("is-closed") && closedBox ? closedBox : win).getBoundingClientRect(), b = area();
+    if (r.right > b.right) pos.x -= r.right - b.right;
+    if (r.bottom > b.bottom) pos.y -= r.bottom - b.bottom;
+    if (r.left < b.left) pos.x += b.left - r.left;
+    applyPos();
+    changed();
+  });
   reopen.addEventListener("click", () => set(null));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(null); });
 
@@ -122,5 +191,6 @@ export function initHeroWindow(): HeroWindow | null {
     dragEnabled: () => wide.matches,
     area,
     onChange: (cb) => { listeners.push(cb); },
+    pos,
   };
 }

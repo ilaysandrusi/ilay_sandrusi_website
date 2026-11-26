@@ -104,4 +104,60 @@
     if (stage.classList.contains('is-max')) f.push('Esc did not restore');
     return f;
   };
+
+  // Drag the window by its bar with synthetic pointer events.
+  C._drag = (dx, dy) => {
+    const bar = document.getElementById('bar'), r = document.getElementById('win').getBoundingClientRect();
+    const ev = (t, x, y) => bar.dispatchEvent(new PointerEvent(t, { bubbles: true, clientX: x, clientY: y, button: 0, pointerId: 1 }));
+    const x = r.left + 150, y = r.top + 20;
+    ev('pointerdown', x, y); ev('pointermove', x + dx, y + dy); ev('pointerup', x + dx, y + dy);
+  };
+
+  // Run at 1366x820 on a fresh load; resizes to 1024 is done by the caller afterwards via dragResize.
+  C.drag = async () => {
+    const f = [];
+    const stage = document.getElementById('stage'), win = document.getElementById('win'), bar = document.getElementById('bar');
+    const click = (act) => stage.querySelector(`.dot[data-act="${act}"]`).click();
+    const R = (el) => { const r = el.getBoundingClientRect(); return { l: Math.round(r.left), t: Math.round(r.top), r: Math.round(r.right), b: Math.round(r.bottom) }; };
+    const same = (a, b) => ['l', 't', 'r', 'b'].every((k) => Math.abs(a[k] - b[k]) <= 1);
+    await wait(1500); finish();
+    const h = document.querySelector('.hero').getBoundingClientRect();
+    const area = { l: h.left + 12, t: h.top + 12, r: h.left + h.width / 2 - 12, b: h.bottom - 12 };
+    const inside = (x) => x.l >= area.l - 1 && x.t >= area.t - 1 && x.r <= area.r + 1 && x.b <= area.b + 1;
+    C._drag(-2000, 2000); finish();
+    const d = R(win);
+    if (!inside(d)) f.push(`dragged rect outside area: ${JSON.stringify(d)}`);
+    if (Math.abs(d.l - area.l) > 1 || Math.abs(d.b - area.b) > 1) f.push('drag did not clamp to bottom-left corner');
+    click('max'); await wait(60); finish();
+    if (!inside(R(win))) f.push(`max rect outside area: ${JSON.stringify(R(win))}`);
+    click('max'); await wait(60); finish();
+    if (!same(R(win), d)) f.push('unmax did not return to dragged spot');
+    click('min'); await wait(800);
+    bar.click(); await wait(800); finish();
+    if (!same(R(win), d)) f.push('restore did not return to dragged spot');
+    click('close'); await wait(60); finish();
+    if (!same(R(document.getElementById('closedBox')), d)) f.push('closed box not at dragged spot');
+    document.getElementById('reopen').click(); await wait(60); finish();
+    if (!same(R(win), d)) f.push('reopen did not return to dragged spot');
+    return f;
+  };
+
+  // Review Focus 2: call after C.drag(), once at 1024x760 and once at 375x812.
+  C.dragResize = async () => {
+    const f = [];
+    await wait(1200); finish(); // emulated resizes reach the page late
+    const win = document.getElementById('win');
+    const r = win.getBoundingClientRect(), h = document.querySelector('.hero').getBoundingClientRect();
+    if (innerWidth >= 960) {
+      if (r.left < h.left + 11 || r.right > h.left + h.width / 2 - 11 || r.bottom > h.bottom - 11) f.push(`after resize window left its area: ${Math.round(r.left)},${Math.round(r.right)}`);
+    } else {
+      const t = win.style.translate;
+      if (t && t !== '0px 0px' && t !== 'none' && t !== '0px') f.push(`narrow screen keeps a drag offset: ${t}`);
+      const before = win.getBoundingClientRect();
+      C._drag(-80, 60); finish();
+      const after = win.getBoundingClientRect();
+      if (Math.abs(before.left - after.left) > 1 || Math.abs(before.top - after.top) > 1) f.push('window can be dragged on a narrow screen');
+    }
+    return f;
+  };
 })();
