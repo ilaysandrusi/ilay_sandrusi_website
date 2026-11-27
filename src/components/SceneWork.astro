@@ -6,9 +6,7 @@ const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
 ---
 
-<section class="scene work has-deco" id="work">
-  <span class="deco orange drift-a" aria-hidden="true" style="width:190px;height:190px;left:-70px;top:16%;transform:rotate(18deg)"></span>
-  <span class="deco paper drift-b" aria-hidden="true" style="width:110px;height:110px;left:5%;bottom:70px"></span>
+<section class="scene work" id="work">
   <div class:list={["work-inner", { "is-empty": projects.length === 0 }]}>
     <h2>{projects.length > 0 ? "דברים שבניתי" : "עוד מעט כאן"}</h2>
     <p class="lead">
@@ -73,13 +71,14 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
 </section>
 
 <style>
+  /* dark section, second on the page */
   .scene.work {
-    background: var(--paper);
-    border-top: var(--line);
-    padding: var(--sp-section) 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: var(--sp-section-lg) 0;
   }
 
-  .site-box { position: relative; background: var(--card); border: var(--line); border-radius: 20px; box-shadow: var(--shadow); height: 320px; overflow: hidden; margin-bottom: 32px; }
+  .site-box { position: relative; background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; box-shadow: 8px 8px 0 rgba(246, 241, 231, 0.14); height: 320px; overflow: hidden; margin-bottom: 32px; }
   .box-bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; }
   .box-bar i { width: 15px; height: 15px; border-radius: 50%; border: var(--line); }
   .box-bar i:first-child { background: var(--accent); }
@@ -103,14 +102,14 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   }
 
   .lead {
-    color: var(--ink-soft);
+    color: #d8d1c3;
     font-size: 1.08rem;
     margin-bottom: 36px;
     max-width: 34ch;
   }
 
   .work-empty {
-    color: var(--ink-soft);
+    color: #d8d1c3;
     font-size: 1.05rem;
     max-width: 40ch;
     margin: 0 0 36px;
@@ -142,7 +141,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   }
 
   .shot {
-    border: var(--line);
+    border: 2px solid var(--paper);
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--paper-soft);
@@ -200,7 +199,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   .n {
     font-family: var(--head);
     font-size: 1.4rem;
-    color: var(--accent);
+    color: #ff6a4a;
   }
 
   h3 {
@@ -216,7 +215,7 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   }
 
   .text {
-    color: var(--ink-soft);
+    color: #d8d1c3;
     font-size: 1rem;
     max-width: 42ch;
   }
