@@ -24,11 +24,9 @@ const img = (name: string) => `${base}character/${name}.png`;
       <span class="blob b2 drift-b" aria-hidden="true"></span>
 
       <div class="closed-box" id="closedBox">
+        <div class="alone" aria-hidden="true"><img class="px" src={img("think")} alt="" width="624" height="732" /></div>
         <p class="closed-note">בלי החלון אני לא יכול ללוות אתכם למטה. תשאירו אותו פתוח?</p>
-        <button class="reopen" type="button" id="reopen" aria-label="פתחו לי את החלון">
-          <span class="app-tile" aria-hidden="true"><img class="px" src={img("laptop_show")} alt="" width="624" height="732" /></span>
-          <span class="app-name" aria-hidden="true">איליי</span>
-        </button>
+        <button class="reopen" type="button" id="reopen">פתחו לי את החלון</button>
       </div>
 
       <div class="win" id="win" role="group" aria-label="חלון עם הדמות של איליי">
@@ -52,6 +50,9 @@ const img = (name: string) => `${base}character/${name}.png`;
           <img class="px excited" src={img("excited")} alt="" width="624" height="732" />
         </div>
         <span class="badge">עובד על זה עכשיו</span>
+        <button class="app-icon" type="button" id="appIcon" aria-label="פתיחת החלון של איליי">
+          <img class="px" src={img("laptop_show")} alt="" width="624" height="732" />
+        </button>
       </div>
     </div>
   </div>
@@ -135,16 +136,11 @@ const img = (name: string) => `${base}character/${name}.png`;
 
   /* closed state */
   .closed-box { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px; z-index: 4; pointer-events: none; transition: translate 0.55s var(--ease); }
-  .closed-note { left: 0; top: 10px; z-index: 6; max-width: 240px; border-radius: 20px; padding: 12px 16px; font-size: 16px; line-height: 1.35; box-shadow: var(--shadow-sm); opacity: 0; transform: scale(0.6); transform-origin: 90% 100%; transition: opacity 0.3s 0.4s, transform 0.45s 0.4s var(--pop); pointer-events: none; }
+  .alone { position: absolute; right: 10px; bottom: 0; width: 150px; z-index: 1; opacity: 0; transform: translateY(20px); transition: opacity 0.35s 0.25s, transform 0.45s 0.25s var(--ease); pointer-events: none; }
+  .closed-note { left: 0; top: 0; z-index: 6; max-width: 240px; border-radius: 20px; padding: 12px 16px; font-size: 16px; line-height: 1.35; box-shadow: var(--shadow-sm); opacity: 0; transform: scale(0.6); transform-origin: 90% 100%; transition: opacity 0.3s 0.4s, transform 0.45s 0.4s var(--pop); pointer-events: none; }
   .closed-note::before { width: 14px; height: 14px; right: 18px; bottom: -18px; }
   .closed-note::after { width: 8px; height: 8px; right: 6px; bottom: -30px; }
-  /* closed: the window shrinks into a small app icon with his face; tapping it opens the window again */
-  .reopen { position: absolute; left: 50%; top: 150px; width: 110px; margin-left: -55px; z-index: 6; display: grid; justify-items: center; gap: 7px; background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; opacity: 0; transform: scale(0.6); pointer-events: none; transition: opacity 0.3s 0.3s, transform 0.45s 0.3s var(--pop); }
-  .app-tile { position: relative; width: 92px; height: 92px; border: var(--line); border-radius: 26px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
-    background: var(--card) linear-gradient(rgba(23, 20, 16, 0.06) 1px, transparent 1px) 0 0 / 14px 14px, var(--card) linear-gradient(90deg, rgba(23, 20, 16, 0.06) 1px, transparent 1px) 0 0 / 14px 14px; }
-  .app-tile img { position: absolute; width: 196px; max-width: none; left: -54px; top: 2px; } /* crops the sprite to his head */
-  .app-name { font: 600 14px var(--head); line-height: 1; background: var(--card); border: var(--line); border-radius: 999px; padding: 4px 11px; }
-  .reopen::after { content: ""; width: 18px; height: 4px; border-radius: 2px; background: var(--accent); } /* "app is here" mark under the icon */
+  .reopen { position: absolute; left: 0; bottom: 18px; z-index: 6; font: 600 15px var(--head); color: var(--ink); background: var(--card); border: var(--line); border-radius: 14px; padding: 9px 16px; box-shadow: var(--shadow-sm); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s 0.45s, transform 0.18s var(--ease), box-shadow 0.18s var(--ease); }
 
   /* hidden pieces are out of the tab order and away from screen readers until their state shows them */
   .reopen, .closed-note, .mx-note, .away-sign { visibility: hidden; }
@@ -158,11 +154,14 @@ const img = (name: string) => `${base}character/${name}.png`;
   .stage.is-opening .win { transition: transform 0.7s var(--pop), opacity 0.25s, width 0.55s var(--ease), height 0.55s var(--ease), margin 0.55s var(--ease), top 0.55s var(--ease), translate 0.55s var(--ease); }
   .stage.is-opening .badge { transition: opacity 0.3s 0.55s, transform 0.45s 0.55s var(--pop); }
 
-  .stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: calc(var(--bar-height) + env(safe-area-inset-bottom) + 12px); height: 44px; width: 290px; margin: 0; z-index: 45; box-shadow: var(--shadow-sm); translate: none !important; }
-  .stage.is-min .bar { cursor: pointer; }
-  .stage.is-min .dot.close, .stage.is-min .dot.min { display: none; } /* minimized: only "maximize" stays */
-  .stage.is-min .bar .url::after { content: " · לחצו לפתיחה"; color: var(--accent-text); font-family: var(--head); font-weight: 600; }
-  .stage.is-min .win .grid, .stage.is-min .win .char, .stage.is-min .win .badge, .stage.is-min .win .mx-note { opacity: 0; transition: opacity 0.2s; }
+  /* minimized: the window shrinks into a small app icon with his face, docked in the corner */
+  .stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: calc(var(--bar-height) + env(safe-area-inset-bottom) + 12px); height: 76px; width: 76px; margin: 0; z-index: 45; border-radius: 22px; box-shadow: var(--shadow-sm); translate: none !important; }
+  .stage.is-min .win .bar, .stage.is-min .win .char, .stage.is-min .win .badge, .stage.is-min .win .mx-note, .stage.is-min .win .away-sign { opacity: 0; visibility: hidden; transition: none; }
+  .stage.is-min .win .grid { inset: 0; background-size: 14px 14px; }
+  .app-icon { position: absolute; inset: 0; z-index: 4; display: block; padding: 0; border: 0; background: none; cursor: pointer; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.25s 0.3s; }
+  .app-icon img { position: absolute; width: 168px; max-width: none; left: -48px; top: -6px; } /* crops the sprite to his head */
+  .stage.is-min .app-icon { opacity: 1; visibility: visible; }
+  .stage.is-min .win:hover { box-shadow: var(--shadow-hot); }
   .stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
 
   .stage.is-max .win { width: min(560px, 92vw); height: 430px; margin: -215px 0 0 calc(min(560px, 92vw) / -2); z-index: 10; }
@@ -172,11 +171,11 @@ const img = (name: string) => `${base}character/${name}.png`;
   .stage.is-max .mx-note { opacity: 1; transform: none; }
 
   .stage.is-closed .win { transform: scale(0.2); opacity: 0; pointer-events: none; }
+  .stage.is-closed .alone { opacity: 1; transform: none; }
   .stage.is-closed .closed-note { opacity: 1; transform: none; }
-  .stage.is-closed .reopen { opacity: 1; transform: none; pointer-events: auto; }
-  .stage.is-closed .app-tile { animation: beat 1.6s ease-in-out 1s infinite; }
-  .stage.is-closed .reopen:hover .app-tile, .stage.is-closed .reopen:focus-visible .app-tile { animation: none; transform: translate(-3px, -3px); box-shadow: var(--shadow-hot); }
-  .stage.is-closed .reopen:active .app-tile { transform: none; box-shadow: none; }
+  .stage.is-closed .reopen { opacity: 1; pointer-events: auto; animation: beat 1.6s ease-in-out 0.9s infinite; }
+  .stage.is-closed .reopen:hover, .stage.is-closed .reopen:focus-visible { animation: none; transform: translate(-3px, -3px); box-shadow: var(--shadow-hot); }
+  .stage.is-closed .reopen:active { transform: none; box-shadow: none; }
   @keyframes beat { 0%, 60%, 100% { transform: scale(1); } 20% { transform: scale(1.07); } 40% { transform: scale(0.98); } }
 
   /* drag (desktop) */
@@ -198,6 +197,6 @@ const img = (name: string) => `${base}character/${name}.png`;
     .stamp { font-size: 9rem; bottom: 40px; left: 8%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-text > *, .win, .win .char, .dot, .badge, .mx-note, .away-sign, .app-tile, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
+    .hero-text > *, .win, .win .char, .dot, .badge, .mx-note, .away-sign, .alone, .app-icon, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
   }
 </style>

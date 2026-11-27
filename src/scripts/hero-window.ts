@@ -132,7 +132,6 @@ export function initHeroWindow(): HeroWindow | null {
       e.stopPropagation();
       const act = b.dataset.act;
       if (act === "min") { set(has("is-min") ? null : "min"); return; }
-      if (has("is-min")) { set(null); return; } // minimized: the only button left brings the window back up
       const next: State = act === "close" ? "closed" : "max";
       set(has(`is-${next}`) ? null : next);
     })
@@ -192,6 +191,7 @@ export function initHeroWindow(): HeroWindow | null {
     changed();
   });
   reopen.addEventListener("click", () => set(null));
+  document.getElementById("appIcon")?.addEventListener("click", () => set(null)); // minimized app icon opens the window
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     const t = e.target;
