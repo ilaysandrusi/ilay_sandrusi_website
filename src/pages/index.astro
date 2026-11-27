@@ -11,15 +11,6 @@ import Footer from "../components/Footer.astro";
 import MobileBar from "../components/MobileBar.astro";
 import RopeClimber from "../components/RopeClimber.astro";
 import { siteDescription } from "../data/contact";
-
-const scenes = [
-  { href: "#top", label: "פתיחה" },
-  { href: "#work", label: "פרויקטים" },
-  { href: "#about", label: "עליי" },
-  { href: "#choose", label: "בחירה" },
-  { href: "#plans", label: "מסלולים" },
-  { href: "#contact", label: "פרטים" },
-];
 ---
 
 <Layout
@@ -27,13 +18,6 @@ const scenes = [
   description={siteDescription}
 >
   <Header />
-  <nav class="scene-nav" aria-label="ניווט בין סצנות">
-    {
-      scenes.map((s) => (
-        <a href={s.href} aria-label={s.label} aria-current="false" title={s.label} />
-      ))
-    }
-  </nav>
   <main id="main">
     <SceneOpen />
     <SceneWork />

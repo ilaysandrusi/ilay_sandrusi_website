@@ -17,9 +17,9 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
 
 <section class="scene work" id="work">
   <div class:list={["work-inner", { "is-empty": projects.length === 0 }]}>
-    <h2>{projects.length > 0 ? "דברים שבניתי" : "עוד מעט כאן"}</h2>
+    <h2>תיק עבודות</h2>
     <p class="lead">
-      {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "הדוגמאות יתווספו כאן אחרי השקות."}
+      {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "כרגע אני עובד על פרויקטים שעוד סודיים, אז עדיין אין מה להראות כאן."}
     </p>
 
     {
@@ -65,7 +65,7 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
           })}
         </ol>
       ) : (
-        <p class="work-empty" role="status">אין עדיין דוגמאות להצגה. בינתיים אפשר לבחור כיוון ולפתוח מסלול.</p>
+        <p class="work-empty" role="status">ברגע שהם יעלו לאוויר, הם יופיעו כאן.</p>
       )
     }
 
