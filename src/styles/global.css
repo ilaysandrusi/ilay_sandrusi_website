@@ -27,8 +27,8 @@
   --shadow-hot: 7px 7px 0 #ff4b26d9;
   --head: "Fredoka", "Varela Round", sans-serif;
   --body: "Varela Round", "Fredoka", sans-serif;
-  --sp-section: clamp(88px, 11vw, 150px);
-  --sp-section-lg: clamp(110px, 14vw, 190px);
+  --sp-section: clamp(56px, 7vw, 100px);
+  --sp-section-lg: clamp(68px, 8.5vw, 120px);
 }
 
 * {
@@ -265,6 +265,24 @@ b, strong,
 .skip-link, .choice-hint, .lock-badge, .tag, .outcome, .locked-hint, .plan li,
 .form-status, .bar-btn, .kind, .go, .alt a, .nav-cta, footer nav a, .site-header .nav a {
   font-family: var(--head);
+}
+
+/* blobs drift very slowly, like the original hero (rotate/translate stack on top of any transform) */
+@media (prefers-reduced-motion: no-preference) {
+  .drift-a { animation: drift-a 14s ease-in-out infinite alternate; }
+  .drift-b { animation: drift-b 18s ease-in-out infinite alternate; }
+}
+@keyframes drift-a { from { rotate: 0deg; translate: 0 0; } to { rotate: 8deg; translate: -14px 12px; } }
+@keyframes drift-b { from { translate: 0 0; } to { translate: 10px -14px; } }
+
+/* decorative blobs scattered in the light sections, desktop only, kept at the side margins */
+.has-deco { position: relative; overflow: clip; }
+.has-deco > :not(.deco) { position: relative; z-index: 1; }
+.deco { display: none; position: absolute; z-index: 0; border: var(--line); border-radius: 40% 60% 55% 45%; pointer-events: none; }
+.deco.orange { background: var(--accent); }
+.deco.paper { background: var(--paper); box-shadow: var(--shadow); }
+@media (min-width: 960px) {
+  .deco { display: block; }
 }
 
 .reveal {

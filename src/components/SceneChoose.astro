@@ -24,9 +24,10 @@ const choices = [
 ];
 ---
 
-<section class="scene choose" id="choose">
+<section class="scene choose has-deco" id="choose">
+  <span class="deco paper drift-b" aria-hidden="true" style="width:120px;height:120px;left:5%;bottom:70px"></span>
+  <span class="deco orange drift-a" aria-hidden="true" style="width:130px;height:130px;left:-40px;top:80px;transform:rotate(-12deg)"></span>
   <div class="choose-inner">
-    <p class="eyebrow">בחירה</p>
     <h2>מה בונים עכשיו?</h2>
     <p class="lead">בחרו כיוון. אפתח רק את המסלולים שמתאימים.</p>
 
@@ -141,7 +142,7 @@ const choices = [
 <style>
   .scene.choose {
     padding: var(--sp-section) 0;
-    background: var(--paper-soft);
+    background: var(--paper);
     border-top: var(--line);
     border-bottom: var(--line);
   }

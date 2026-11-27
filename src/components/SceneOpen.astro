@@ -5,12 +5,12 @@ const img = (name: string) => `${base}character/${name}.png`;
 ---
 
 <section class="scene hero" id="top" aria-labelledby="open-heading">
+  <span class="stamp" aria-hidden="true">א.</span>
   <div class="container hero-grid">
     <div class="hero-text">
-      <p class="eyebrow">איליי סנדרוסי</p>
       <h1 id="open-heading">תכירו אותי <em>קודם.</em></h1>
       <p class="lead">בונה לכם אתר שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.</p>
-      <a href="#about" class="btn btn-primary">
+      <a href="#work" class="btn btn-primary">
         הכירו אותי
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -19,8 +19,8 @@ const img = (name: string) => `${base}character/${name}.png`;
     </div>
 
     <div class="stage is-boot" id="stage">
-      <span class="blob b1" aria-hidden="true"></span>
-      <span class="blob b2" aria-hidden="true"></span>
+      <span class="blob b1 drift-a" aria-hidden="true"></span>
+      <span class="blob b2 drift-b" aria-hidden="true"></span>
 
       <div class="closed-box" id="closedBox">
         <div class="alone" aria-hidden="true"><img class="px" src={img("think")} alt="" width="624" height="732" /></div>
@@ -49,6 +49,9 @@ const img = (name: string) => `${base}character/${name}.png`;
           <img class="px excited" src={img("excited")} alt="" width="624" height="732" />
         </div>
         <span class="badge">עובד על זה עכשיו</span>
+        <button class="app-icon" type="button" id="appIcon" aria-label="פתיחת החלון של איליי">
+          <img class="px" src={img("laptop_show")} alt="" width="624" height="732" />
+        </button>
       </div>
     </div>
   </div>
@@ -71,7 +74,11 @@ const img = (name: string) => `${base}character/${name}.png`;
     /* clear the fixed header (62px on phones, 74px from 768px) plus the phone's notch */
     padding: calc(96px + env(safe-area-inset-top)) 0 80px;
   }
+  /* the faint "א." mark from the original hero, under the blobs */
+  .stamp { position: absolute; bottom: calc(var(--bar-height) + 24px); left: 20px; z-index: 0; font: 400 4.5rem/1 "Suez One", serif; color: var(--ink); opacity: 0.08; pointer-events: none; user-select: none; }
   .hero-grid {
+    position: relative;
+    z-index: 1;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
@@ -146,10 +153,21 @@ const img = (name: string) => `${base}character/${name}.png`;
   .stage.is-opening .win { transition: transform 0.7s var(--pop), opacity 0.25s, width 0.55s var(--ease), height 0.55s var(--ease), margin 0.55s var(--ease), top 0.55s var(--ease), translate 0.55s var(--ease); }
   .stage.is-opening .badge { transition: opacity 0.3s 0.55s, transform 0.45s 0.55s var(--pop); }
 
-  .stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: calc(var(--bar-height) + env(safe-area-inset-bottom) + 12px); height: 44px; width: 290px; margin: 0; z-index: 45; box-shadow: var(--shadow-sm); translate: none !important; }
-  .stage.is-min .bar { cursor: pointer; }
-  .stage.is-min .bar .url::after { content: " · לחצו לפתיחה"; color: var(--accent-text); font-family: var(--head); font-weight: 600; }
-  .stage.is-min .win .grid, .stage.is-min .win .char, .stage.is-min .win .badge, .stage.is-min .win .mx-note { opacity: 0; transition: opacity 0.2s; }
+  /* minimized: the window shrinks into a small app icon with his face, docked in the corner */
+  .stage.is-min .win { position: fixed; left: 24px; top: auto; bottom: calc(var(--bar-height) + env(safe-area-inset-bottom) + 12px); height: 76px; width: 76px; margin: 0; z-index: 45; border-radius: 22px; box-shadow: var(--shadow-sm); translate: none !important; }
+  .stage.is-min .win .bar, .stage.is-min .win .char, .stage.is-min .win .badge, .stage.is-min .win .mx-note, .stage.is-min .win .away-sign { opacity: 0; visibility: hidden; transition: none; }
+  .stage.is-min .win .grid { inset: 0; background-size: 14px 14px; }
+  .app-icon { position: absolute; inset: 0; z-index: 4; display: block; padding: 0; border: 0; background: none; cursor: pointer; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.25s 0.3s; }
+  .app-icon img { position: absolute; width: 168px; max-width: none; left: -48px; top: -6px; } /* crops the sprite to his head */
+  .stage.is-min .app-icon { opacity: 1; visibility: visible; }
+  /* reopening from the icon: keep the face while it grows, then cross-fade to the window's content */
+  .win .bar, .win .grid { transition: opacity 0.3s var(--ease); }
+  .win.restoring .bar, .win.restoring .char, .win.restoring .badge { opacity: 0; transition: none; }
+  .win.restoring .app-icon { visibility: visible; transition: none; animation: icon-out 0.28s var(--ease) forwards; }
+  @keyframes icon-out { from { opacity: 1; } to { opacity: 0; } }
+  .win:not(.restoring) .app-icon { transition: opacity 0.25s, visibility 0s linear 0.25s; }
+  .stage.is-min .win:not(.restoring) .app-icon { transition: opacity 0.25s 0.3s; }
+  .stage.is-min .win:hover { box-shadow: var(--shadow-hot); }
   .stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
 
   .stage.is-max .win { width: min(560px, 92vw); height: 430px; margin: -215px 0 0 calc(min(560px, 92vw) / -2); z-index: 10; }
@@ -182,8 +200,10 @@ const img = (name: string) => `${base}character/${name}.png`;
   @media (min-width: 960px) {
     .hero-grid { grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 90px); }
     .stage { height: 440px; }
+    .stage .b2 { right: auto; left: 228px; top: 92px; } /* sits just above-right of the orange blob, never touching */
+    .stamp { font-size: 9rem; bottom: 40px; left: 8%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-text > *, .win, .win .char, .dot, .badge, .mx-note, .away-sign, .alone, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
+    .hero-text > *, .win, .win .char, .dot, .badge, .mx-note, .away-sign, .alone, .app-icon, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
   }
 </style>

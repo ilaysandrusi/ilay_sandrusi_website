@@ -18,7 +18,7 @@ const OPEN_DELAY = 1200;
 const MORPH_MS = 620;
 const EASE = "cubic-bezier(.22,1,.36,1)";
 type State = "min" | "max" | "closed" | null;
-interface Box { left: number; top: number; width: number; height: number }
+interface Box { left: number; top: number; width: number; height: number; radius: string }
 
 export function initHeroWindow(): HeroWindow | null {
   const stage = document.getElementById("stage");
@@ -37,6 +37,18 @@ export function initHeroWindow(): HeroWindow | null {
 
   const closedBox = document.getElementById("closedBox");
   const pos = { x: 0, y: 0 }; // where the visitor left the window, as an offset from home
+  let userMoved = false;
+
+  // desktop default spot: near the start of the left area, top lined up with the headline block
+  const heroText = hero.querySelector<HTMLElement>(".hero-text");
+  const placeDefault = () => {
+    const st = stage.getBoundingClientRect(), b = area();
+    const homeLeft = st.left + st.width / 2 - 160, homeTop = st.top + st.height / 2 - 170; // .win margins
+    const wantLeft = b.left + 60;
+    const wantTop = (heroText ? heroText.getBoundingClientRect().top : homeTop) + 26;
+    pos.x = Math.min(b.right - 320 - homeLeft, Math.max(b.left - homeLeft, wantLeft - homeLeft));
+    pos.y = Math.min(b.bottom - 320 - homeTop, Math.max(b.top - homeTop, wantTop - homeTop));
+  };
 
   const area = (): Area => {
     const h = hero.getBoundingClientRect(), pad = 12;
@@ -63,8 +75,9 @@ export function initHeroWindow(): HeroWindow | null {
 
   // ---- glide between two on-screen boxes; the classes hold the end state ----
   let morphing = false;
-  const box = (r: DOMRect): Box => ({ left: r.left, top: r.top, width: r.width, height: r.height });
-  const frame = (b: Box): Keyframe => ({ position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, bottom: "auto", margin: "0px" });
+  const box = (r: DOMRect): Box => ({ left: r.left, top: r.top, width: r.width, height: r.height, radius: getComputedStyle(win).borderRadius });
+  // the boxes are measured on screen, so the remembered offset (translate) must not be added on top during the glide
+  const frame = (b: Box): Keyframe => ({ position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, bottom: "auto", margin: "0px", translate: "0px 0px", borderRadius: b.radius });
   const dock = (): Box => {
     const r = win.getBoundingClientRect(); // already docked by the class
     return box(r);
@@ -98,11 +111,15 @@ export function initHeroWindow(): HeroWindow | null {
   const restore = (then: State) => {
     const from = box(win.getBoundingClientRect());
     win.style.transition = "none";
+    win.classList.add("restoring"); // the face stays on while it grows; the window's content fades in at the end
     stage.classList.remove("is-min");
     applyPos(); // back to the remembered spot, not the offset it had while maximized
     void win.offsetWidth;
     const to = box(win.getBoundingClientRect());
-    morph(from, to, () => { if (then) { stage.classList.add(`is-${then}`); applyPos(); } });
+    morph(from, to, () => {
+      win.classList.remove("restoring");
+      if (then) { stage.classList.add(`is-${then}`); applyPos(); }
+    });
   };
   const set = (s: State) => {
     if (morphing) return;
@@ -131,7 +148,8 @@ export function initHeroWindow(): HeroWindow | null {
   let drag: { x: number; y: number; dx: number; dy: number; base: Box; moved: boolean } | null = null;
   const syncDragMode = () => {
     document.documentElement.classList.toggle("can-drag", wide.matches);
-    if (!wide.matches) { pos.x = 0; pos.y = 0; }
+    if (!wide.matches) { pos.x = 0; pos.y = 0; userMoved = false; }
+    else if (!userMoved) placeDefault();
     applyPos();
     changed();
   };
@@ -147,7 +165,7 @@ export function initHeroWindow(): HeroWindow | null {
   bar.addEventListener("pointermove", (e) => {
     if (!drag) return;
     const b = area(), mx = e.clientX - drag.x, my = e.clientY - drag.y;
-    if (Math.abs(mx) + Math.abs(my) > 3) drag.moved = true;
+    if (Math.abs(mx) + Math.abs(my) > 3) { drag.moved = true; userMoved = true; }
     pos.x = Math.min(b.right - drag.base.width - drag.base.left, Math.max(b.left - drag.base.left, drag.dx + mx));
     pos.y = Math.min(b.bottom - drag.base.height - drag.base.top, Math.max(b.top - drag.base.top, drag.dy + my));
     applyPos();
@@ -167,6 +185,7 @@ export function initHeroWindow(): HeroWindow | null {
   syncDragMode();
   // keep it inside the area if the screen size changes
   addEventListener("resize", () => {
+    if (wide.matches && !userMoved && !has("is-min")) placeDefault();
     if (has("is-max")) { applyPos(); changed(); return; }
     if (!wide.matches || (!pos.x && !pos.y) || has("is-min")) return;
     const r = (has("is-closed") && closedBox ? closedBox : win).getBoundingClientRect(), b = area();
@@ -177,6 +196,7 @@ export function initHeroWindow(): HeroWindow | null {
     changed();
   });
   reopen.addEventListener("click", () => set(null));
+  document.getElementById("appIcon")?.addEventListener("click", () => set(null)); // minimized app icon opens the window
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     const t = e.target;
