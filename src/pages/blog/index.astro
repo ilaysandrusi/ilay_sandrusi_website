@@ -45,13 +45,17 @@ const blogData = {
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(blogData)} />
   <Header />
-  <main id="main" class="guides">
+  <main id="main" class="guides has-deco">
+    <span class="deco orange drift-a" aria-hidden="true" style="width:230px;height:230px;left:5%;top:300px;transform:rotate(18deg)"></span>
+    <span class="deco paper drift-b" aria-hidden="true" style="width:100px;height:100px;left:27%;top:120px"></span>
+    <span class="deco orange drift-b" aria-hidden="true" style="width:130px;height:130px;right:-50px;bottom:110px;transform:rotate(-14deg)"></span>
     <div class="guides-inner">
       <p class="eyebrow">בלוג</p>
       <h1>צעד אחרי צעד</h1>
       <p class="lead">
         מה שאני מראה באינסטגרם, כתוב כאן בנחת: מה עושים, ובאיזה סדר.
       </p>
+      <img class="beach" src={`${base}character/beach.png`} alt="" aria-hidden="true" width="624" height="732" />
 
       {
         guides.length > 0 ? (
@@ -106,10 +110,26 @@ const blogData = {
   }
 
   .guides-inner {
+    position: relative;
     width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 20px;
+  }
+
+  /* the character reading on a beach chair: under the intro on phones, in the left column on desktop */
+  .beach {
+    display: block;
+    width: 140px;
+    height: auto;
+    margin: 4px 0 24px auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  @media (min-width: 960px) {
+    .guides-inner > :not(.beach) { max-width: calc(100% - 320px); }
+    .beach { position: absolute; left: 40px; top: 40px; width: 240px; margin: 0; }
   }
 
   h1 {
