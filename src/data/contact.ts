@@ -9,3 +9,5 @@ export const phoneDisplay = "050-9700059";
 export const phoneTel = "0509700059";
 export const whatsappLink = "https://wa.me/972509700059";
 export const email = "ilaysan159@gmail.com";
+/** FormSubmit alias for the address above, so the contact form does not carry the email in the page source. */
+export const formsubmitId = "2e140fc350a50fa7e0bcf4328e4d6ee3";

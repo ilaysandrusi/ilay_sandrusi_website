@@ -87,7 +87,11 @@ const article = {
         <p class="meta">
           {tag && <span class="tag">{tag}</span>}
           {draft && <span class="tag draft">טיוטה</span>}
-          <time datetime={isoDate}>{formatDate(date)}</time>
+          <span class="byline">
+            <span class="author">איליי סנדרוסי</span>
+            <span aria-hidden="true">·</span>
+            <time datetime={isoDate}>{formatDate(date)}</time>
+          </span>
         </p>
         <h1>{title}</h1>
         <p class="lead">{description}</p>
@@ -171,6 +175,13 @@ const article = {
     color: var(--ink-soft);
     font-size: 0.9rem;
     font-weight: 500;
+  }
+
+  /* name and date stay together when the line wraps on a phone */
+  .byline {
+    display: inline-flex;
+    gap: 8px;
+    white-space: nowrap;
   }
 
   .tag {

@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { alternateNames, email, instagramLink, phoneTel, siteDescription, whatsappLink } from "../data/contact";
+import { alternateNames, instagramLink, phoneTel, siteDescription, whatsappLink } from "../data/contact";
 
 interface Props {
   title: string;
@@ -39,7 +39,6 @@ const structuredData = {
       image: new URL(`${base}brand-mark.png`, Astro.site).href,
       jobTitle: "בונה אתרים",
       description: siteDescription,
-      email,
       telephone: phoneE164,
       // profiles only; WhatsApp is a way to reach him and stays in contactPoint
       sameAs: [instagramLink],
@@ -63,7 +62,6 @@ const structuredData = {
         "@type": "ContactPoint",
         contactType: "customer service",
         telephone: phoneE164,
-        email,
         availableLanguage: ["he"],
         url: whatsappLink,
       },
