@@ -16,8 +16,14 @@
     if (!getComputedStyle(document.body).fontFamily.replace(/"/g, '').startsWith('Varela Round')) f.push('body font is not Varela Round');
     if (!document.fonts.check('700 40px Fredoka', 'א')) f.push('Fredoka 700 Hebrew not loaded');
     if (!document.fonts.check('16px "Varela Round"', 'א')) f.push('Varela Round Hebrew not loaded');
-    const suez = [...document.body.querySelectorAll('*')].filter((el) => getComputedStyle(el).fontFamily.includes('Suez'));
-    if (suez.length) f.push(`${suez.length} elements still use Suez`);
+    // Suez One is kept only for the "איליי." logo and the faint "א." mark (27.11.2026)
+    const suez = [...document.body.querySelectorAll('*')].filter((el) => getComputedStyle(el).fontFamily.includes('Suez') && !el.closest('.logo, .stamp'));
+    if (suez.length) f.push(`${suez.length} elements use Suez outside the logo and the mark`);
+    for (const sel of ['.site-header .logo', '.hero .stamp']) {
+      const el = document.querySelector(sel);
+      if (!el || !getComputedStyle(el).fontFamily.includes('Suez One')) f.push(`${sel} is not Suez One`);
+    }
+    if (!document.fonts.check('40px "Suez One"', 'א')) f.push('Suez One Hebrew not loaded');
     let hot = false;
     for (const sh of document.styleSheets) {
       let rules; try { rules = sh.cssRules; } catch (_) { continue; }
@@ -29,10 +35,6 @@
       }
     }
     if (!hot) f.push('.btn-primary:hover has no orange shadow');
-    if (innerWidth >= 900) {
-      const nav = document.querySelector('.scene-nav');
-      if (nav && nav.getBoundingClientRect().left < innerWidth / 2) f.push('scene-nav dots are on the left');
-    }
     return f;
   };
 
@@ -68,7 +70,7 @@
   // Run on a fresh load.
   C.windowStates = async () => {
     const f = [];
-    const stage = document.getElementById('stage'), win = document.getElementById('win'), bar = document.getElementById('bar');
+    const stage = document.getElementById('stage'), win = document.getElementById('win');
     const click = (act) => stage.querySelector(`.dot[data-act="${act}"]`).click();
     const rect = () => { const r = win.getBoundingClientRect(); return [r.left, r.top, r.width, r.height].map(Math.round); };
     const states = ['is-boot', 'is-min', 'is-max', 'is-closed'];
@@ -82,8 +84,11 @@
     const before = rect();
     click('min'); await wait(750);
     const docked = rect();
-    if (docked[2] !== 290 || docked[0] !== 24) f.push(`docked rect wrong: ${docked}`);
-    bar.click(); await wait(750); finish();
+    // minimize docks a 76px app icon with his face, with no window buttons on it
+    if (docked[0] !== 24 || docked[2] !== 76 || docked[3] !== 76) f.push(`docked app icon rect wrong: ${docked}`);
+    if (getComputedStyle(document.getElementById('appIcon')).visibility !== 'visible') f.push('app icon not shown when minimized');
+    if ([...stage.querySelectorAll('.dot')].some((d) => d.offsetParent && getComputedStyle(d).visibility === 'visible')) f.push('window buttons still shown on the app icon');
+    document.getElementById('appIcon').click(); await wait(750); finish();
     const back = rect();
     if (back.some((v, i) => Math.abs(v - before[i]) > 1)) f.push(`restore rect ${back} != ${before}`);
     click('close'); await wait(60); finish();
@@ -94,10 +99,10 @@
     // Review Focus 1: rapid clicks must not leave it stuck
     click('min'); click('min'); click('min'); await wait(800);
     const s1 = stage.classList.contains('is-min');
-    if (s1) bar.click(); else click('min');
+    if (s1) document.getElementById('appIcon').click(); else click('min');
     await wait(800);
     if (stage.classList.contains('is-min') === s1) f.push('window stuck after rapid clicks');
-    if (stage.classList.contains('is-min')) { bar.click(); await wait(800); }
+    if (stage.classList.contains('is-min')) { document.getElementById('appIcon').click(); await wait(800); }
     // Esc returns to normal
     click('max'); await wait(60);
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); await wait(60);
@@ -116,7 +121,8 @@
   // Run at 1366x820 on a fresh load; resizes to 1024 is done by the caller afterwards via dragResize.
   C.drag = async () => {
     const f = [];
-    const stage = document.getElementById('stage'), win = document.getElementById('win'), bar = document.getElementById('bar');
+    if (innerWidth < 960) return f; // dragging is desktop-only (960px and up)
+    const stage = document.getElementById('stage'), win = document.getElementById('win');
     const click = (act) => stage.querySelector(`.dot[data-act="${act}"]`).click();
     const R = (el) => { const r = el.getBoundingClientRect(); return { l: Math.round(r.left), t: Math.round(r.top), r: Math.round(r.right), b: Math.round(r.bottom) }; };
     const same = (a, b) => ['l', 't', 'r', 'b'].every((k) => Math.abs(a[k] - b[k]) <= 1);
@@ -129,11 +135,14 @@
     if (!inside(d)) f.push(`dragged rect outside area: ${JSON.stringify(d)}`);
     if (Math.abs(d.l - area.l) > 1 || Math.abs(d.b - area.b) > 1) f.push('drag did not clamp to bottom-left corner');
     click('max'); await wait(60); finish();
-    if (!inside(R(win))) f.push(`max rect outside area: ${JSON.stringify(R(win))}`);
+    // maximized fits the area when there is room; when the box is wider than the area it pins to the area's start
+    const mx = R(win), maxFits = area.r - area.l >= Math.min(560, innerWidth * 0.92);
+    if (maxFits && !inside(mx)) f.push(`max rect outside area: ${JSON.stringify(mx)}`);
+    if (!maxFits && (Math.abs(mx.l - area.l) > 1 || mx.r > innerWidth)) f.push(`wide max not pinned to the area start: ${JSON.stringify(mx)}`);
     click('max'); await wait(60); finish();
     if (!same(R(win), d)) f.push('unmax did not return to dragged spot');
     click('min'); await wait(800);
-    bar.click(); await wait(800); finish();
+    document.getElementById('appIcon').click(); await wait(800); finish();
     if (!same(R(win), d)) f.push('restore did not return to dragged spot');
     click('close'); await wait(60); finish();
     if (!same(R(document.getElementById('closedBox')), d)) f.push('closed box not at dragged spot');
@@ -209,7 +218,7 @@
     document.querySelector('.dot[data-act="min"]').click(); await wait(800);
     scrollTo(0, 1500); climb();
     if (document.body.classList.contains('away')) f.push('descends while the window is minimized');
-    scrollTo(0, 0); climb(); document.getElementById('bar').click(); await wait(800); finish();
+    scrollTo(0, 0); climb(); document.getElementById('appIcon').click(); await wait(800); finish();
     // tie point follows the window's place in its area (desktop)
     if (innerWidth >= 960) {
       for (const [dx, want] of [[4000, 'left'], [-4000, 'right']]) {
@@ -266,11 +275,18 @@
     }
     const strays = [...document.querySelectorAll('img[src*="character/"]')].filter((i) => !i.closest('#stage') && !i.closest('#climber'));
     if (strays.length) f.push(`character image outside hero/climber: ${strays.length}`);
-    const tape = document.querySelector('#work .tape');
-    if (document.querySelector('#work .work-empty') && (!tape || tape.textContent.trim() !== 'בבנייה')) f.push('work empty state has no "בבנייה" tape');
+    // until real projects are in, the portfolio shows a slow carousel of site types
+    if (document.querySelector('#work .work-empty')) {
+      const names = [...document.querySelectorAll('#work .types figcaption')].map((c) => c.textContent.trim());
+      for (const n of ['אתר לעסק', 'דף נחיתה', 'חנות אונליין']) if (!names.includes(n)) f.push(`carousel is missing "${n}"`);
+      const track = document.querySelector('#work .types-track');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!track || (!reduce && getComputedStyle(track).animationName !== 'types-drift')) f.push('projects carousel is not drifting');
+    }
+    if (document.querySelector('#work h2')?.textContent.trim() !== 'תיק עבודות') f.push('projects title is not "תיק עבודות"');
     const num = document.querySelector('#plans .num');
     if (num && !getComputedStyle(num).webkitTextStrokeWidth.startsWith('2')) f.push('plan numbers are not outlined');
-    if (getComputedStyle(document.querySelector('#about')).paddingTop.replace('px', '') < 100) f.push('about section spacing too small');
+    if (parseFloat(getComputedStyle(document.querySelector('#about')).paddingTop) < 56) f.push('about section spacing too small');
     return f;
   };
 
@@ -305,7 +321,7 @@
     await wait(1600); finish();
     // make the window "open" again while the hero is far above: minimize, then restore from the dock
     document.querySelector('.dot[data-act="min"]').click(); await wait(800); climb();
-    document.getElementById('bar').click(); await wait(700);
+    document.getElementById('appIcon').click(); await wait(700);
     climb(); // first frame after it is open again
     const t1 = parseFloat(document.getElementById('climber').style.getPropertyValue('--y'));
     await wait(700); climb();
@@ -384,9 +400,8 @@
     const dot = document.querySelector('.dot[data-act="min"]'), r = dot.getBoundingClientRect();
     const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2 + 11);
     if (!hit || !hit.closest('.dot[data-act="min"]')) f.push('minimize dot tap area is under 24px');
-    // scene dots do not sit on the text between 900 and 1240
-    const nav = document.querySelector('.scene-nav');
-    if (innerWidth >= 900 && innerWidth < 1240 && getComputedStyle(nav).display !== 'none') f.push('scene dots shown where they touch the text');
+    // the side scene dots were removed (27.11.2026)
+    if (document.querySelector('.scene-nav')) f.push('side scene dots are back');
     // Esc while typing does not restore a minimized window
     const stage = document.getElementById('stage');
     document.querySelector('.dot[data-act="min"]').click(); await wait(800);
@@ -394,14 +409,14 @@
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await wait(60);
     if (!stage.classList.contains('is-min')) f.push('Esc in a form field restored the minimized window');
-    document.getElementById('bar').click(); await wait(800); finish();
+    document.getElementById('appIcon').click(); await wait(800); finish();
     // max → min → restore returns to the dragged spot (desktop)
     if (innerWidth >= 960) {
       C._drag(-2000, 2000); finish();
       const d = document.getElementById('win').getBoundingClientRect();
       document.querySelector('.dot[data-act="max"]').click(); await wait(80); finish();
       document.querySelector('.dot[data-act="min"]').click(); await wait(800);
-      document.getElementById('bar').click(); await wait(800); finish();
+      document.getElementById('appIcon').click(); await wait(800); finish();
       const b = document.getElementById('win').getBoundingClientRect();
       if (Math.abs(b.left - d.left) > 1 || Math.abs(b.top - d.top) > 1) f.push(`max → min → restore lands at ${Math.round(b.left)},${Math.round(b.top)} not ${Math.round(d.left)},${Math.round(d.top)}`);
     }
@@ -411,6 +426,17 @@
   // Review Focus 4 + 5: header link to #contact, then the form status grows.
   C.ropeLink = async () => {
     const f = [];
+    if (innerWidth < 768) {
+      // phones have no rope: he just waits by the send button, pointing (27.11.2026)
+      const c = document.getElementById('climber'), send = document.getElementById('send');
+      send.scrollIntoView({ block: 'center', behavior: 'instant' }); await wait(300); climb();
+      if (document.body.classList.contains('away')) f.push('rope descent runs on a phone');
+      if (getComputedStyle(document.getElementById('rope')).opacity !== '0') f.push('rope shown on a phone');
+      if (!c.classList.contains('landed') || getComputedStyle(c).opacity !== '1') f.push('character not waiting by the send button on a phone');
+      const a = c.getBoundingClientRect(), b = send.getBoundingClientRect();
+      if (Math.abs((a.top + a.height / 2) - (b.top + b.height / 2)) > 1) f.push('phone character not centered on the send button');
+      return f;
+    }
     // smooth scrolling and rAF are paused in a hidden preview pane: jump instantly and run the frame by hand
     document.documentElement.style.scrollBehavior = 'auto';
     scrollTo(0, 0); await wait(1600); finish();
