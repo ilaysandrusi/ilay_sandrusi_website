@@ -94,7 +94,7 @@ export const plans: Plan[] = [
   },
 ];
 
-/** Plan number as people read it: 1, 2, 3… (the big outline number on the card shows it as 01). */
+/** Plan number as people read it: 1, 2, 3… (also the big number on the card). */
 export const planNumber = (plan: Plan) => plans.indexOf(plan) + 1;
 
 export const planButtonText = (plan: Plan) => plan.cta ?? `דברו איתי על מסלול ${planNumber(plan)}`;

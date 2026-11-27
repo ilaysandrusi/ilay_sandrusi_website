@@ -296,8 +296,11 @@
       if (!track || (!reduce && getComputedStyle(track).animationName !== 'types-drift')) f.push('projects carousel is not drifting');
     }
     if (document.querySelector('#work h2')?.textContent.trim() !== 'תיק עבודות') f.push('projects title is not "תיק עבודות"');
-    const num = document.querySelector('#plans .num');
-    if (num && !getComputedStyle(num).webkitTextStrokeWidth.startsWith('2')) f.push('plan numbers are not outlined');
+    // plan numbers: one digit, no leading zero, in Bungee (27.11.2026)
+    const nums = [...document.querySelectorAll('#plans .num')];
+    if (nums.some((n) => !/^[1-9]$/.test(n.textContent.trim()))) f.push(`plan numbers are not single digits: ${nums.map((n) => n.textContent.trim()).join(', ')}`);
+    if (nums[0] && !getComputedStyle(nums[0]).fontFamily.replace(/"/g, '').startsWith('Bungee')) f.push('plan numbers are not in Bungee');
+    if (nums[0] && !document.fonts.check('52px Bungee', '1')) f.push('Bungee not loaded');
     if (parseFloat(getComputedStyle(document.querySelector('#about')).paddingTop) < 56) f.push('about section spacing too small');
     return f;
   };
