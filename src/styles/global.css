@@ -27,8 +27,8 @@
   --shadow-hot: 7px 7px 0 #ff4b26d9;
   --head: "Fredoka", "Varela Round", sans-serif;
   --body: "Varela Round", "Fredoka", sans-serif;
-  --sp-section: clamp(88px, 11vw, 150px);
-  --sp-section-lg: clamp(110px, 14vw, 190px);
+  --sp-section: clamp(56px, 7vw, 100px);
+  --sp-section-lg: clamp(68px, 8.5vw, 120px);
 }
 
 * {
