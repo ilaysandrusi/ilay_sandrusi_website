@@ -161,6 +161,13 @@ const img = (name: string) => `${base}character/${name}.png`;
   .app-icon { position: absolute; inset: 0; z-index: 4; display: block; padding: 0; border: 0; background: none; cursor: pointer; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.25s 0.3s; }
   .app-icon img { position: absolute; width: 168px; max-width: none; left: -48px; top: -6px; } /* crops the sprite to his head */
   .stage.is-min .app-icon { opacity: 1; visibility: visible; }
+  /* reopening from the icon: keep the face while it grows, then cross-fade to the window's content */
+  .win .bar, .win .grid { transition: opacity 0.3s var(--ease); }
+  .win.restoring .bar, .win.restoring .char, .win.restoring .badge { opacity: 0; transition: none; }
+  .win.restoring .app-icon { visibility: visible; transition: none; animation: icon-out 0.28s var(--ease) forwards; }
+  @keyframes icon-out { from { opacity: 1; } to { opacity: 0; } }
+  .win:not(.restoring) .app-icon { transition: opacity 0.25s, visibility 0s linear 0.25s; }
+  .stage.is-min .win:not(.restoring) .app-icon { transition: opacity 0.25s 0.3s; }
   .stage.is-min .win:hover { box-shadow: var(--shadow-hot); }
   .stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
 
@@ -194,6 +201,7 @@ const img = (name: string) => `${base}character/${name}.png`;
   @media (min-width: 960px) {
     .hero-grid { grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 90px); }
     .stage { height: 440px; }
+    .stage .b2 { right: auto; left: 228px; top: 92px; } /* sits just above-right of the orange blob, never touching */
     .stamp { font-size: 9rem; bottom: 40px; left: 8%; }
   }
   @media (prefers-reduced-motion: reduce) {

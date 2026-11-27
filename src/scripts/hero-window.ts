@@ -18,7 +18,7 @@ const OPEN_DELAY = 1200;
 const MORPH_MS = 620;
 const EASE = "cubic-bezier(.22,1,.36,1)";
 type State = "min" | "max" | "closed" | null;
-interface Box { left: number; top: number; width: number; height: number }
+interface Box { left: number; top: number; width: number; height: number; radius: string }
 
 export function initHeroWindow(): HeroWindow | null {
   const stage = document.getElementById("stage");
@@ -75,8 +75,9 @@ export function initHeroWindow(): HeroWindow | null {
 
   // ---- glide between two on-screen boxes; the classes hold the end state ----
   let morphing = false;
-  const box = (r: DOMRect): Box => ({ left: r.left, top: r.top, width: r.width, height: r.height });
-  const frame = (b: Box): Keyframe => ({ position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, bottom: "auto", margin: "0px" });
+  const box = (r: DOMRect): Box => ({ left: r.left, top: r.top, width: r.width, height: r.height, radius: getComputedStyle(win).borderRadius });
+  // the boxes are measured on screen, so the remembered offset (translate) must not be added on top during the glide
+  const frame = (b: Box): Keyframe => ({ position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, bottom: "auto", margin: "0px", translate: "0px 0px", borderRadius: b.radius });
   const dock = (): Box => {
     const r = win.getBoundingClientRect(); // already docked by the class
     return box(r);
@@ -110,11 +111,15 @@ export function initHeroWindow(): HeroWindow | null {
   const restore = (then: State) => {
     const from = box(win.getBoundingClientRect());
     win.style.transition = "none";
+    win.classList.add("restoring"); // the face stays on while it grows; the window's content fades in at the end
     stage.classList.remove("is-min");
     applyPos(); // back to the remembered spot, not the offset it had while maximized
     void win.offsetWidth;
     const to = box(win.getBoundingClientRect());
-    morph(from, to, () => { if (then) { stage.classList.add(`is-${then}`); applyPos(); } });
+    morph(from, to, () => {
+      win.classList.remove("restoring");
+      if (then) { stage.classList.add(`is-${then}`); applyPos(); }
+    });
   };
   const set = (s: State) => {
     if (morphing) return;
