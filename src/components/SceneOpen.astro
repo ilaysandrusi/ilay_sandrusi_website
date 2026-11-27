@@ -1,7 +1,7 @@
 ---
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const img = (name: string) => `${base}character/${name}.png`;
+import { publicPath } from "../data/site";
+
+const img = (name: string) => publicPath(`character/${name}.png`);
 ---
 
 <section class="scene hero" id="top" aria-labelledby="open-heading">
@@ -71,8 +71,8 @@ const img = (name: string) => `${base}character/${name}.png`;
     display: flex;
     align-items: center;
     overflow: hidden;
-    /* clear the fixed header (62px on phones, 74px from 768px) plus the phone's notch */
-    padding: calc(96px + env(safe-area-inset-top)) 0 80px;
+    /* clear the fixed header plus the phone's notch */
+    padding: calc(var(--header-h) + 34px + env(safe-area-inset-top)) 0 80px;
   }
   /* the faint "א." mark from the original hero, under the blobs */
   .stamp { position: absolute; bottom: calc(var(--bar-height) + 24px); left: 20px; z-index: 0; font: 400 4.5rem/1 "Suez One", serif; color: var(--ink); opacity: 0.08; pointer-events: none; user-select: none; }
@@ -97,21 +97,24 @@ const img = (name: string) => `${base}character/${name}.png`;
   .px { image-rendering: pixelated; image-rendering: crisp-edges; display: block; width: 100%; height: auto; }
   .blob { position: absolute; border: var(--line); border-radius: 40% 60% 55% 45%; pointer-events: none; }
 
-  .stage { position: relative; height: 380px; }
+  /*
+   * Window sizes. src/scripts/hero-window.ts reads these four values (it keeps the window inside the hero
+   * while dragging), so change them here only. The maximized width is also capped at 92vw in both places.
+   */
+  .stage { --win: 320px; --win-lift: 10px; --win-max-w: 560px; --win-max-h: 430px; position: relative; height: 380px; }
   .stage .b1 { width: 210px; height: 210px; background: var(--accent); left: 0; bottom: 10px; transform: rotate(18deg); }
   .stage .b2 { width: 130px; height: 130px; background: var(--paper); right: 10px; top: 0; box-shadow: var(--shadow); }
 
   /* ---------- the window ---------- */
   .win {
-    position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px;
+    position: absolute; left: 50%; top: 50%; width: var(--win); height: var(--win); margin: calc(var(--win) / -2 - var(--win-lift)) 0 0 calc(var(--win) / -2);
     background: var(--card); border: var(--line); border-radius: 18px; box-shadow: none; overflow: hidden; z-index: 3;
     transform-origin: 20% 100%;
     transition: transform 0.55s var(--ease), opacity 0.3s, width 0.55s var(--ease), height 0.55s var(--ease), margin 0.55s var(--ease), top 0.55s var(--ease), translate 0.55s var(--ease);
   }
   .bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; background: var(--card); position: relative; z-index: 2; user-select: none; }
   .bar .url { margin-left: 10px; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
-  .dot { color: var(--ink); width: 17px; height: 17px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform 0.15s, background 0.15s; }
-  .dot { position: relative; }
+  .dot { position: relative; color: var(--ink); width: 17px; height: 17px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform 0.15s, background 0.15s; }
   .dot::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; } /* 29px tap area */
   .dot svg { width: 62%; height: 62%; }
   .dot:hover { transform: scale(1.2); }
@@ -134,7 +137,7 @@ const img = (name: string) => `${base}character/${name}.png`;
   .away-sign small { display: block; font: 500 15px var(--body); color: var(--ink-soft); margin-top: 6px; }
 
   /* closed state */
-  .closed-box { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; margin: -170px 0 0 -160px; z-index: 4; pointer-events: none; transition: translate 0.55s var(--ease); }
+  .closed-box { position: absolute; left: 50%; top: 50%; width: var(--win); height: var(--win); margin: calc(var(--win) / -2 - var(--win-lift)) 0 0 calc(var(--win) / -2); z-index: 4; pointer-events: none; transition: translate 0.55s var(--ease); }
   .alone { position: absolute; right: 10px; bottom: 0; width: 150px; z-index: 1; opacity: 0; transform: translateY(20px); transition: opacity 0.35s 0.25s, transform 0.45s 0.25s var(--ease); pointer-events: none; }
   .closed-note { left: 0; top: 0; z-index: 6; max-width: 240px; border-radius: 20px; padding: 12px 16px; font-size: 16px; line-height: 1.35; box-shadow: var(--shadow-sm); opacity: 0; transform: scale(0.6); transform-origin: 90% 100%; transition: opacity 0.3s 0.4s, transform 0.45s 0.4s var(--pop); pointer-events: none; }
   .closed-note::before { width: 14px; height: 14px; right: 18px; bottom: -18px; }
@@ -170,7 +173,7 @@ const img = (name: string) => `${base}character/${name}.png`;
   .stage.is-min .win:hover { box-shadow: var(--shadow-hot); }
   .stage.is-min .badge, .stage.is-max .badge, .stage.is-closed .badge { opacity: 0; }
 
-  .stage.is-max .win { width: min(560px, 92vw); height: 430px; margin: -215px 0 0 calc(min(560px, 92vw) / -2); z-index: 10; }
+  .stage.is-max .win { width: min(var(--win-max-w), 92vw); height: var(--win-max-h); margin: calc(var(--win-max-h) / -2) 0 0 calc(min(var(--win-max-w), 92vw) / -2); z-index: 10; }
   .stage.is-max .char { width: 250px; }
   .stage.is-max .char img:first-child { display: none; }
   .stage.is-max .char img.excited { display: block; }
@@ -195,6 +198,7 @@ const img = (name: string) => `${base}character/${name}.png`;
   :global(body.away) .badge { opacity: 0; transform: scale(0.4); }
 
   @media (min-width: 768px) {
+    .hero { padding-top: calc(var(--header-h) + 22px + env(safe-area-inset-top)); }
     .stage.is-min .win { bottom: 24px; }
   }
   @media (min-width: 960px) {

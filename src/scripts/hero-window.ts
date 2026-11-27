@@ -30,7 +30,12 @@ export function initHeroWindow(): HeroWindow | null {
   if (!stage || !win || !bar || !reopen || !hero || !inWinChar) return null;
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // same breakpoint as the 960px @media in SceneOpen.astro (side-by-side layout, window can be dragged)
   const wide = matchMedia("(min-width: 960px)");
+  // window sizes come from the CSS variables on .stage in SceneOpen.astro, so they are set in one place
+  const stageCss = getComputedStyle(stage);
+  const cssPx = (name: string) => parseFloat(stageCss.getPropertyValue(name));
+  const WIN = cssPx("--win"), WIN_LIFT = cssPx("--win-lift"), WIN_MAX_W = cssPx("--win-max-w"), WIN_MAX_H = cssPx("--win-max-h");
   const listeners: Array<() => void> = [];
   const changed = () => listeners.forEach((cb) => cb());
   const has = (c: string) => stage.classList.contains(c);
@@ -43,11 +48,11 @@ export function initHeroWindow(): HeroWindow | null {
   const heroText = hero.querySelector<HTMLElement>(".hero-text");
   const placeDefault = () => {
     const st = stage.getBoundingClientRect(), b = area();
-    const homeLeft = st.left + st.width / 2 - 160, homeTop = st.top + st.height / 2 - 170; // .win margins
+    const homeLeft = st.left + st.width / 2 - WIN / 2, homeTop = st.top + st.height / 2 - WIN / 2 - WIN_LIFT; // .win margins
     const wantLeft = b.left + 60;
     const wantTop = (heroText ? heroText.getBoundingClientRect().top : homeTop) + 26;
-    pos.x = Math.min(b.right - 320 - homeLeft, Math.max(b.left - homeLeft, wantLeft - homeLeft));
-    pos.y = Math.min(b.bottom - 320 - homeTop, Math.max(b.top - homeTop, wantTop - homeTop));
+    pos.x = Math.min(b.right - WIN - homeLeft, Math.max(b.left - homeLeft, wantLeft - homeLeft));
+    pos.y = Math.min(b.bottom - WIN - homeTop, Math.max(b.top - homeTop, wantTop - homeTop));
   };
 
   const area = (): Area => {
@@ -64,7 +69,7 @@ export function initHeroWindow(): HeroWindow | null {
       tx = 0; ty = 0; // stacked layout: the window stays centered in its stage
     } else if (has("is-max")) {
       const st = stage.getBoundingClientRect(), b = area();
-      const W = Math.min(560, innerWidth * 0.92), H = 430;
+      const W = Math.min(WIN_MAX_W, innerWidth * 0.92), H = WIN_MAX_H; // 0.92: the 92vw cap in the CSS
       const cx = st.left + st.width / 2, cy = st.top + st.height / 2;
       tx = fit(b.left - (cx - W / 2), b.right - (cx + W / 2), pos.x);
       ty = fit(b.top - (cy - H / 2), b.bottom - (cy + H / 2), pos.y);
@@ -141,7 +146,7 @@ export function initHeroWindow(): HeroWindow | null {
   bar.addEventListener("click", () => { if (justDragged) return; if (has("is-min")) set(null); });
 
   // ---- drag by the bar, desktop only, inside the left half of the hero ----
-  let drag: { x: number; y: number; dx: number; dy: number; base: Box; moved: boolean } | null = null;
+  let drag: { x: number; y: number; dx: number; dy: number; base: Omit<Box, "radius">; moved: boolean } | null = null;
   const syncDragMode = () => {
     document.documentElement.classList.toggle("can-drag", wide.matches);
     if (!wide.matches) { pos.x = 0; pos.y = 0; userMoved = false; }

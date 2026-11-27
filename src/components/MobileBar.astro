@@ -1,5 +1,5 @@
 ---
-import { phoneTel, whatsappLink } from "../data/contact";
+import { phoneDisplay, phoneTel, whatsappLink } from "../data/contact";
 ---
 
 <div class="mobile-bar" role="navigation" aria-label="יצירת קשר מהיר">
@@ -12,7 +12,7 @@ import { phoneTel, whatsappLink } from "../data/contact";
   >
     וואטסאפ
   </a>
-  <a href={`tel:${phoneTel}`} class="bar-btn call" aria-label={`התקשרו ל-${phoneTel}`}>
+  <a href={`tel:${phoneTel}`} class="bar-btn call" aria-label={`התקשרו ל-${phoneDisplay}`}>
     התקשרו
   </a>
 </div>
@@ -38,6 +38,7 @@ import { phoneTel, whatsappLink } from "../data/contact";
     justify-content: center;
     min-height: 48px;
     border-radius: 12px;
+    font-family: var(--head);
     font-weight: 700;
     font-size: 1.02rem;
     border: var(--line);

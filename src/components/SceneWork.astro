@@ -1,9 +1,15 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { projects } from "../data/projects";
 
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
+// Project screenshots live in src/assets/work and are resized and converted at build time.
+const shots = import.meta.glob<{ default: ImageMetadata }>("../assets/work/*.{png,jpg,jpeg,webp,avif}", { eager: true });
+const shotFor = (file: string) => {
+  const found = shots[`../assets/work/${file}`];
+  if (!found) throw new Error(`Project image "${file}" not found in src/assets/work (check the name in src/data/projects.ts)`);
+  return found.default;
+};
 
 // Until real projects are in, a slow carousel shows the kinds of sites on offer.
 const types = [
@@ -16,8 +22,8 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
 ---
 
 <section class="scene work" id="work">
-  <div class="work-inner">
-    <h2>תיק עבודות</h2>
+  <div class="container">
+    <h2 class="scene-title">תיק עבודות</h2>
     <p class="lead">
       {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "כרגע אני עובד על פרויקטים שעוד סודיים, אז עדיין אין מה להראות כאן."}
     </p>
@@ -36,11 +42,11 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
                 <Tag class="piece-link" {...linkProps}>
                   <div class="shot">
                     {p.image ? (
-                      <img
-                        src={src(p.image)}
+                      <Image
+                        src={shotFor(p.image)}
                         alt={p.imageAlt || p.name}
-                        width="1200"
-                        height="750"
+                        widths={[600, 1200]}
+                        sizes="(min-width: 960px) 42rem, 100vw"
                         loading="lazy"
                       />
                     ) : (
@@ -149,28 +155,15 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
   .box-bar i:first-child { background: var(--accent); }
   .box-bar span { margin-left: 10px; font-size: 13px; color: var(--ink-soft); }
 
-  .work-inner {
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  h2 {
-    font-size: clamp(38px, 5.2vw, 68px);
-    line-height: 0.95;
-    margin-bottom: 16px;
-  }
-
   .lead {
-    color: #d8d1c3;
+    color: var(--on-ink-soft);
     font-size: 1.08rem;
     margin-bottom: 36px;
     max-width: 34ch;
   }
 
   .work-empty {
-    color: #d8d1c3;
+    color: var(--on-ink-soft);
     font-size: 1.05rem;
     max-width: 40ch;
     margin: 0 0 36px;
@@ -198,7 +191,7 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
   a.piece-link:hover .shot,
   a.piece-link:focus-visible .shot {
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+    box-shadow: var(--shadow-hot);
   }
 
   .shot {
@@ -269,6 +262,7 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
   }
 
   .kind {
+    font-family: var(--head);
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--accent);
@@ -276,7 +270,7 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
   }
 
   .text {
-    color: #d8d1c3;
+    color: var(--on-ink-soft);
     font-size: 1rem;
     max-width: 42ch;
   }
@@ -286,18 +280,12 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
     align-items: center;
     min-height: 44px;
     margin-top: 4px;
+    font-family: var(--head);
     font-weight: 700;
     color: var(--accent);
   }
 
-  @media (min-width: 768px) {
-    .work-inner {
-      padding: 0 32px;
-    }
-  }
-
   @media (min-width: 960px) {
-
     .works {
       gap: 56px;
       max-width: 42rem;

@@ -429,6 +429,7 @@
     if (innerWidth < 768) {
       // phones have no rope: he just waits by the send button, pointing (27.11.2026)
       const c = document.getElementById('climber'), send = document.getElementById('send');
+      await wait(1600); finish(); // he shows up only once the hero window has opened (1.2s after load)
       send.scrollIntoView({ block: 'center', behavior: 'instant' }); await wait(300); climb();
       if (document.body.classList.contains('away')) f.push('rope descent runs on a phone');
       if (getComputedStyle(document.getElementById('rope')).opacity !== '0') f.push('rope shown on a phone');

@@ -1,55 +1,13 @@
 ---
 import { whatsappLink } from "../data/contact";
-
-const plans = [
-  {
-    num: "01",
-    name: "אתר עד שאתם מרוצים",
-    tag: "מסלול בסיסי",
-    outcome: "אתר מוכן להשקה, בלי לעצור באמצע.",
-    text: "בונים עד שזה מרגיש נכון. אני בודק, ואז משחרר לאוויר.",
-    items: ["אפיון ועיצוב", "בנייה עד שאתם מרוצים", "בדיקות תוכנה", "השקה"],
-    fit: "ecommerce landing",
-    wa: "היי איליי, מעניין אותי מסלול 1, אתר עד שאתם מרוצים",
-  },
-  {
-    num: "02",
-    name: "אתר + תחזוקה חודשית",
-    tag: "עם ליווי",
-    outcome: "האתר חי, ואני נשאר איתו אחרי ההשקה.",
-    text: "מסלול 1, ועוד ליווי חודשי: בדיקות, עדכוני גרסה ותיקונים קטנים.",
-    items: ["הכול ממסלול 1", "בדיקות חודשיות", "עדכוני גרסה", "תיקונים קטנים"],
-    fit: "ecommerce landing",
-    wa: "היי איליי, מעניין אותי מסלול 2, אתר + תחזוקה חודשית",
-  },
-  {
-    num: "03",
-    name: "אתר + תחזוקה + אוטומציות",
-    tag: "מסלול מלא",
-    outcome: "אתר עם חיבורים שעובדים ברקע.",
-    text: "מסלול 2, ועוד חיבורים לטפסים, וואטסאפ ומערכות.",
-    items: ["הכול ממסלול 2", "אוטומציות וחיבורים", "טפסים והתראות", "תחזוקה שוטפת"],
-    fit: "ecommerce",
-    wa: "היי איליי, מעניין אותי מסלול 3, אתר + תחזוקה + אוטומציות",
-  },
-  {
-    num: "04",
-    name: "נתאים יחד",
-    tag: "מסלול אישי",
-    outcome: "רק מה שאתם צריכים, לפי היקף ותקציב.",
-    text: "נשב, נבין מה צריך, ונבנה מסלול משלכם.",
-    items: ["שיחת היכרות", "התאמה להיקף ולתקציב", "רק מה שצריך"],
-    fit: "unique",
-    featured: true,
-    wa: "היי איליי, לא מצאתי מסלול שמתאים. רוצה לבנות משהו משלנו.",
-  },
-];
+// the plans and the choices that open them are listed in src/data/plans.ts
+import { planButtonText, planNumber, plans, planWhatsappText } from "../data/plans";
 ---
 
 <section class="scene plans has-deco" id="plans" data-filter="">
   <span class="deco orange drift-a" aria-hidden="true" style="width:170px;height:170px;right:-70px;bottom:70px;transform:rotate(24deg)"></span>
-  <div class="plans-head">
-    <h2>בחרו מסלול והמשיכו בוואטסאפ</h2>
+  <div class="container plans-head">
+    <h2 class="scene-title">בחרו מסלול והמשיכו בוואטסאפ</h2>
     <p class="lead">אחרי הבחירה למעלה נפתחים רק המסלולים שמתאימים. השאר נשארים נעולים.</p>
     <p class="note">המחיר נקבע בשיחה. בדרך כלל פרויקט אחד בכל פעם.</p>
   </div>
@@ -59,10 +17,10 @@ const plans = [
       plans.map((p) => (
         <article
           class:list={["plan", "card", { featured: p.featured }]}
-          data-fit={p.fit}
+          data-fit={p.fit.join(" ")}
         >
           <span class="lock-badge">לא מתאים לבחירה שלכם</span>
-          <span class="num" aria-hidden="true">{p.num}</span>
+          <span class="num" aria-hidden="true">{String(planNumber(p)).padStart(2, "0")}</span>
           <span class="tag">{p.tag}</span>
           <h3>{p.name}</h3>
           <p class="outcome">{p.outcome}</p>
@@ -74,11 +32,11 @@ const plans = [
           </ul>
           <a
             class={p.featured ? "btn btn-primary" : "btn btn-ghost"}
-            href={`${whatsappLink}?text=${encodeURIComponent(p.wa)}`}
+            href={`${whatsappLink}?text=${encodeURIComponent(planWhatsappText(p))}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {p.featured ? "דברו איתי על מסלול אישי" : `דברו איתי על מסלול ${p.num}`}
+            {planButtonText(p)}
           </a>
           <p class="locked-hint">בחרו כיוון אחר למעלה כדי לפתוח את המסלול הזה</p>
         </article>
@@ -93,15 +51,7 @@ const plans = [
   }
 
   .plans-head {
-    max-width: var(--max-width);
-    margin: 0 auto 28px;
-    padding: 0 20px;
-  }
-
-  h2 {
-    font-size: clamp(38px, 5.2vw, 68px);
-    line-height: 0.95;
-    margin-bottom: 16px;
+    margin-bottom: 28px;
   }
 
   .lead {
@@ -116,6 +66,7 @@ const plans = [
   }
 
   .outcome {
+    font-family: var(--head);
     font-weight: 600;
     color: var(--ink);
     font-size: 1.02rem;
@@ -155,6 +106,7 @@ const plans = [
     inset-inline-end: 14px;
     background: var(--ink);
     color: var(--paper);
+    font-family: var(--head);
     font-size: 0.78rem;
     font-weight: 700;
     padding: 4px 10px;
@@ -216,6 +168,7 @@ const plans = [
   }
 
   .tag {
+    font-family: var(--head);
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--accent);
@@ -233,7 +186,7 @@ const plans = [
   }
 
   .featured > p {
-    color: #cfc6b8;
+    color: var(--on-ink-soft);
   }
 
   ul {
@@ -247,6 +200,7 @@ const plans = [
   li {
     position: relative;
     padding-inline-start: 20px;
+    font-family: var(--head);
     font-weight: 600;
     font-size: 0.92rem;
   }
@@ -271,6 +225,7 @@ const plans = [
   .locked-hint {
     display: none;
     margin-top: 8px;
+    font-family: var(--head);
     font-size: 0.85rem;
     color: var(--ink-soft);
     font-weight: 600;
@@ -281,7 +236,7 @@ const plans = [
   }
 
   .plan.featured .locked-hint {
-    color: #cfc6b8;
+    color: var(--on-ink-soft);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -294,11 +249,14 @@ const plans = [
     }
   }
 
-  @media (min-width: 900px) {
-    .plans-head {
-      padding: 0 32px;
+  /* same side margin as the heading above (the .container padding) */
+  @media (min-width: 768px) {
+    .rail {
+      padding-inline: 32px;
     }
+  }
 
+  @media (min-width: 900px) {
     .rail {
       display: grid;
       grid-template-columns: 1fr 1fr;

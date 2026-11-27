@@ -1,7 +1,5 @@
 import { getCollection } from "astro:content";
 
-export { instagramLink } from "./contact";
-
 /** Published guides, newest first. Drafts are included only in dev. */
 export async function getGuides() {
   const all = await getCollection("guides", ({ data }) => import.meta.env.DEV || !data.draft);

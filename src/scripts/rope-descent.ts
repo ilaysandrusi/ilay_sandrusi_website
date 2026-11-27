@@ -21,7 +21,7 @@ export function initRopeDescent(hero: HeroWindow): void {
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   // phones get no rope: he just waits by the send button, pointing
-  const phone = matchMedia("(max-width: 767px)");
+  const phone = matchMedia("(max-width: 767px)"); // the site's 768px breakpoint
   const still = () => reduce || phone.matches;
   let away = false, landed = false, raf = 0, exitT0 = -Infinity, first = true, landedAt = Infinity;
 

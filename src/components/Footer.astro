@@ -1,22 +1,17 @@
 ---
 import { instagramLink } from "../data/contact";
+import { sections } from "../data/nav";
+import { base, homePrefix, siteName } from "../data/site";
 
 const year = new Date().getFullYear();
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
-const home = path === base ? "" : base;
+const home = homePrefix(Astro.url.pathname);
 ---
 
 <footer>
   <div class="container footer-inner">
-    <p>© {year} איליי סנדרוסי</p>
+    <p>© {year} {siteName}</p>
     <nav>
-      <a href={`${home}#work`}>פרויקטים</a>
-      <a href={`${home}#about`}>עליי</a>
-      <a href={`${home}#choose`}>בחירה</a>
-      <a href={`${home}#plans`}>מסלולים</a>
-      <a href={`${home}#contact`}>פרטים</a>
+      {sections.map((s) => <a href={`${home}#${s.id}`}>{s.label}</a>)}
       <a href={`${base}blog/`}>בלוג</a>
       <a href={instagramLink} target="_blank" rel="noopener noreferrer">אינסטגרם</a>
     </nav>
@@ -43,6 +38,7 @@ const home = path === base ? "" : base;
     flex-wrap: wrap;
     gap: 24px;
     justify-content: center;
+    font-family: var(--head);
     font-weight: 600;
   }
 

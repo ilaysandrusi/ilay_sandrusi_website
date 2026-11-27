@@ -16,8 +16,6 @@ const guides = defineCollection({
     updated: z.coerce.date().optional(),
     /** Short topic label shown as a pill, e.g. "Claude Code". */
     tag: z.string().optional(),
-    /** Link to the Instagram post or reel this guide belongs to. */
-    instagram: z.string().url().optional(),
     /** Optional video shown under the title. Paths are inside /public, e.g. "media/my-guide/guide.mp4". */
     video: z.string().optional(),
     poster: z.string().optional(),

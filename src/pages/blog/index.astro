@@ -3,13 +3,13 @@ import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import MobileBar from "../../components/MobileBar.astro";
-import { formatDate, getGuides, instagramLink } from "../../data/guides";
+import { instagramLink } from "../../data/contact";
+import { formatDate, getGuides } from "../../data/guides";
+import { absUrl, base, pageTitle, publicPath } from "../../data/site";
 
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const guides = await getGuides();
 
-const abs = (path: string) => new URL(`${base}${path}`, Astro.site).href;
+const abs = (path: string) => absUrl(path, Astro.site);
 const siteUrl = abs("");
 const blogUrl = abs("blog/");
 const blogData = {
@@ -18,7 +18,7 @@ const blogData = {
     {
       "@type": "Blog",
       "@id": `${blogUrl}#blog`,
-      name: "בלוג · איליי סנדרוסי",
+      name: pageTitle("בלוג"),
       url: blogUrl,
       inLanguage: "he-IL",
       isPartOf: { "@id": `${siteUrl}#website` },
@@ -40,7 +40,7 @@ const blogData = {
 ---
 
 <Layout
-  title="בלוג · איליי סנדרוסי"
+  title={pageTitle("בלוג")}
   description="הבלוג של איליי סנדרוסי: מה שאני מראה באינסטגרם, כתוב כאן צעד אחרי צעד."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(blogData)} />
@@ -49,7 +49,7 @@ const blogData = {
     <span class="deco orange drift-a" aria-hidden="true" style="width:230px;height:230px;left:5%;top:300px;transform:rotate(18deg)"></span>
     <span class="deco paper drift-b" aria-hidden="true" style="width:100px;height:100px;left:27%;top:120px"></span>
     <span class="deco orange drift-b" aria-hidden="true" style="width:130px;height:130px;right:-50px;bottom:110px;transform:rotate(-14deg)"></span>
-    <div class="guides-inner">
+    <div class="container guides-inner">
       <h1>צעד אחרי צעד</h1>
       <p class="lead">
         מה שאני מראה באינסטגרם, כתוב כאן בנחת: מה עושים, ובאיזה סדר.
@@ -87,7 +87,7 @@ const blogData = {
       }
 
       <!-- phones: under the guides; desktop: placed in the left column by CSS -->
-      <img class="beach" src={`${base}character/beach.png`} alt="" aria-hidden="true" width="624" height="732" />
+      <img class="beach" src={publicPath("character/beach.png")} alt="" aria-hidden="true" width="624" height="732" />
 
       <a
         class="btn btn-ghost insta"
@@ -107,15 +107,11 @@ const blogData = {
 <style>
   .guides {
     min-height: 100svh;
-    padding: calc(62px + 56px + env(safe-area-inset-top)) 0 64px;
+    padding: calc(var(--header-h) + 56px + env(safe-area-inset-top)) 0 64px;
   }
 
   .guides-inner {
     position: relative;
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 20px;
   }
 
   /* the character reading on a beach chair: under the intro on phones, in the left column on desktop */
@@ -171,7 +167,7 @@ const blogData = {
   .guide:hover,
   .guide:focus-visible {
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+    box-shadow: var(--shadow-hot);
   }
 
   .guide:active {
@@ -198,6 +194,7 @@ const blogData = {
   }
 
   .tag {
+    font-family: var(--head);
     background: var(--ink);
     color: var(--paper);
     font-size: 0.8rem;
@@ -226,6 +223,7 @@ const blogData = {
     align-items: center;
     min-height: 36px;
     margin-top: 6px;
+    font-family: var(--head);
     font-weight: 700;
     color: var(--accent);
   }
@@ -261,12 +259,8 @@ const blogData = {
 
   @media (min-width: 768px) {
     .guides {
-      padding-top: calc(74px + 72px);
+      padding-top: calc(var(--header-h) + 72px);
       padding-bottom: 96px;
-    }
-
-    .guides-inner {
-      padding: 0 32px;
     }
 
     .guide {

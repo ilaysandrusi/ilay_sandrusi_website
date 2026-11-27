@@ -1,12 +1,11 @@
 ---
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+import { publicPath } from "../data/site";
 ---
 
 <div class="rope" id="rope" aria-hidden="true"></div>
 <div class="climber" id="climber" aria-hidden="true">
-  <img class="hang" src={`${base}character/rope_hang.png`} alt="" width="624" height="732" />
-  <img class="land" src={`${base}character/rope_point.png`} alt="" width="624" height="732" />
+  <img class="hang" src={publicPath("character/rope_hang.png")} alt="" width="624" height="732" />
+  <img class="land" src={publicPath("character/rope_point.png")} alt="" width="624" height="732" />
 </div>
 
 <style>

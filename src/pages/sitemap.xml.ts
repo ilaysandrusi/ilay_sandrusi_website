@@ -1,11 +1,10 @@
 import type { APIRoute } from "astro";
 import { getGuides } from "../data/guides";
+import { absUrl } from "../data/site";
 
 /** Built at deploy time, so every published guide is listed without manual edits. */
 export const GET: APIRoute = async ({ site }) => {
-  const rawBase = import.meta.env.BASE_URL;
-  const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-  const abs = (path: string) => new URL(`${base}${path}`, site).href;
+  const abs = (path: string) => absUrl(path, site);
   const guides = (await getGuides()).filter((g) => !g.data.draft);
 
   const day = (d: Date) => d.toISOString().slice(0, 10);

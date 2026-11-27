@@ -1,34 +1,13 @@
 ---
-const choices = [
-  {
-    id: "ecommerce",
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1.5 9h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/><circle cx="9.5" cy="19.5" r="1"/><circle cx="15" cy="19.5" r="1"/></svg>',
-    title: "חנות אונליין",
-    text: "קטלוג, סליקה וסדר מההתחלה.",
-    hint: "מסלולים 1–3",
-  },
-  {
-    id: "landing",
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5"/><path d="M8 16h4" stroke="#ff4b26"/></svg>',
-    title: "דף נחיתה",
-    text: "עמוד אחד שמביא פנייה.",
-    hint: "מסלולים 1–2",
-  },
-  {
-    id: "unique",
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L20 9l-4.3 3.8L17 18.5 12 15.6 7 18.5l1.3-5.7L4 9l5.8-.7z"/></svg>',
-    title: "משהו אחר",
-    text: "תגידו מה צריך ונבנה מסלול משלנו.",
-    hint: "מסלול 4 בלבד",
-  },
-];
+// the choices and the plans they open are listed in src/data/plans.ts
+import { choiceHint, choices } from "../data/plans";
 ---
 
 <section class="scene choose has-deco" id="choose">
   <span class="deco paper drift-b" aria-hidden="true" style="width:120px;height:120px;left:5%;bottom:70px"></span>
   <span class="deco orange drift-a" aria-hidden="true" style="width:130px;height:130px;left:-40px;top:80px;transform:rotate(-12deg)"></span>
-  <div class="choose-inner">
-    <h2>מה בונים עכשיו?</h2>
+  <div class="container">
+    <h2 class="scene-title">מה בונים עכשיו?</h2>
     <p class="lead">בחרו כיוון. אפתח רק את המסלולים שמתאימים.</p>
 
     <div class="choices" role="group" aria-label="בחירת סוג אתר">
@@ -39,17 +18,18 @@ const choices = [
             class="choice card reveal"
             style={`--reveal-delay: ${i * 80}ms`}
             data-choice={c.id}
+            data-label={c.title}
             aria-pressed="false"
           >
             <span class="ic" aria-hidden="true" set:html={c.icon} />
             <span class="choice-title">{c.title}</span>
             <span class="choice-text">{c.text}</span>
-            <span class="choice-hint">{c.hint}</span>
+            <span class="choice-hint">{choiceHint(c.id)}</span>
           </button>
         ))
       }
     </div>
-    <p class="filter-status" id="plans-filter-status" aria-live="polite"></p>
+    <p class="sr-only" id="plans-filter-status" aria-live="polite"></p>
   </div>
 </section>
 
@@ -58,12 +38,6 @@ const choices = [
   const plans = document.getElementById("plans");
   const status = document.getElementById("plans-filter-status");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const labels: Record<string, string> = {
-    ecommerce: "חנות אונליין",
-    landing: "דף נחיתה",
-    unique: "משהו אחר",
-  };
 
   const applyFilter = (choice: string | undefined) => {
     if (!plans) return;
@@ -96,7 +70,7 @@ const choices = [
 
     if (status) {
       status.textContent = choice
-        ? `נפתחו מסלולים ל${labels[choice] || choice}.`
+        ? `נפתחו מסלולים ל${[...buttons].find((b) => b.dataset.choice === choice)?.dataset.label ?? choice}.`
         : "";
     }
   };
@@ -147,19 +121,6 @@ const choices = [
     border-bottom: var(--line);
   }
 
-  .choose-inner {
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  h2 {
-    font-size: clamp(38px, 5.2vw, 68px);
-    line-height: 0.95;
-    margin-bottom: 16px;
-  }
-
   .ic { width: 52px; height: 52px; border: var(--line); border-radius: 14px; display: grid; place-items: center; background: var(--paper); color: var(--ink); margin-bottom: 10px; }
   .ic :global(svg) { width: 26px; height: 26px; }
   .choice:hover .ic, .choice.active .ic { background: var(--accent); color: #fff; }
@@ -202,12 +163,12 @@ const choices = [
     background: var(--ink);
     color: var(--paper);
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(255, 75, 38, 0.85);
+    box-shadow: var(--shadow-hot);
   }
 
   .choice:active {
     transform: translate(0, 0);
-    box-shadow: 3px 3px 0 rgba(255, 75, 38, 0.85);
+    box-shadow: 3px 3px 0 var(--accent-shadow);
   }
 
   .choice-title {
@@ -223,6 +184,7 @@ const choices = [
   }
 
   .choice-hint {
+    font-family: var(--head);
     margin-top: 6px;
     font-size: 0.85rem;
     font-weight: 700;
@@ -232,16 +194,6 @@ const choices = [
   .choice.active .choice-hint,
   .choice:hover .choice-hint {
     color: var(--accent);
-  }
-
-  .filter-status {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -255,10 +207,6 @@ const choices = [
   }
 
   @media (min-width: 768px) {
-    .choose-inner {
-      padding: 0 32px;
-    }
-
     .choices {
       display: grid;
       grid-template-columns: repeat(3, 1fr);

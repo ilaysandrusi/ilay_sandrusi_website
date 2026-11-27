@@ -1,18 +1,10 @@
 ---
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
-/** On the home page the links scroll; on any other page they lead back home. */
-const home = path === base ? "" : base;
-const inBlog = path.startsWith(`${base}blog/`);
+import { sections } from "../data/nav";
+import { base, homePrefix } from "../data/site";
 
-const links = [
-  { href: `${home}#work`, label: "פרויקטים" },
-  { href: `${home}#about`, label: "עליי" },
-  { href: `${home}#choose`, label: "בחירה" },
-  { href: `${home}#plans`, label: "מסלולים" },
-  { href: `${home}#contact`, label: "פרטים" },
-];
+/** On the home page the links scroll; on any other page they lead back home. */
+const home = homePrefix(Astro.url.pathname);
+const inBlog = Astro.url.pathname.startsWith(`${base}blog/`);
 ---
 
 <header class="site-header">
@@ -20,7 +12,7 @@ const links = [
     <a href={home || "#top"} class="logo" translate="no">איליי<span>.</span></a>
     <nav class="nav" id="nav" aria-label="ניווט ראשי">
       {
-        links.map((link) => <a href={link.href}>{link.label}</a>)
+        sections.map((s) => <a href={`${home}#${s.id}`}>{s.label}</a>)
       }
       <a href={`${home}#choose`} class="nav-cta">בחרו מה בונים</a>
       <a href={`${base}blog/`} aria-current={inBlog ? "page" : undefined}>בלוג</a>
@@ -75,7 +67,7 @@ const links = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 62px;
+    height: var(--header-h);
   }
 
   .logo {
@@ -90,7 +82,7 @@ const links = [
 
   .nav {
     position: absolute;
-    top: 62px;
+    top: var(--header-h);
     inset-inline: 0;
     display: none;
     flex-direction: column;
@@ -103,7 +95,9 @@ const links = [
     display: flex;
   }
 
+  /* weights above 400 are set in Fredoka: Varela Round has one weight, and the browser would fake a bold */
   .nav a {
+    font-family: var(--head);
     padding: 14px 4px;
     font-size: 1.15rem;
     font-weight: 500;
@@ -116,7 +110,6 @@ const links = [
 
   .nav-cta {
     color: var(--accent);
-    font-family: var(--head);
   }
 
   .menu-toggle {
@@ -149,10 +142,6 @@ const links = [
   }
 
   @media (min-width: 768px) {
-    .header-inner {
-      height: 74px;
-    }
-
     .nav {
       position: static;
       display: flex;
@@ -185,7 +174,7 @@ const links = [
       box-shadow: 0 3px 0 var(--accent);
     }
 
-    .nav-cta,
+    /* after the hover rule, so the call to action stays orange */
     .nav a.nav-cta {
       color: var(--accent);
     }

@@ -5,6 +5,7 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import MobileBar from "../../components/MobileBar.astro";
 import { formatDate, getGuides } from "../../data/guides";
+import { absUrl, base, pageTitle, siteName } from "../../data/site";
 
 export async function getStaticPaths() {
   const guides = await getGuides();
@@ -13,13 +14,11 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 const { Content } = await render(guide);
-const { title, description, date, updated, tag, instagram, draft, video, poster, videoDuration, videoNote, videoCredit } = guide.data;
+const { title, description, date, updated, tag, draft, video, poster, videoDuration, videoNote, videoCredit } = guide.data;
 
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const isoDate = date.toISOString().slice(0, 10);
 
-const abs = (path: string) => new URL(`${base}${path}`, Astro.site).href;
+const abs = (path: string) => absUrl(path, Astro.site);
 const siteUrl = abs("");
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 const person = { "@id": `${siteUrl}#person` }; // defined once in Layout.astro
@@ -73,11 +72,8 @@ const article = {
 };
 ---
 
-<Layout title={`${title} · איליי סנדרוסי`} description={description} ogType="article">
-  <Fragment slot="head">
-    {draft && <meta name="robots" content="noindex" />}
-    <script type="application/ld+json" set:html={JSON.stringify(article)} />
-  </Fragment>
+<Layout title={pageTitle(title)} description={description} ogType="article" noindex={draft}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(article)} />
   <Header />
   <main id="main" class="guide-page">
     <article class="guide-inner">
@@ -88,7 +84,7 @@ const article = {
           {tag && <span class="tag">{tag}</span>}
           {draft && <span class="tag draft">טיוטה</span>}
           <span class="byline">
-            <span class="author">איליי סנדרוסי</span>
+            <span class="author">{siteName}</span>
             <span aria-hidden="true">·</span>
             <time datetime={isoDate}>{formatDate(date)}</time>
           </span>
@@ -131,7 +127,7 @@ const article = {
 <style>
   .guide-page {
     min-height: 100svh;
-    padding: calc(62px + 32px + env(safe-area-inset-top)) 0 64px;
+    padding: calc(var(--header-h) + 32px + env(safe-area-inset-top)) 0 64px;
   }
 
   .guide-inner {
@@ -146,6 +142,7 @@ const article = {
     align-items: center;
     min-height: 44px;
     margin-bottom: 20px;
+    font-family: var(--head);
     font-weight: 700;
     color: var(--ink-soft);
     transition: color var(--motion) var(--ease);
@@ -424,43 +421,14 @@ const article = {
     text-align: start;
   }
 
-  .end {
-    margin-top: 56px;
-    padding: 26px 22px;
-  }
-
-  .end h2 {
-    font-size: 1.6rem;
-    margin-bottom: 4px;
-  }
-
-  .end p {
-    color: var(--ink-soft);
-    margin-bottom: 18px;
-  }
-
-  .end-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
   @media (min-width: 768px) {
     .guide-page {
-      padding-top: calc(74px + 48px);
+      padding-top: calc(var(--header-h) + 48px);
       padding-bottom: 96px;
     }
 
     .guide-inner {
       padding: 0 32px;
-    }
-
-    .end {
-      padding: 32px;
-    }
-
-    .end-actions {
-      flex-direction: row;
     }
   }
 </style>

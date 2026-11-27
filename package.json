@@ -9,12 +9,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "test:browser": "node tests/run-checks.mjs"
   },
   "dependencies": {
     "@fontsource/fredoka": "^5.3.0",
     "@fontsource/suez-one": "^5.3.0",
     "@fontsource/varela-round": "^5.3.0",
     "astro": "^7.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "playwright": "^1.65.1",
+    "typescript": "^6.0.3"
   }
 }
