@@ -97,7 +97,8 @@ export const plans: Plan[] = [
 /** Plan number as people read it: 1, 2, 3… (also the big number on the card). */
 export const planNumber = (plan: Plan) => plans.indexOf(plan) + 1;
 
-export const planButtonText = (plan: Plan) => plan.cta ?? `דברו איתי על מסלול ${planNumber(plan)}`;
+/** The card already shows the plan number, so the button just says "the plan"; the WhatsApp message names it. */
+export const planButtonText = (plan: Plan) => plan.cta ?? "דברו איתי על המסלול";
 
 export const planWhatsappText = (plan: Plan) =>
   plan.wa ?? `היי איליי, מעניין אותי מסלול ${planNumber(plan)}, ${plan.name}`;
