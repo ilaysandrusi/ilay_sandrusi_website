@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+
+// GitHub Pages serves this file (dist/404.html) for every address that does not exist.
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+---
+
+<Layout
+  title="הדף לא נמצא · איליי סנדרוסי"
+  description="הדף שחיפשתם לא קיים. מכאן אפשר לחזור לדף הבית או לבלוג."
+>
+  <meta slot="head" name="robots" content="noindex" />
+  <Header />
+  <main id="main" class="lost">
+    <div class="lost-inner">
+      <div class="text">
+        <p class="eyebrow">404</p>
+        <h1>חיפשתי, אין פה כלום.</h1>
+        <p class="lead">בדקתי פעמיים. הדף שחיפשתם לא קיים, אבל כל השאר במקום.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href={base}>לדף הבית</a>
+          <a class="btn btn-ghost" href={`${base}blog/`}>לבלוג</a>
+        </div>
+      </div>
+      <img class="px" src={`${base}character/think.png`} alt="" width="624" height="732" />
+    </div>
+  </main>
+  <Footer />
+  <MobileBar />
+</Layout>
+
+<style>
+  .lost {
+    min-height: 100svh;
+    padding: calc(62px + 56px + env(safe-area-inset-top)) 0 64px;
+    display: flex;
+    align-items: center;
+  }
+
+  .lost-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 10vw, 4rem);
+    margin-bottom: 10px;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    max-width: 36ch;
+    margin-bottom: 32px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .px {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    display: block;
+    width: 160px;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .lost-inner {
+      grid-template-columns: 1fr auto;
+      gap: 56px;
+    }
+
+    .px {
+      width: 240px;
+    }
+  }
+</style>

@@ -4,7 +4,7 @@ export const instagramLink = "https://www.instagram.com/ilaybuilds/";
 export const alternateNames = ["Ilay Sandrusi", "ILAYBUILDS"];
 /** One fixed description of the person and the business, the same on every page (structured data). */
 export const siteDescription =
-  "איליי סנדרוסי. אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.";
+  "אני איליי. בונה אתרים, דפי נחיתה וחנויות אונליין לעסקים. בודק תוכנה במקצוע, אז אני בונה בדיוק את מה שאחרים מפספסים.";
 export const phoneDisplay = "050-9700059";
 export const phoneTel = "0509700059";
 export const whatsappLink = "https://wa.me/972509700059";

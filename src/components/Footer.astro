@@ -1,4 +1,6 @@
 ---
+import { instagramLink } from "../data/contact";
+
 const year = new Date().getFullYear();
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
@@ -16,6 +18,7 @@ const home = path === base ? "" : base;
       <a href={`${home}#plans`}>מסלולים</a>
       <a href={`${home}#contact`}>פרטים</a>
       <a href={`${base}blog/`}>בלוג</a>
+      <a href={instagramLink} target="_blank" rel="noopener noreferrer">אינסטגרם</a>
     </nav>
   </div>
 </footer>
