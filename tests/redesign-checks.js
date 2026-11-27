@@ -343,6 +343,71 @@
     return f;
   };
 
+  // ---------- round 2: land as soon as the button is visible ----------
+  C.landsWhenVisible = async () => {
+    const f = [];
+    if (!window.__climbForTest) return ['__climbForTest not exposed'];
+    document.documentElement.style.scrollBehavior = 'auto';
+    await wait(1500); finish();
+    scrollTo(0, 200); climb(); await wait(700);
+    const send = document.getElementById('send'), c = document.getElementById('climber');
+    const bar = document.querySelector('.mobile-bar');
+    const safe = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect().height : 0;
+    const H = document.documentElement.scrollHeight - innerHeight;
+    let visibleAt = null;
+    for (let y = document.getElementById('contact').offsetTop - innerHeight; y <= H; y += 10) {
+      scrollTo(0, y); climb();
+      if (send.getBoundingClientRect().bottom <= innerHeight - safe - 8) { visibleAt = y; break; }
+    }
+    if (visibleAt === null) return ['send button never fully visible'];
+    scrollTo(0, Math.min(H, visibleAt + 50)); climb();
+    if (!c.classList.contains('landed')) f.push(`not landed 50px after the button is fully visible (scroll ${visibleAt}, page end ${H})`);
+    const cr = c.getBoundingClientRect();
+    if (cr.bottom > innerHeight - safe + 1) f.push('landed climber is cut by the bottom of the screen');
+    return f;
+  };
+
+  // ---------- round 2: small findings ----------
+  C.smallFixes = async () => {
+    const f = [];
+    await wait(1500); finish();
+    const h1 = document.querySelector('h1');
+    if (!/אותי\s+קודם/.test(h1.textContent)) f.push(`h1 text reads "${h1.textContent.trim()}"`);
+    // faux bold: bold text set in the one-weight body font
+    const faux = [...document.querySelectorAll('body *')].filter((el) => {
+      if (!el.childNodes.length || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return false;
+      const cs = getComputedStyle(el);
+      return Number(cs.fontWeight) >= 600 && cs.fontFamily.replace(/"/g, '').startsWith('Varela Round');
+    });
+    if (faux.length) f.push(`faux bold in Varela Round: ${[...new Set(faux.map((e) => e.tagName.toLowerCase() + '.' + [...e.classList].join('.')))].slice(0, 8).join(', ')}`);
+    // window dots: at least 24px to tap
+    const dot = document.querySelector('.dot[data-act="min"]'), r = dot.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2 + 11);
+    if (!hit || !hit.closest('.dot[data-act="min"]')) f.push('minimize dot tap area is under 24px');
+    // scene dots do not sit on the text between 900 and 1240
+    const nav = document.querySelector('.scene-nav');
+    if (innerWidth >= 900 && innerWidth < 1240 && getComputedStyle(nav).display !== 'none') f.push('scene dots shown where they touch the text');
+    // Esc while typing does not restore a minimized window
+    const stage = document.getElementById('stage');
+    document.querySelector('.dot[data-act="min"]').click(); await wait(800);
+    const input = document.querySelector('#contact-form input[name="name"]');
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await wait(60);
+    if (!stage.classList.contains('is-min')) f.push('Esc in a form field restored the minimized window');
+    document.getElementById('bar').click(); await wait(800); finish();
+    // max → min → restore returns to the dragged spot (desktop)
+    if (innerWidth >= 960) {
+      C._drag(-2000, 2000); finish();
+      const d = document.getElementById('win').getBoundingClientRect();
+      document.querySelector('.dot[data-act="max"]').click(); await wait(80); finish();
+      document.querySelector('.dot[data-act="min"]').click(); await wait(800);
+      document.getElementById('bar').click(); await wait(800); finish();
+      const b = document.getElementById('win').getBoundingClientRect();
+      if (Math.abs(b.left - d.left) > 1 || Math.abs(b.top - d.top) > 1) f.push(`max → min → restore lands at ${Math.round(b.left)},${Math.round(b.top)} not ${Math.round(d.left)},${Math.round(d.top)}`);
+    }
+    return f;
+  };
+
   // Review Focus 4 + 5: header link to #contact, then the form status grows.
   C.ropeLink = async () => {
     const f = [];

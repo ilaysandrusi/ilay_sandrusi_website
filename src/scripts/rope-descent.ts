@@ -41,10 +41,14 @@ export function initRopeDescent(hero: HeroWindow): void {
     return { x, pageY: b.top + sY + b.height / 2 - ch * 0.5 };
   };
 
+  // the mobile WhatsApp bar covers the bottom of the screen on phones
+  const bottomBar = document.querySelector<HTMLElement>(".mobile-bar");
+  const safeBottom = () => (bottomBar && getComputedStyle(bottomBar).display !== "none" ? bottomBar.getBoundingClientRect().height : 0);
+
   const placeReduced = () => {
     const cw = climber.offsetWidth, ch = climber.offsetHeight;
     const b = send.getBoundingClientRect();
-    const show = b.bottom > 0 && b.top < innerHeight;
+    const show = hero.isOpen() && b.bottom > 0 && b.top < innerHeight;
     climber.classList.toggle("rm-show", show);
     setLanded(show);
     if (!show) return;
@@ -75,7 +79,8 @@ export function initRopeDescent(hero: HeroWindow): void {
 
     const land = landing(cw, ch, sY);
     const maxScroll = document.documentElement.scrollHeight - vh;
-    let yEnd = Math.min(vh - ch - 96, Math.max(120, vh * 0.58));
+    // touch down as soon as he and the button both fit on screen (lowest spot above the bottom edge / bar)
+    let yEnd = Math.max(84, vh - safeBottom() - 8 - ch);
     let sEnd = land.pageY - yEnd;
     if (sEnd > maxScroll) { sEnd = maxScroll; yEnd = land.pageY - maxScroll; }
     sEnd = Math.max(sEnd, s0 + 1);

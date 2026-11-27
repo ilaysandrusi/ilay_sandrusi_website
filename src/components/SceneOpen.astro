@@ -8,7 +8,7 @@ const img = (name: string) => `${base}character/${name}.png`;
   <div class="container hero-grid">
     <div class="hero-text">
       <p class="eyebrow">איליי סנדרוסי</p>
-      <h1 id="open-heading">תכירו אותי<em>קודם.</em></h1>
+      <h1 id="open-heading">תכירו אותי <em>קודם.</em></h1>
       <p class="lead">אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים.</p>
       <a href="#about" class="btn btn-primary">
         הכירו אותי
@@ -103,6 +103,8 @@ const img = (name: string) => `${base}character/${name}.png`;
   .bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; background: var(--card); position: relative; z-index: 2; user-select: none; }
   .bar .url { margin-left: 10px; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
   .dot { color: var(--ink); width: 17px; height: 17px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform 0.15s, background 0.15s; }
+  .dot { position: relative; }
+  .dot::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; } /* 29px tap area */
   .dot svg { width: 62%; height: 62%; }
   .dot:hover { transform: scale(1.2); }
   .dot.close { background: var(--accent); color: #fff; }
@@ -181,6 +183,6 @@ const img = (name: string) => `${base}character/${name}.png`;
     .stage { height: 440px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-text > *, .win, .badge, .mx-note, .away-sign, .alone, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
+    .hero-text > *, .win, .win .char, .dot, .badge, .mx-note, .away-sign, .alone, .closed-note, .reopen, .closed-box { animation: none !important; transition: none !important; }
   }
 </style>

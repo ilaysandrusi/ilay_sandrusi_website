@@ -99,6 +99,7 @@ export function initHeroWindow(): HeroWindow | null {
     const from = box(win.getBoundingClientRect());
     win.style.transition = "none";
     stage.classList.remove("is-min");
+    applyPos(); // back to the remembered spot, not the offset it had while maximized
     void win.offsetWidth;
     const to = box(win.getBoundingClientRect());
     morph(from, to, () => { if (then) { stage.classList.add(`is-${then}`); applyPos(); } });
@@ -176,7 +177,12 @@ export function initHeroWindow(): HeroWindow | null {
     changed();
   });
   reopen.addEventListener("click", () => set(null));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(null); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const t = e.target;
+    if (t instanceof HTMLElement && (t.closest("input, textarea, select") || t.isContentEditable)) return; // typing in the form
+    set(null);
+  });
 
   // ---- open after the headline had a moment ----
   if (reduce) {

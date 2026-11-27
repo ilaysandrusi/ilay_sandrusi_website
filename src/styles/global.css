@@ -254,10 +254,17 @@ summary:focus-visible {
   border-color: var(--accent);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1240px) {
   .scene-nav {
     display: flex;
   }
+}
+
+/* Varela Round has a single weight: anything bold is set in Fredoka instead of a faked bold */
+b, strong,
+.skip-link, .choice-hint, .lock-badge, .tag, .outcome, .locked-hint, .plan li,
+.form-status, .bar-btn, .kind, .go, .alt a, .nav-cta, footer nav a, .site-header .nav a {
+  font-family: var(--head);
 }
 
 .reveal {
