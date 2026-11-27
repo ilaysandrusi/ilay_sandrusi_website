@@ -16,7 +16,7 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
 ---
 
 <section class="scene work" id="work">
-  <div class:list={["work-inner", { "is-empty": projects.length === 0 }]}>
+  <div class="work-inner">
     <h2>תיק עבודות</h2>
     <p class="lead">
       {projects.length > 0 ? "אתרים שכבר עלו לאוויר." : "כרגע אני עובד על פרויקטים שעוד סודיים, אז עדיין אין מה להראות כאן."}
@@ -290,12 +290,6 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
     color: var(--accent);
   }
 
-  .work-cta {
-    margin-top: 40px;
-    width: 100%;
-    max-width: 320px;
-  }
-
   @media (min-width: 768px) {
     .work-inner {
       padding: 0 32px;
@@ -307,10 +301,6 @@ const track = [...set, ...set];     // two sets: the loop moves by exactly one s
     .works {
       gap: 56px;
       max-width: 42rem;
-    }
-
-    .work-cta {
-      width: auto;
     }
   }
 

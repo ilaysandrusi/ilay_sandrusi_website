@@ -78,10 +78,6 @@ export function initHeroWindow(): HeroWindow | null {
   const box = (r: DOMRect): Box => ({ left: r.left, top: r.top, width: r.width, height: r.height, radius: getComputedStyle(win).borderRadius });
   // the boxes are measured on screen, so the remembered offset (translate) must not be added on top during the glide
   const frame = (b: Box): Keyframe => ({ position: "fixed", left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px`, bottom: "auto", margin: "0px", translate: "0px 0px", borderRadius: b.radius });
-  const dock = (): Box => {
-    const r = win.getBoundingClientRect(); // already docked by the class
-    return box(r);
-  };
   const morph = (from: Box, to: Box, done?: () => void) => {
     morphing = true;
     win.style.transition = "none";
@@ -106,7 +102,7 @@ export function initHeroWindow(): HeroWindow | null {
     win.style.transition = "none";
     stage.classList.remove("is-max", "is-closed");
     stage.classList.add("is-min");
-    morph(from, dock());
+    morph(from, box(win.getBoundingClientRect())); // the class has already docked it
   };
   const restore = (then: State) => {
     const from = box(win.getBoundingClientRect());
