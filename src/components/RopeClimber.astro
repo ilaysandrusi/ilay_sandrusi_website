@@ -12,12 +12,12 @@ const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 <style>
   .rope {
     position: fixed; top: 0; left: 0; width: 4px; height: 0; margin-left: -2px; z-index: 40; pointer-events: none; opacity: 0;
-    transform-origin: 50% 0;
+    transform-origin: 50% 0; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r, 0rad));
     background: repeating-linear-gradient(180deg, #d8c39a 0 6px, #b9a276 6px 9px);
     border-inline: 1.5px solid var(--ink);
   }
   .rope::before { content: ""; position: absolute; top: -5px; left: 50%; width: 12px; height: 8px; margin-left: -6px; background: var(--ink); border-radius: 3px; }
-  .climber { position: fixed; top: 0; left: 0; width: 118px; z-index: 41; pointer-events: none; opacity: 0; transform-origin: 75% 0; will-change: transform, top; }
+  .climber { position: fixed; top: 0; left: 0; width: 118px; z-index: 41; pointer-events: none; opacity: 0; transform-origin: 75% 0; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r, 0deg)); will-change: transform; }
   .climber img { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; }
   .climber .land { display: none; }
   :global(body.away) .climber, :global(body.away) .rope { opacity: 1; }

@@ -13,21 +13,63 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 const { Content } = await render(guide);
-const { title, description, date, tag, instagram, draft, video, poster, videoNote, videoCredit } = guide.data;
+const { title, description, date, updated, tag, instagram, draft, video, poster, videoDuration, videoNote, videoCredit } = guide.data;
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const isoDate = date.toISOString().slice(0, 10);
 
+const abs = (path: string) => new URL(`${base}${path}`, Astro.site).href;
+const siteUrl = abs("");
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const person = { "@id": `${siteUrl}#person` }; // defined once in Layout.astro
+const imageUrl = poster ? abs(poster) : abs("og-image.png");
+
 const article = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: title,
-  description,
-  datePublished: isoDate,
-  inLanguage: "he-IL",
-  url: new URL(Astro.url.pathname, Astro.site).href,
-  author: { "@type": "Person", name: "איליי סנדרוסי", url: new URL(base, Astro.site).href },
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": `${pageUrl}#article`,
+      headline: title,
+      description,
+      image: imageUrl,
+      datePublished: isoDate,
+      dateModified: (updated ?? date).toISOString().slice(0, 10),
+      inLanguage: "he-IL",
+      url: pageUrl,
+      mainEntityOfPage: pageUrl,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      author: person,
+      publisher: person,
+      ...(video && poster ? { video: { "@id": `${pageUrl}#video` } } : {}),
+    },
+    // Google needs a thumbnail for a video, so the video is described only when there is a poster
+    ...(video && poster
+      ? [
+          {
+            "@type": "VideoObject",
+            "@id": `${pageUrl}#video`,
+            name: title,
+            description,
+            thumbnailUrl: abs(poster),
+            contentUrl: abs(video),
+            uploadDate: isoDate,
+            ...(videoDuration ? { duration: videoDuration } : {}),
+            inLanguage: "he-IL",
+          },
+        ]
+      : []),
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "דף הבית", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "בלוג", item: abs("blog/") },
+        { "@type": "ListItem", position: 3, name: title },
+      ],
+    },
+  ],
 };
 ---
 

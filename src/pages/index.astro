@@ -10,6 +10,7 @@ import SceneContact from "../components/SceneContact.astro";
 import Footer from "../components/Footer.astro";
 import MobileBar from "../components/MobileBar.astro";
 import RopeClimber from "../components/RopeClimber.astro";
+import { siteDescription } from "../data/contact";
 
 const scenes = [
   { href: "#top", label: "פתיחה" },
@@ -23,7 +24,7 @@ const scenes = [
 
 <Layout
   title="איליי סנדרוסי · בניית אתרים"
-  description="איליי סנדרוסי. אני אוהב שהכול יושב במקום - גם בעיצוב וגם במה שקורה אחרי שלוחצים."
+  description={siteDescription}
 >
   <Header />
   <nav class="scene-nav" aria-label="ניווט בין סצנות">

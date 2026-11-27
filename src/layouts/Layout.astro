@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { email, phoneTel, whatsappLink } from "../data/contact";
+import { alternateNames, email, instagramLink, phoneTel, siteDescription, whatsappLink } from "../data/contact";
 
 interface Props {
   title: string;
@@ -26,20 +26,23 @@ const structuredData = {
       name: "איליי סנדרוסי",
       url: siteUrl,
       inLanguage: "he-IL",
-      description,
+      // the site, the person and the service keep one description on every page; the page's own text is in <meta name="description">
+      description: siteDescription,
       publisher: { "@id": `${siteUrl}#person` },
     },
     {
       "@type": "Person",
       "@id": `${siteUrl}#person`,
       name: "איליי סנדרוסי",
+      alternateName: alternateNames,
       url: siteUrl,
       image: new URL(`${base}brand-mark.png`, Astro.site).href,
       jobTitle: "בונה אתרים",
-      description,
+      description: siteDescription,
       email,
       telephone: phoneE164,
-      sameAs: [whatsappLink],
+      // profiles only; WhatsApp is a way to reach him and stays in contactPoint
+      sameAs: [instagramLink],
     },
     {
       "@type": "ProfessionalService",
@@ -48,7 +51,7 @@ const structuredData = {
       url: siteUrl,
       image: ogImage,
       inLanguage: "he-IL",
-      description,
+      description: siteDescription,
       provider: { "@id": `${siteUrl}#person` },
       areaServed: {
         "@type": "Country",
@@ -93,9 +96,9 @@ const structuredData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" href={`${base}brand-mark.png`} />
+    <link rel="icon" type="image/png" sizes="96x96" href={`${base}icon-96.png`} />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-    <link rel="apple-touch-icon" href={`${base}brand-mark.png`} />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

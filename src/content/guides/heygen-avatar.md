@@ -5,6 +5,7 @@ date: 2026-11-24
 tag: "מדריך למתחילים"
 video: "media/heygen-avatar/guide.mp4"
 poster: "media/heygen-avatar/poster.jpg"
+videoDuration: "PT1M32S"
 videoNote: "הסרטון (כדקה וחצי, עם מוזיקת רקע) מציג את המסכים באותו סדר. אני ממליץ לצפות בו קודם, ואז לעבור על השלבים בכתב."
 videoCredit: 'מוזיקה: "Local Forecast – Elevator" מאת Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), ברישיון <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.'
 ---

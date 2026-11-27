@@ -186,12 +186,12 @@
     let prev = null, maxJ = 0, tieErr = 0;
     for (let y = 200; y <= H; y += 10) {
       scrollTo(0, y); climb();
-      const L = parseFloat(c.style.left);
+      const L = parseFloat(c.style.getPropertyValue('--x'));
       if (prev !== null) maxJ = Math.max(maxJ, Math.abs(L - prev));
       prev = L;
       if (!c.classList.contains('landed') && parseFloat(rope.style.height) > 0) {
         const t = tieExpected();
-        tieErr = Math.max(tieErr, Math.abs(parseFloat(rope.style.left) - t.x), Math.abs(parseFloat(rope.style.top) - t.y));
+        tieErr = Math.max(tieErr, Math.abs(parseFloat(rope.style.getPropertyValue('--x')) - t.x), Math.abs(parseFloat(rope.style.getPropertyValue('--y')) - t.y));
       }
     }
     if (maxJ > 4) f.push(`climber jumps ${maxJ.toFixed(1)}px sideways`);
@@ -201,7 +201,7 @@
     const dc = Math.abs((cr.top + cr.height / 2) - (b.top + b.height / 2));
     if (dc > 1) f.push(`landing off center by ${dc.toFixed(1)}px`);
     if (innerWidth >= 1200) {
-      const gap = b.left - (parseFloat(c.style.left) + c.offsetWidth);
+      const gap = b.left - (parseFloat(c.style.getPropertyValue('--x')) + c.offsetWidth);
       if (Math.abs(gap - 14) > 1) f.push(`gap to button is ${gap.toFixed(1)}px`);
     }
     // only while the window is open
@@ -216,7 +216,7 @@
         C._drag(dx, 0); finish();
         scrollTo(0, 200); climb(); await wait(700); climb();
         const w = document.getElementById('win').getBoundingClientRect();
-        const fromEdge = want === 'left' ? parseFloat(rope.style.left) - w.left : w.right - parseFloat(rope.style.left);
+        const fromEdge = want === 'left' ? parseFloat(rope.style.getPropertyValue('--x')) - w.left : w.right - parseFloat(rope.style.getPropertyValue('--x'));
         if (Math.abs(fromEdge - 16) > 1) f.push(`window at area ${want === 'left' ? 'right' : 'left'} end: rope ${fromEdge.toFixed(1)}px from ${want} edge`);
         scrollTo(0, 0); climb(); await wait(100);
       }
@@ -307,9 +307,9 @@
     document.querySelector('.dot[data-act="min"]').click(); await wait(800); climb();
     document.getElementById('bar').click(); await wait(700);
     climb(); // first frame after it is open again
-    const t1 = parseFloat(document.getElementById('climber').style.top);
+    const t1 = parseFloat(document.getElementById('climber').style.getPropertyValue('--y'));
     await wait(700); climb();
-    const t2 = parseFloat(document.getElementById('climber').style.top);
+    const t2 = parseFloat(document.getElementById('climber').style.getPropertyValue('--y'));
     if (Math.abs(t1 - t2) > 1) f.push(`climber slides in after boot (${t1.toFixed(0)} → ${t2.toFixed(0)})`);
     return f;
   };
