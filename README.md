@@ -52,4 +52,6 @@ src/
 ## בדיקות
 
 - `npm run check` — בדיקת טיפוסים וקוד. רצה גם בכל העלאה ל-GitHub, ושגיאה עוצרת את ההעלאה.
-- `npm run test:browser` — בדיקות הדפדפן מ-`tests/redesign-checks.js` (החלון, החבל, הסקשנים, הטופס). צריך שרת פיתוח רץ (`npm run dev`), ופעם ראשונה גם `npx playwright install chromium`.
+- `npm run test:browser` — בדיקות הדפדפן מ-`tests/redesign-checks.js` (החלון, החבל, הסקשנים, הטופס, הקישורים בתפריט). צריך שרת פיתוח רץ (`npm run dev`), ופעם ראשונה גם `npx playwright install chromium`.
+  - שרת בפורט אחר: `SITE_URL=http://localhost:4322/ilay_sandrusi_website/ npm run test:browser`
+  - עצירת שרת הפיתוח: `npx astro dev stop`

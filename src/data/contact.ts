@@ -6,7 +6,7 @@ const intl = phone.replace(/^0/, "972");
 
 /** For tel: links. */
 export const phoneTel = phone;
-/** As people read it: 050-9700059. */
+/** As people read it: 050-9700059 (assumes a mobile number with a 3-digit prefix). */
 export const phoneDisplay = `${phone.slice(0, 3)}-${phone.slice(3)}`;
 /** International form for structured data: +972509700059. */
 export const phoneE164 = `+${intl}`;

@@ -11,10 +11,11 @@ import Footer from "../components/Footer.astro";
 import MobileBar from "../components/MobileBar.astro";
 import RopeClimber from "../components/RopeClimber.astro";
 import { siteDescription } from "../data/contact";
+import { siteName } from "../data/site";
 ---
 
 <Layout
-  title="איליי סנדרוסי · אתרים, דפי נחיתה וחנויות אונליין לעסקים"
+  title={`${siteName} · אתרים, דפי נחיתה וחנויות אונליין לעסקים`}
   description={siteDescription}
 >
   <Header />

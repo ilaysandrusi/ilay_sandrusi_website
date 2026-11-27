@@ -245,6 +245,18 @@
   };
 
   // Run at 1366x820 on a fresh load.
+  // Every section link in the header and footer points at a section that exists on the home page (src/data/nav.ts).
+  C.navTargets = async () => {
+    const f = [];
+    const links = [...document.querySelectorAll('.site-header a[href*="#"], footer a[href*="#"]')];
+    if (!links.length) f.push('no section links found');
+    for (const a of links) {
+      const id = a.getAttribute('href').split('#')[1];
+      if (id && !document.getElementById(id)) f.push(`"${a.textContent.trim()}" links to #${id}, which is not on the page`);
+    }
+    return f;
+  };
+
   C.sections = async () => {
     const f = [];
     document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visible'));

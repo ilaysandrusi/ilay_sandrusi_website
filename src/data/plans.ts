@@ -1,9 +1,13 @@
 /**
  * The "what are we building" choices and the plans they open, in one place.
  *
- * To change a plan: edit it below. Its number, the hint on each choice ("מסלולים 1–3")
- * and the WhatsApp message are worked out from this list, so they cannot drift apart.
+ * To change a plan: edit it below. Its number, the hint on each choice ("מסלולים 1–3"),
+ * the button text and the WhatsApp message are worked out from this list.
  * To open a plan for a choice: add the choice id to the plan's `fit`.
+ *
+ * Written by hand, so check them when you reorder or insert plans:
+ * - descriptions that mention another plan by number ("הכול ממסלול 1", "מסלול 2, ועוד...").
+ * The desktop layout shows the plans in one row of 4 (2 per row from 900px), and the custom plan stays last.
  */
 
 export type ChoiceId = "ecommerce" | "landing" | "unique";

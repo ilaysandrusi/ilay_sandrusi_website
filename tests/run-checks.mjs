@@ -15,9 +15,16 @@ const sizes = {
 
 // Some checks need a step before them; each one runs on a freshly loaded page.
 const setups = {
-  dragResize: async (page) => {
-    await page.evaluate(() => window.__redesignChecks.drag());
-    await page.setViewportSize({ width: 1024, height: 820 });
+  // drag on a wide screen, then shrink: to 1024 in the desktop pass, to phone width in the phone pass
+  dragResize: async (page, viewport) => {
+    const target = viewport.width < 960 ? viewport : { width: 1024, height: 820 };
+    await page.setViewportSize({ width: 1366, height: 820 });
+    const problems = await page.evaluate(async () => {
+      await window.__redesignChecks._wait(400);
+      return window.__redesignChecks.drag();
+    });
+    if (problems.length) throw new Error(`drag before dragResize failed: ${problems.join("; ")}`);
+    await page.setViewportSize(target);
   },
   maxAfterResize: async (page) => {
     await page.evaluate(async () => {
@@ -47,7 +54,7 @@ try {
       await page.addScriptTag({ content: checksSource });
       let result;
       try {
-        if (setups[name]) await setups[name](page);
+        if (setups[name]) await setups[name](page, viewport);
         result = await page.evaluate((n) => window.__redesignChecks[n](), name);
       } catch (e) {
         result = [`check crashed: ${String(e).split("\n")[0]}`];

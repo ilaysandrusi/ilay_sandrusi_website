@@ -34,8 +34,9 @@ export function initHeroWindow(): HeroWindow | null {
   const wide = matchMedia("(min-width: 960px)");
   // window sizes come from the CSS variables on .stage in SceneOpen.astro, so they are set in one place
   const stageCss = getComputedStyle(stage);
-  const cssPx = (name: string) => parseFloat(stageCss.getPropertyValue(name));
-  const WIN = cssPx("--win"), WIN_LIFT = cssPx("--win-lift"), WIN_MAX_W = cssPx("--win-max-w"), WIN_MAX_H = cssPx("--win-max-h");
+  // the fallbacks are today's sizes, in case a variable is renamed in the CSS
+  const cssPx = (name: string, fallback: number) => parseFloat(stageCss.getPropertyValue(name)) || fallback;
+  const WIN = cssPx("--win", 320), WIN_LIFT = cssPx("--win-lift", 10), WIN_MAX_W = cssPx("--win-max-w", 560), WIN_MAX_H = cssPx("--win-max-h", 430);
   const listeners: Array<() => void> = [];
   const changed = () => listeners.forEach((cb) => cb());
   const has = (c: string) => stage.classList.contains(c);
