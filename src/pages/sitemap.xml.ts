@@ -8,12 +8,17 @@ export const GET: APIRoute = async ({ site }) => {
   const abs = (path: string) => new URL(`${base}${path}`, site).href;
   const guides = (await getGuides()).filter((g) => !g.data.draft);
 
+  const day = (d: Date) => d.toISOString().slice(0, 10);
+  const changed = (g: (typeof guides)[number]) => g.data.updated ?? g.data.date;
+  // the blog index changes when a guide is added or updated
+  const newest = guides.map(changed).sort((a, b) => b.getTime() - a.getTime())[0];
+
   const urls = [
     { loc: abs(""), changefreq: "monthly", priority: "1.0" },
-    { loc: abs("blog/"), changefreq: "weekly", priority: "0.8" },
+    { loc: abs("blog/"), ...(newest ? { lastmod: day(newest) } : {}), changefreq: "weekly", priority: "0.8" },
     ...guides.map((g) => ({
       loc: abs(`blog/${g.id}/`),
-      lastmod: g.data.date.toISOString().slice(0, 10),
+      lastmod: day(changed(g)),
       changefreq: "monthly",
       priority: "0.7",
     })),

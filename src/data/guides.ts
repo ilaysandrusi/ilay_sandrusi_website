@@ -1,6 +1,6 @@
 import { getCollection } from "astro:content";
 
-export const instagramLink = "https://www.instagram.com/ilaybuilds/";
+export { instagramLink } from "./contact";
 
 /** Published guides, newest first. Drafts are included only in dev. */
 export async function getGuides() {

@@ -7,6 +7,11 @@ const EXIT_MS = 520;
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const ease = (k: number) => 1 - Math.pow(1 - k, 3);
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+// Position through transform (CSS reads --x / --y / --r): moving with top/left counts as a layout shift on every scroll frame.
+const moveTo = (el: HTMLElement, x: number, y: number) => {
+  el.style.setProperty("--x", `${x}px`);
+  el.style.setProperty("--y", `${y}px`);
+};
 
 export function initRopeDescent(hero: HeroWindow): void {
   const climber = document.getElementById("climber");
@@ -56,8 +61,7 @@ export function initRopeDescent(hero: HeroWindow): void {
     setLanded(show);
     if (!show) return;
     const l = landing(cw, ch, scrollY);
-    climber.style.left = `${l.x}px`;
-    climber.style.top = `${l.pageY - scrollY}px`;
+    moveTo(climber, l.x, l.pageY - scrollY);
   };
 
   const place = () => {
@@ -65,7 +69,7 @@ export function initRopeDescent(hero: HeroWindow): void {
     if (still()) {
       setAway(false);
       rope.style.height = "0px";
-      climber.style.transform = "";
+      climber.style.setProperty("--r", "0deg");
       placeReduced();
       return;
     }
@@ -111,18 +115,16 @@ export function initRopeDescent(hero: HeroWindow): void {
       y = lerp(r.bottom - ch, y, e);
       raf = requestAnimationFrame(place);
     }
-    climber.style.left = `${x}px`;
-    climber.style.top = `${y}px`;
+    moveTo(climber, x, y);
 
     const ax = tieX, ay = tiePageY - sY;
     const dx = x + cw * ROPE_AT - ax, dy = y + 6 - ay;
     const showRope = !landed && dy > 0;
     const ang = -Math.atan2(dx, dy);
-    rope.style.left = `${ax}px`;
-    rope.style.top = `${ay}px`;
+    moveTo(rope, ax, ay);
     rope.style.height = `${showRope ? Math.hypot(dx, dy) : 0}px`;
-    rope.style.transform = `rotate(${ang}rad)`;
-    climber.style.transform = `rotate(${showRope ? Math.max(-12, Math.min(12, ang * 57.3 * 0.5)) : 0}deg)`;
+    rope.style.setProperty("--r", `${ang}rad`);
+    climber.style.setProperty("--r", `${showRope ? Math.max(-12, Math.min(12, ang * 57.3 * 0.5)) : 0}deg`);
   };
 
   const req = () => { if (!raf) raf = requestAnimationFrame(place); };

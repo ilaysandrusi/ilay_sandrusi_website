@@ -45,7 +45,7 @@ const img = (name: string) => `${base}character/${name}.png`;
         <span class="away-sign">יצאתי לרגע<small>גללו למטה</small></span>
         <span class="mx-note">יש פה מספיק מקום לפרויקט שלך</span>
         <div class="char" aria-hidden="true">
-          <img class="px" src={img("laptop_show")} alt="" width="624" height="732" />
+          <img class="px" src={img("laptop_show")} alt="" width="624" height="732" fetchpriority="high" />
           <img class="px excited" src={img("excited")} alt="" width="624" height="732" />
         </div>
         <span class="badge">עובד על זה עכשיו</span>
