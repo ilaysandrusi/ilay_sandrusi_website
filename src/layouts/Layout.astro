@@ -1,5 +1,14 @@
 ---
 import "../styles/global.css";
+// Fonts are served from the site itself (no request to Google). Each file covers one script; the browser fetches only what a page uses.
+import "@fontsource/fredoka/500.css";
+import "@fontsource/fredoka/600.css";
+import "@fontsource/fredoka/700.css";
+import "@fontsource/varela-round/400.css";
+import "@fontsource/suez-one/400.css";
+// the two files every page needs first: Hebrew headings and Hebrew body text
+import headFont from "@fontsource/fredoka/files/fredoka-hebrew-700-normal.woff2?url";
+import bodyFont from "@fontsource/varela-round/files/varela-round-hebrew-400-normal.woff2?url";
 import { alternateNames, instagramLink, phoneTel, siteDescription, whatsappLink } from "../data/contact";
 
 interface Props {
@@ -97,12 +106,8 @@ const structuredData = {
     <link rel="icon" type="image/png" sizes="96x96" href={`${base}icon-96.png`} />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Suez+One&family=Varela+Round&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" as="font" type="font/woff2" href={headFont} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     <slot name="head" />
