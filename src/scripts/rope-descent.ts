@@ -15,6 +15,9 @@ export function initRopeDescent(hero: HeroWindow): void {
   if (!climber || !rope || !send) return;
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // phones get no rope: he just waits by the send button, pointing
+  const phone = matchMedia("(max-width: 767px)");
+  const still = () => reduce || phone.matches;
   let away = false, landed = false, raf = 0, exitT0 = -Infinity, first = true, landedAt = Infinity;
 
   const setLanded = (v: boolean) => {
@@ -48,7 +51,7 @@ export function initRopeDescent(hero: HeroWindow): void {
   const placeReduced = () => {
     const cw = climber.offsetWidth, ch = climber.offsetHeight;
     const b = send.getBoundingClientRect();
-    const show = hero.isOpen() && b.bottom > 0 && b.top < innerHeight;
+    const show = hero.isOpen() && b.bottom > 0 && b.top < innerHeight - safeBottom();
     climber.classList.toggle("rm-show", show);
     setLanded(show);
     if (!show) return;
@@ -59,7 +62,14 @@ export function initRopeDescent(hero: HeroWindow): void {
 
   const place = () => {
     raf = 0;
-    if (reduce) { placeReduced(); return; }
+    if (still()) {
+      setAway(false);
+      rope.style.height = "0px";
+      climber.style.transform = "";
+      placeReduced();
+      return;
+    }
+    climber.classList.remove("rm-show");
     const vh = innerHeight, sY = scrollY, cw = climber.offsetWidth, ch = climber.offsetHeight;
     const s0 = hero.hero.offsetHeight * 0.12;
     setAway(sY > s0 && hero.isOpen());
@@ -118,6 +128,7 @@ export function initRopeDescent(hero: HeroWindow): void {
   const req = () => { if (!raf) raf = requestAnimationFrame(place); };
   addEventListener("scroll", req, { passive: true });
   addEventListener("resize", req);
+  phone.addEventListener("change", req);
   hero.onChange(req);
   new ResizeObserver(req).observe(document.body); // e.g. the form status text moves the button
   place();
