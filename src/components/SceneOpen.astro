@@ -68,7 +68,8 @@ const img = (name: string) => `${base}character/${name}.png`;
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding: 60px 0 80px;
+    /* clear the fixed header (62px on phones, 74px from 768px) plus the phone's notch */
+    padding: calc(96px + env(safe-area-inset-top)) 0 80px;
   }
   .hero-grid {
     width: 100%;
