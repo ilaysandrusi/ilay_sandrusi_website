@@ -37,6 +37,18 @@ export function initHeroWindow(): HeroWindow | null {
 
   const closedBox = document.getElementById("closedBox");
   const pos = { x: 0, y: 0 }; // where the visitor left the window, as an offset from home
+  let userMoved = false;
+
+  // desktop default spot: near the start of the left area, top lined up with the headline block
+  const heroText = hero.querySelector<HTMLElement>(".hero-text");
+  const placeDefault = () => {
+    const st = stage.getBoundingClientRect(), b = area();
+    const homeLeft = st.left + st.width / 2 - 160, homeTop = st.top + st.height / 2 - 170; // .win margins
+    const wantLeft = b.left + 60;
+    const wantTop = (heroText ? heroText.getBoundingClientRect().top : homeTop) + 26;
+    pos.x = Math.min(b.right - 320 - homeLeft, Math.max(b.left - homeLeft, wantLeft - homeLeft));
+    pos.y = Math.min(b.bottom - 320 - homeTop, Math.max(b.top - homeTop, wantTop - homeTop));
+  };
 
   const area = (): Area => {
     const h = hero.getBoundingClientRect(), pad = 12;
@@ -120,6 +132,7 @@ export function initHeroWindow(): HeroWindow | null {
       e.stopPropagation();
       const act = b.dataset.act;
       if (act === "min") { set(has("is-min") ? null : "min"); return; }
+      if (has("is-min")) { set(null); return; } // minimized: the only button left brings the window back up
       const next: State = act === "close" ? "closed" : "max";
       set(has(`is-${next}`) ? null : next);
     })
@@ -131,7 +144,8 @@ export function initHeroWindow(): HeroWindow | null {
   let drag: { x: number; y: number; dx: number; dy: number; base: Box; moved: boolean } | null = null;
   const syncDragMode = () => {
     document.documentElement.classList.toggle("can-drag", wide.matches);
-    if (!wide.matches) { pos.x = 0; pos.y = 0; }
+    if (!wide.matches) { pos.x = 0; pos.y = 0; userMoved = false; }
+    else if (!userMoved) placeDefault();
     applyPos();
     changed();
   };
@@ -147,7 +161,7 @@ export function initHeroWindow(): HeroWindow | null {
   bar.addEventListener("pointermove", (e) => {
     if (!drag) return;
     const b = area(), mx = e.clientX - drag.x, my = e.clientY - drag.y;
-    if (Math.abs(mx) + Math.abs(my) > 3) drag.moved = true;
+    if (Math.abs(mx) + Math.abs(my) > 3) { drag.moved = true; userMoved = true; }
     pos.x = Math.min(b.right - drag.base.width - drag.base.left, Math.max(b.left - drag.base.left, drag.dx + mx));
     pos.y = Math.min(b.bottom - drag.base.height - drag.base.top, Math.max(b.top - drag.base.top, drag.dy + my));
     applyPos();
@@ -167,6 +181,7 @@ export function initHeroWindow(): HeroWindow | null {
   syncDragMode();
   // keep it inside the area if the screen size changes
   addEventListener("resize", () => {
+    if (wide.matches && !userMoved && !has("is-min")) placeDefault();
     if (has("is-max")) { applyPos(); changed(); return; }
     if (!wide.matches || (!pos.x && !pos.y) || has("is-min")) return;
     const r = (has("is-closed") && closedBox ? closedBox : win).getBoundingClientRect(), b = area();
