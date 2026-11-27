@@ -159,35 +159,6 @@ const structuredData = {
         window.addEventListener("scroll", updateProgress, { passive: true });
         window.addEventListener("resize", updateProgress);
       }
-
-      // Scene progress nav — highlight current section
-      const sceneLinks = document.querySelectorAll<HTMLAnchorElement>(".scene-nav a");
-      const scenes = [...sceneLinks]
-        .map((a) => document.querySelector(a.getAttribute("href") || ""))
-        .filter(Boolean) as HTMLElement[];
-
-      if (scenes.length && sceneLinks.length) {
-        const mark = (id: string) => {
-          sceneLinks.forEach((a) => {
-            const current = a.getAttribute("href") === `#${id}`;
-            a.setAttribute("aria-current", current ? "true" : "false");
-          });
-          sceneLinks[0]?.parentElement?.classList.toggle(
-            "on-ink",
-            id === "work" || id === "contact"
-          );
-        };
-        const io = new IntersectionObserver(
-          (entries) => {
-            const visible = entries
-              .filter((e) => e.isIntersecting)
-              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-            if (visible?.target?.id) mark(visible.target.id);
-          },
-          { threshold: [0.35, 0.55, 0.75] }
-        );
-        scenes.forEach((s) => io.observe(s));
-      }
     </script>
   </body>
 </html>
