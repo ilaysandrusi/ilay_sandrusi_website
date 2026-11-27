@@ -55,7 +55,6 @@ const blogData = {
       <p class="lead">
         מה שאני מראה באינסטגרם, כתוב כאן בנחת: מה עושים, ובאיזה סדר.
       </p>
-      <img class="beach" src={`${base}character/beach.png`} alt="" aria-hidden="true" width="624" height="732" />
 
       {
         guides.length > 0 ? (
@@ -87,6 +86,9 @@ const blogData = {
           </div>
         )
       }
+
+      <!-- phones: under the guides; desktop: placed in the left column by CSS -->
+      <img class="beach" src={`${base}character/beach.png`} alt="" aria-hidden="true" width="624" height="732" />
 
       <a
         class="btn btn-ghost insta"
@@ -122,7 +124,7 @@ const blogData = {
     display: block;
     width: 140px;
     height: auto;
-    margin: 4px 0 24px auto;
+    margin: 28px 0 0 auto;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
   }
