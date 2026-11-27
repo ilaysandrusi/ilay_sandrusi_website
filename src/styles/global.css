@@ -126,18 +126,6 @@ section {
   margin-bottom: 14px;
 }
 
-.section-title {
-  font-size: clamp(1.85rem, 6.5vw, 2.9rem);
-  margin-bottom: 10px;
-}
-
-.section-subtitle {
-  color: var(--ink-soft);
-  font-size: 1.05rem;
-  max-width: 560px;
-  margin-bottom: 36px;
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -203,61 +191,6 @@ summary:focus-visible {
   border: var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-}
-
-/* Progress dots for cinematic scenes — 44px hit area, small visual */
-.scene-nav {
-  position: fixed;
-  inset-inline-start: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
-  display: none;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.scene-nav a {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  transition: transform var(--motion) var(--ease);
-}
-
-.scene-nav a::before {
-  content: "";
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--ink);
-  background: transparent;
-  transition: background var(--motion) var(--ease), border-color var(--motion) var(--ease), transform var(--motion) var(--ease);
-}
-
-.scene-nav a[aria-current="true"]::before {
-  background: var(--accent);
-  border-color: var(--accent);
-  transform: scale(1.25);
-}
-
-.scene-nav.on-ink a::before {
-  border-color: var(--paper);
-}
-
-.scene-nav a:hover::before,
-.scene-nav a:focus-visible::before {
-  border-color: var(--accent);
-}
-
-@media (min-width: 1240px) {
-  .scene-nav {
-    display: flex;
-  }
 }
 
 /* Varela Round has a single weight: anything bold is set in Fredoka instead of a faked bold */
