@@ -4,6 +4,15 @@ import { projects } from "../data/projects";
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
+
+// Until real projects are in, a slow carousel shows the kinds of sites on offer.
+const types = [
+  { name: "אתר לעסק", url: "my-business", kind: "site" },
+  { name: "דף נחיתה", url: "landing", kind: "landing" },
+  { name: "חנות אונליין", url: "shop", kind: "shop" },
+];
+const set = [...types, ...types];   // one set is wider than a wide screen
+const track = [...set, ...set];     // two sets: the loop moves by exactly one set
 ---
 
 <section class="scene work" id="work">
@@ -57,16 +66,44 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
         </ol>
       ) : (
         <p class="work-empty" role="status">אין עדיין דוגמאות להצגה. בינתיים אפשר לבחור כיוון ולפתוח מסלול.</p>
-        <div class="site-box" aria-hidden="true">
-          <div class="box-bar"><i></i><i></i><i></i><span>project-01</span></div>
-          <div class="stripes"></div>
-          <div class="ghost-lines"><i style="width:180px"></i><i style="width:120px"></i><i style="width:150px"></i></div>
-          <span class="tape">בבנייה</span>
-        </div>
       )
     }
 
   </div>
+
+  {
+    projects.length === 0 && (
+      <div class="types" aria-hidden="true">
+        <div class="types-track">
+          {track.map((t) => (
+            <figure class="type">
+              <div class:list={["type-win", t.kind]}>
+                <div class="box-bar"><i></i><i></i><i></i><span>{t.url}</span></div>
+                <div class="sketch">
+                  {t.kind === "site" && (
+                    <>
+                      <div class="nav"><b></b><i></i><i></i><i></i></div>
+                      <div class="hero-l"><b style="width:70%"></b><b style="width:48%"></b><i style="width:60%"></i><u></u></div>
+                      <div class="cards"><span></span><span></span><span></span></div>
+                    </>
+                  )}
+                  {t.kind === "landing" && (
+                    <div class="land"><b style="width:80%"></b><b style="width:56%"></b><i style="width:66%"></i><i style="width:50%"></i><u></u></div>
+                  )}
+                  {t.kind === "shop" && (
+                    <div class="grid">
+                      {[0, 1, 2, 3, 4, 5].map(() => <span><em></em><i></i></span>)}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <figcaption>{t.name}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -77,15 +114,40 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
     padding: var(--sp-section-lg) 0;
   }
 
-  .site-box { position: relative; background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; box-shadow: 8px 8px 0 rgba(246, 241, 231, 0.14); height: 320px; overflow: hidden; margin-bottom: 32px; }
+  /* ---- carousel of site types: drifts slowly left to right, endless ---- */
+  .types { margin-top: 44px; overflow: hidden; direction: ltr; padding: 6px 0 14px; }
+  .types-track { display: flex; gap: 28px; width: max-content; animation: types-drift 70s linear infinite; }
+  .types:hover .types-track { animation-play-state: paused; }
+  @keyframes types-drift { from { transform: translateX(calc(-50% - 14px)); } to { transform: translateX(0); } }
+  .type { flex: none; width: 280px; margin: 0; }
+  .type figcaption { margin-top: 14px; text-align: center; font: 600 17px var(--head); color: var(--paper); direction: rtl; }
+  .type-win { position: relative; height: 200px; background: var(--card); color: var(--ink); border: var(--line); border-radius: 18px; box-shadow: 8px 8px 0 rgba(246, 241, 231, 0.14); overflow: hidden; }
+  .type-win .box-bar { height: 34px; }
+  .type-win .box-bar i { width: 12px; height: 12px; }
+  .sketch { position: absolute; inset: 34px 0 0 0; padding: 14px 16px; direction: rtl; }
+  .sketch b, .sketch i, .sketch u { display: block; border-radius: 4px; }
+  .sketch b { height: 10px; background: rgba(23, 20, 16, 0.78); margin-bottom: 6px; }
+  .sketch i { height: 6px; background: rgba(23, 20, 16, 0.14); margin-bottom: 6px; }
+  .sketch u { width: 64px; height: 18px; border-radius: 6px; background: var(--accent); border: 1.5px solid var(--ink); margin-top: 8px; }
+  .nav { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .nav b { width: 26px; height: 8px; margin: 0 0 0 auto; }
+  .nav i { width: 22px; margin: 0; }
+  .cards { display: flex; gap: 8px; margin-top: 12px; }
+  .cards span { flex: 1; height: 30px; border: 1.5px solid var(--ink); border-radius: 6px; background: var(--paper-soft); }
+  .landing .sketch { background: repeating-linear-gradient(-45deg, transparent 0 18px, rgba(255, 75, 38, 0.07) 18px 36px); }
+  .land { display: flex; flex-direction: column; align-items: center; padding-top: 10px; }
+  .land b, .land i { margin-inline: auto; }
+  .land u { width: 92px; height: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .grid span { display: flex; flex-direction: column; gap: 4px; padding: 5px; border: 1.5px solid var(--ink); border-radius: 6px; background: var(--card); }
+  .grid em { display: block; height: 26px; border-radius: 4px; background: var(--paper-soft); }
+  .grid span i { width: 60%; height: 5px; margin: 0; background: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .types-track { animation: none; } }
+
   .box-bar { height: 40px; border-bottom: var(--line); display: flex; align-items: center; gap: 8px; padding: 0 14px; direction: ltr; }
   .box-bar i { width: 15px; height: 15px; border-radius: 50%; border: var(--line); }
   .box-bar i:first-child { background: var(--accent); }
   .box-bar span { margin-left: 10px; font-size: 13px; color: var(--ink-soft); }
-  .stripes { position: absolute; inset: 40px 0 0 0; background: repeating-linear-gradient(-45deg, transparent 0 22px, rgba(255, 75, 38, 0.08) 22px 44px); }
-  .ghost-lines { position: absolute; top: 64px; right: 24px; display: grid; gap: 10px; }
-  .ghost-lines i { display: block; height: 12px; border-radius: 6px; background: rgba(23, 20, 16, 0.08); }
-  .tape { position: absolute; z-index: 3; top: 110px; right: -40px; transform: rotate(18deg); background: var(--accent); color: #fff; border-block: var(--line); font: 600 16px var(--head); padding: 7px 70px; }
 
   .work-inner {
     width: 100%;
@@ -241,14 +303,6 @@ const src = (image: string) => `${base}${image.replace(/^\//, "")}`;
   }
 
   @media (min-width: 960px) {
-    .work-inner.is-empty {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: clamp(32px, 6vw, 90px);
-      align-items: start;
-    }
-    .work-inner.is-empty > * { grid-column: 1; justify-self: start; }
-    .work-inner.is-empty .site-box { grid-column: 2; grid-row: 1 / span 5; justify-self: stretch; height: 380px; margin: 0; }
 
     .works {
       gap: 56px;
