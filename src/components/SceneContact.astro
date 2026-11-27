@@ -16,7 +16,7 @@ const formAction = `https://formsubmit.co/${formsubmitId}`;
       <input type="hidden" name="_subject" value="פנייה מהאתר של איליי" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
-      <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" data-1p-ignore data-lpignore="true" />
 
       <div class="field">
         <label for="contact-name">
@@ -94,8 +94,8 @@ const formAction = `https://formsubmit.co/${formsubmitId}`;
       return;
     }
 
-    const honey = (form.querySelector('[name="_honey"]') as HTMLInputElement | null)?.value;
-    if (honey) return;
+    // The hidden _honey field is for bots that post the form without this script (FormSubmit drops those).
+    // It must not stop a real visitor: browser autofill can fill it, and then the button looked dead.
 
     const data = new FormData(form);
     const payload: Record<string, string> = {};
@@ -174,14 +174,9 @@ const formAction = `https://formsubmit.co/${formsubmitId}`;
     padding: 28px;
   }
 
+  /* display: none keeps browser autofill and password managers out of it */
   .honey {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
+    display: none;
   }
 
   .sr-only {
